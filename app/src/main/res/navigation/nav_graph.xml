@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashScreen">
+
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.splash.SplashScreen"
+        android:label="SplashScreen"
+        tools:layout="@layout/screen_splash">
+        <action
+            android:id="@+id/action_splashScreen_to_loginScreen"
+            app:destination="@id/loginScreen"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.login.LoginScreen"
+        android:label="LoginScreen"
+        tools:layout="@layout/screen_login">
+        <action
+            android:id="@+id/action_loginScreen_to_registerScreen"
+            app:destination="@id/registerScreen"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_loginScreen_to_verifyCodeScreen"
+            app:destination="@id/verifyCodeScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.register.RegisterScreen"
+        android:label="RegisterScreen"
+        tools:layout="@layout/screen_register">
+        <action
+            android:id="@+id/action_registerScreen_to_loginScreen"
+            app:destination="@id/loginScreen"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_registerScreen_to_verifyCodeScreen"
+            app:destination="@id/verifyCodeScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyCodeScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.verify.VerifyCodeScreen"
+        android:label="VerifyCodeScreen"
+        tools:layout="@layout/screen_verify_code">
+        <action
+            android:id="@+id/action_verifyCodeScreen_to_permissionsCheckScreen"
+            app:destination="@id/permissionsCheckScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/permissionsCheckScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
+        android:label="PermissionsCheckScreen"
+        tools:layout="@layout/screen_permissions_check">
+        <action
+            android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.MainScreen"
+        android:label="MainScreen"
+        tools:layout="@layout/screen_main" />
+</navigation>

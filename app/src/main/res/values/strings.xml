@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Saiga Driver</string>
+    <string name="phone_number">Phone number</string>
+    <string name="enter_the_phone_number">Enter the phone number</string>
+    <string name="enter_name">Enter your first name</string>
+    <string name="enter_last_name">Enter your last name</string>
+    <string name="next">Next</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="phone_hint">901234567</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="permission_check">Permissions check</string>
+    <string name="check">Check</string>
+    <string name="account_not">Do you not have an account yet?</string>
+    <string name="already_account">Do you already have an account?</string>
+    <string name="enable_notification">Enable Notification</string>
+    <string name="please_enable_notification">Please turn on notifications so that you don\'t miss every incoming order. This will not compromise your security.</string>
+    <string name="enable_location">Enable location</string>
+    <string name="please_enable_location">Please turn on geolocation to ensure that we can communicate with you effectively. This does not pose any risk to your security.</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="orders">Orders</string>
+
+</resources>

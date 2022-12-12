@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="CircleImageView">
+        <item name="cornerSize">50%</item>
+    </style>
+
+
+    <style name="ShapeImageView">
+        <item name="cornerSize">12dp</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.InnerBottom" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/margin_std</item>
+        <item name="cornerSizeTopLeft">@dimen/margin_std</item>
+        <item name="cornerSizeBottomRight">@dimen/margin_std</item>
+        <item name="cornerSizeBottomLeft">@dimen/margin_std</item>
+    </style>
+
+    <style name="OutlineTextField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">@dimen/margin_component</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/margin_component</item>
+        <item name="boxCornerRadiusTopStart">@dimen/margin_component</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/margin_component</item>
+    </style>
+
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal" />
+
+    <style name="FabShapeStyle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">@dimen/margin_component</item>
+        <item name="backgroundColor">#fff</item>
+    </style>
+
+    <style name="FabShapeBottomStyle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSizeTopLeft">@dimen/margin_large</item>
+        <item name="cornerSizeTopRight">@dimen/margin_large</item>
+        <item name="backgroundColor">#fff</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">@drawable/background_bottom_nav_item</item>
+        <item name="itemIconTint">@drawable/color_bottom_nav_item</item>
+        <item name="itemTextColor">@color/light_grey</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigation.Overline</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigation.Overline</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="paddingStart">32dp</item>
+        <item name="paddingEnd">32dp</item>
+    </style>
+
+    <style name="TextAppearance.BottomNavigation.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+</resources>
