@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/action_bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_large"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap"
+            tools:text="Hello Jamshid" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_notification"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_std"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/margin_std"
+            android:src="@drawable/ic_notification"
+            app:tint="@color/dark_grey" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_balance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_large"
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/margin_extra_large"
+        app:cardElevation="@dimen/margin_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/action_bar_container"
+        app:layout_constraintWidth_percent="0.9">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_large"
+            android:paddingStart="@dimen/margin_std"
+            tools:ignore="RtlSymmetry">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/total_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_balance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_total_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_std"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/total_balance"
+                tools:text="123 000 sum" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_money"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/light_grey" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_component"
+                android:text="@string/transfer_money"
+                app:layout_constraintBottom_toBottomOf="@id/image_money"
+                app:layout_constraintStart_toEndOf="@id/image_money"
+                app:layout_constraintTop_toTopOf="@id/image_money" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_refresh_money"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="?selectableItemBackground"
+                android:padding="@dimen/margin_std"
+                android:src="@drawable/ic_refresh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/light_grey" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/margin_large"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/card_balance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_balance"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_order_container"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/margin_large"
+        app:cardCornerRadius="@dimen/margin_large"
+        app:cardElevation="@dimen/margin_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        app:layout_constraintWidth_percent="0.9">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_car"
+                app:tint="@color/primary" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_order_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_car"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="152 Orders" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_icon_main"
+                android:padding="@dimen/margin_std"
+                android:src="@drawable/ic_right"
+                app:tint="@color/dark_grey" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/margin_large"
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/margin_large"
+        app:cardElevation="@dimen/margin_small"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="@id/card_balance"
+        app:layout_constraintTop_toBottomOf="@+id/card_order_container"
+        app:layout_constraintWidth_percent="0.42">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_income"
+                app:tint="@color/white" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_order_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_income"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="152 000 sum" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_icon_main"
+                android:padding="@dimen/margin_std"
+                android:src="@drawable/ic_right"
+                app:tint="@color/light_grey" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_income_container"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/margin_large"
+        app:cardCornerRadius="@dimen/margin_large"
+        app:cardElevation="@dimen/margin_small"
+        app:layout_constraintEnd_toEndOf="@id/card_balance"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@+id/card_order_container"
+        app:layout_constraintWidth_percent="0.42">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_expanse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_expanse"
+                app:tint="@color/primary" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_order_expanse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_expanse"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="152 000 sum" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_icon_main"
+                android:padding="@dimen/margin_std"
+                android:src="@drawable/ic_right"
+                app:tint="@color/dark_grey" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_directions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_std"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_income_container"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/list_item_directions" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
