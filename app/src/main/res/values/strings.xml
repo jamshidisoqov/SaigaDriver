@@ -28,5 +28,11 @@
     <string name="settings">Settings</string>
     <string name="directions">Directions</string>
     <string name="finance">Finance</string>
+    <string name="delete_direction">Delete direction</string>
+    <string name="add_direction">Add direction</string>
+    <string name="where_from">Where from</string>
+    <string name="where_to">Where to</string>
+    <string name="amount">Departure price</string>
+    <string name="time_to_leave">Time to leave</string>
 
 </resources>
