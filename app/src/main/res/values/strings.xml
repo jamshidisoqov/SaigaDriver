@@ -41,5 +41,12 @@
     <string name="filter">Filter</string>
     <string name="language">Language</string>
     <string name="uzbek">Uzbek</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="choose_date">Choose date</string>
+    <string name="error">Error</string>
+    <string name="english">English</string>
+    <string name="message">Message</string>
+    <string name="success">Success</string>
 
 </resources>
