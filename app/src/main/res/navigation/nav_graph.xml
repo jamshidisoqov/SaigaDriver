@@ -14,6 +14,10 @@
             android:id="@+id/action_splashScreen_to_loginScreen"
             app:destination="@id/loginScreen"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_splashScreen_to_mainScreen"
+            app:destination="@id/mainScreen"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/loginScreen"
