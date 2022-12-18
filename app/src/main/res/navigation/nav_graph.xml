@@ -64,4 +64,24 @@
         android:name="uz.gita.saiga_driver.presentation.ui.main.MainScreen"
         android:label="MainScreen"
         tools:layout="@layout/screen_main" />
+    <fragment
+        android:id="@+id/settingsScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.settings.SettingsScreen"
+        android:label="SettingsScreen" />
+    <fragment
+        android:id="@+id/directionDetailScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionDetailScreen"
+        android:label="DirectionDetailScreen" />
+    <fragment
+        android:id="@+id/addDirectionScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionScreen"
+        android:label="AddDirectionScreen" />
+    <fragment
+        android:id="@+id/directionsScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.direction.DirectionsScreen"
+        android:label="DirectionsScreen" />
+    <fragment
+        android:id="@+id/financeScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.finance.FinanceScreen"
+        android:label="FinanceScreen" />
 </navigation>
