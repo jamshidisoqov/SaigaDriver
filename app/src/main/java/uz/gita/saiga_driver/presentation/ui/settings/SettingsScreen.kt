@@ -8,4 +8,5 @@ import uz.gita.saiga_driver.R
 @AndroidEntryPoint
 class SettingsScreen :Fragment(R.layout.screen_settings){
 
+
 }

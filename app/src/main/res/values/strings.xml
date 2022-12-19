@@ -50,5 +50,10 @@
     <string name="success">Success</string>
     <string name="accept_order">Do you accept this order?</string>
     <string name="accept">Accept</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="birthday">Birthday</string>
+    <string name="confirm">Save</string>
 
 </resources>
