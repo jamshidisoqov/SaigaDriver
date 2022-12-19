@@ -48,5 +48,7 @@
     <string name="english">English</string>
     <string name="message">Message</string>
     <string name="success">Success</string>
+    <string name="accept_order">Do you accept this order?</string>
+    <string name="accept">Accept</string>
 
 </resources>

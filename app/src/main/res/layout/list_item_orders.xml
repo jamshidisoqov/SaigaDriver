@@ -22,9 +22,9 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_location" />
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_target_red" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_from_order"
@@ -45,18 +45,19 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_direction" />
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_target_blue" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_direction"
+                android:id="@+id/tv_to_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_std"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:text="4 km" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@string/default_to" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,17 +70,18 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_income" />
+                android:src="@drawable/ic_direction"
+                app:tint="@color/dark_grey" />
+
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_income"
+                android:id="@+id/tv_car_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_std"
-                android:textColor="@color/primary"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text=">7 000 sum" />
+                tools:text="Light weight" />
 
             <Space
                 android:layout_width="0dp"
@@ -87,21 +89,9 @@
                 android:layout_weight="1" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_expanse" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_expanse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_std"
-                android:textColor="@color/dark_grey"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="1 000 sum" />
-
-
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:src="@drawable/saiga_yellow_car" />
         </LinearLayout>
 
     </LinearLayout>

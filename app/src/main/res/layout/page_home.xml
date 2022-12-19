@@ -180,6 +180,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_income_container"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginTop="@dimen/margin_large"
@@ -230,7 +231,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_income_container"
+        android:id="@+id/card_expanse_container"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginTop="@dimen/margin_large"

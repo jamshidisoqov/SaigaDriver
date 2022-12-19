@@ -15,9 +15,11 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import uz.gita.saiga_driver.MainActivity
-import uz.gita.saiga_user.presentation.dialogs.ErrorDialog
 import uz.gita.saiga_driver.presentation.dialogs.MessageDialog
+import uz.gita.saiga_user.presentation.dialogs.ErrorDialog
 
 // Created by Jamshid Isoqov on 12/12/2022
 
@@ -116,3 +118,5 @@ fun Fragment.showMessageDialog(message: String) {
 fun Fragment.toast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }
+
+
