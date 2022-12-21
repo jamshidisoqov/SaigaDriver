@@ -33,4 +33,7 @@ interface DirectionsModule {
     @Binds
     fun bindHomeDirections(impl: HomeScreenDirectionImpl): HomeScreenDirection
 
+    @Binds
+    fun bindDirections(impl: DirectionsScreenDirectionImpl): DirectionsScreenDirection
+
 }
