@@ -3,21 +3,24 @@ package uz.gita.saiga_driver.presentation.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.HomeScreenDirection
-import uz.gita.saiga_driver.domain.repository.orders.OrderRepository
+import uz.gita.saiga_driver.domain.repository.AuthRepository
+import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.home.HomeViewModel
-import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModelImpl @Inject constructor(
     private val orderRepository: OrderRepository,
-    private val direction: HomeScreenDirection
+    private val direction: HomeScreenDirection,
+    private val authRepository: AuthRepository
 ) : HomeViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -34,59 +37,35 @@ class HomeViewModelImpl @Inject constructor(
 
     override val expanseBalance = MutableStateFlow(0.0)
 
-    override val myDirectionsFlow = MutableStateFlow(emptyList<DirectionalTaxiData>())
+    override val myDirectionsFlow = MutableStateFlow(emptyList<OrderResponse>())
 
     override fun getData() {
         viewModelScope.launch {
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
-                combine(
-                    orderRepository.getBalanceFlow(),
-                    orderRepository.getExpanseFlow(),
-                    orderRepository.getIncomeFlow(),
-                    orderRepository.getOrders(),
-                    orderRepository.getAllMyDirections()
-                ) { balance, expanse, income, orders, directions ->
-                    loadingSharedFlow.emit(false)
-                    balance.onSuccess {
-                        currentBalanceFlow.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                    expanse.onSuccess {
-                        expanseBalance.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                    income.onSuccess {
-                        incomeBalance.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                    orders.onSuccess {
-                        ordersFlow.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                    directions.onSuccess {
-                        myDirectionsFlow.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                }
             } else {
                 messageSharedFlow.emit("No internet connection")
             }
+        }
+    }
+
+    override fun refreshUserBalance() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.getUserData().collectLatest { result ->
+                result.onSuccess {
+
+                }.onMessage {
+
+                }.onError {
+
+                }
+            }
+
+            orderRepository.getAllOrders().collectLatest {
+                ordersFlow.emit(it.size)
+            }
+
+
         }
     }
 
@@ -102,9 +81,9 @@ class HomeViewModelImpl @Inject constructor(
         }
     }
 
-    override fun navigateToDirectionDetail(directionalTaxiData: DirectionalTaxiData) {
+    override fun navigateToDirectionDetail(orderResponse: OrderResponse) {
         viewModelScope.launch {
-            direction.navigateToDirectionDetails(directionalTaxiData)
+            direction.navigateToDirectionDetails(orderResponse)
         }
     }
 

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
-import uz.gita.saiga_driver.domain.repository.auth.AuthRepository
+import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.profile.detail.ProfileDetailViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import javax.inject.Inject

@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     fun showProgress() {
         dialog.show()
     }
@@ -47,4 +46,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var activity: MainActivity
     }
+
 }

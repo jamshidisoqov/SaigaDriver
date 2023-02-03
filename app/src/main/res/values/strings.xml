@@ -1,7 +1,4 @@
 <resources>
-
-    <string name="map_key" translatable="false">AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ</string>
-
     <string name="app_name">Saiga Driver</string>
     <string name="phone_number">Phone number</string>
     <string name="enter_the_phone_number">Enter the phone number</string>

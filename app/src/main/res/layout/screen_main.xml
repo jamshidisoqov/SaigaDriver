@@ -22,6 +22,4 @@
         app:morphCornerRadius="128dp"
         app:morphItemRadius="64dp"
         app:morphVerticalOffset="8dp" />
-
-
 </LinearLayout>

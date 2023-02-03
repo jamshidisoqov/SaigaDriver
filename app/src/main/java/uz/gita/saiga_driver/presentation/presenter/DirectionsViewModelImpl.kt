@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.DirectionsScreenDirection
-import uz.gita.saiga_driver.domain.repository.directions.DirectionsRepository
+import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionsViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class DirectionsViewModelImpl @Inject constructor(
     private val repository: DirectionsRepository
 ) : DirectionsViewModel, ViewModel() {
 
-    override val allDirections = MutableStateFlow<List<DirectionalTaxiData>>(emptyList())
+    override val allDirections = MutableStateFlow<List<OrderResponse>>(emptyList())
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
 
@@ -33,7 +34,7 @@ class DirectionsViewModelImpl @Inject constructor(
         }
     }
 
-    override fun navigateToDirectionDetail(directionalTaxiData: DirectionalTaxiData) {
+    override fun navigateToDirectionDetail(directionalTaxiData: OrderResponse) {
         viewModelScope.launch {
             directions.navigateToDirectionDetail(directionalTaxiData)
         }
@@ -41,16 +42,7 @@ class DirectionsViewModelImpl @Inject constructor(
 
     override fun getAllDirection() {
         viewModelScope.launch {
-            loadingSharedFlow.emit(true)
-            repository.getAllDirection().collectLatest { result ->
-                result.onSuccess {
-                    allDirections.emit(it)
-                }.onMessage {
-                    messageSharedFlow.emit(it)
-                }.onError {
-                    errorSharedFlow.emit(it.getMessage())
-                }
-            }
+
         }
     }
 }

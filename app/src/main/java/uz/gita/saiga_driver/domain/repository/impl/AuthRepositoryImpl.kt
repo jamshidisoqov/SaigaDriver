@@ -127,6 +127,10 @@ class AuthRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
+    override fun getUserData(): Flow<ResultData<AuthResponse>> = flow {
+
+    }
+
     private fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential, onSuccess: () -> Unit, onFailure: (Exception) -> Unit
     ) {

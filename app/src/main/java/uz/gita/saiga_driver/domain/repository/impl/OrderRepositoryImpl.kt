@@ -13,6 +13,7 @@ import uz.gita.saiga_driver.data.remote.api.SocketOrderApi
 import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
+import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.utils.ResultData
@@ -42,16 +43,16 @@ class OrderRepositoryImpl @Inject constructor(
                 )
             )
         ).func(gson = gson).onSuccess {
-                emit(ResultData.Success(it.body.data))
-            }.onMessage {
-                emit(ResultData.Message(it))
-            }.onError {
-                emit(ResultData.Error(it))
-            }
+            emit(ResultData.Success(it.body.data))
+        }.onMessage {
+            emit(ResultData.Message(it))
+        }.onError {
+            emit(ResultData.Error(it))
+        }
         moon.state
     }.catch { error ->
-            emit(ResultData.Error(error))
-        }.flowOn(Dispatchers.IO)
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
 
     override fun addFavourite(
         whereFrom: String, whereFromLatLng: LatLng, whereTo: String
@@ -60,6 +61,7 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     override fun getAllOrders(): Flow<List<OrderResponse>> = socketOrderApi.getAllOrders()
+
 
     override suspend fun socketConnect() {
         if (moon.state.value == Moon.Status.DISCONNECT) {

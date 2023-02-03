@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
 import uz.gita.saiga_driver.databinding.ScreenAddDirectionBinding
 import uz.gita.saiga_driver.presentation.presenter.AddDirectionViewModelImpl
 import uz.gita.saiga_driver.utils.extensions.*
@@ -28,7 +29,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
     private val boolPrice: Boolean = false
     private val boolSchedule: Boolean = false
 
-    private var allDirection = emptyList<AddressData>()
+    private var allDirection = emptyList<DirectionResponse>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         viewModel.allDirections.onEach {

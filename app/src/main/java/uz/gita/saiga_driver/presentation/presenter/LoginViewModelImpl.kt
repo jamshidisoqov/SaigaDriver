@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.presentation.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -11,8 +12,11 @@ import uz.gita.saiga_driver.directions.LoginScreenDirection
 import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.presentation.ui.login.LoginViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.log
 import javax.inject.Inject
 
+
+@HiltViewModel
 class LoginViewModelImpl @Inject constructor(
     private val authRepository: AuthRepository,
     private val direction: LoginScreenDirection,
@@ -34,9 +38,10 @@ class LoginViewModelImpl @Inject constructor(
     override fun login(phone: String) {
         viewModelScope.launch(Dispatchers.IO) {
             loadingSharedFlow.emit(true)
+            log(phone,"Phone")
+            println("Phone->$phone")
             authRepository.login(phone)
                 .collectLatest { result ->
-                    loadingSharedFlow.emit(false)
                     result.onSuccess {
                         val userResponse = it.data
                         mySharedPref.firstName = userResponse.firstName

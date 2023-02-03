@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import uz.gita.saiga_driver.domain.repository.orders.OrderRepository
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
-import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,25 +24,20 @@ class OrdersViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-    override val allOrderFlow = MutableStateFlow<List<OrderData>>(emptyList())
+    override val allOrderFlow = MutableStateFlow<List<OrderResponse>>(emptyList())
 
     override fun getAllData() {
         viewModelScope.launch {
-            loadingSharedFlow.emit(true)
-            orderRepository.getAllOrders().collectLatest { result ->
-                loadingSharedFlow.emit(false)
-                result.onSuccess {
-                    allOrderFlow.emit(it)
-                }.onMessage {
-                    messageSharedFlow.emit(it)
-                }.onError {
-                    errorSharedFlow.emit(it.getMessage())
+            if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                orderRepository.getAllOrders().collectLatest { result ->
+                    allOrderFlow.emit(result)
                 }
             }
         }
     }
 
-    override fun accept(orderData: OrderData) {
+    override fun accept(orderData: OrderResponse) {
         viewModelScope.launch {
 
         }

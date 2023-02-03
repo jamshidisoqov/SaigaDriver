@@ -1,6 +1,7 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.home
 
 import kotlinx.coroutines.flow.StateFlow
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.utils.BaseViewModel
 
 // Created by Jamshid Isoqov on 12/19/2022
@@ -14,15 +15,17 @@ interface HomeViewModel : BaseViewModel {
 
     val expanseBalance: StateFlow<Double>
 
-    val myDirectionsFlow: StateFlow<List<DirectionalTaxiData>>
+    val myDirectionsFlow: StateFlow<List<OrderResponse>>
 
     fun getData()
+
+    fun refreshUserBalance()
 
     fun navigateToOrders()
 
     fun navigateToFinance()
 
-    fun navigateToDirectionDetail(directionalTaxiData: DirectionalTaxiData)
+    fun navigateToDirectionDetail(orderResponse: OrderResponse)
 
     fun navigateToNotifications()
 
