@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver.presentation.ui.verify
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.ScreenVerifyCodeBinding
 import uz.gita.saiga_driver.presentation.presenter.VerifyViewModelImpl
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
+import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getTimeFormat
 import uz.gita.saiga_driver.utils.extensions.include
 
@@ -51,11 +53,12 @@ class VerifyCodeScreen : Fragment(R.layout.screen_verify_code) {
             }.launchIn(lifecycleScope)
         }
 
+    @SuppressLint("SetTextI18n")
     private fun runTimer() = viewBinding.include {
         var time = 180
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             while (time > 0) {
-                tvCodeSend.text = time.getTimeFormat()
+                tvCodeSend.text = "Code expired".combine(time.getTimeFormat())
                 delay(1000)
                 time--
             }

@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uz.gita.saiga_driver.R
-import uz.gita.saiga_driver.data.remote.response.DirectionalTaxiData
 import uz.gita.saiga_driver.databinding.ListItemDirectionsBinding
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
 import uz.gita.saiga_driver.utils.extensions.include

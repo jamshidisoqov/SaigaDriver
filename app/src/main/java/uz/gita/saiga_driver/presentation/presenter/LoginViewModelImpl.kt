@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.directions.LoginScreenDirection
-import uz.gita.saiga_driver.domain.repository.auth.AuthRepository
+import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.presentation.ui.login.LoginViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import javax.inject.Inject
@@ -38,11 +38,28 @@ class LoginViewModelImpl @Inject constructor(
                 .collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                        //TODO navigate and save shared prefs
-                        direction.navigateToVerifyScreen(phone)
+                        val userResponse = it.data
+                        mySharedPref.firstName = userResponse.firstName
+                        mySharedPref.lastName = userResponse.lastName
+                        mySharedPref.phoneNumber = userResponse.phoneNumber
+                        mySharedPref.language = userResponse.lang.ordinal
+                        mySharedPref.token = it.token
+                        mySharedPref.userId = userResponse.id
+                        authRepository.sendSms(phone).collectLatest { result ->
+                            loadingSharedFlow.emit(false)
+                            result.onSuccess {
+                                direction.navigateToVerifyScreen(phone)
+                            }.onMessage { message ->
+                                messageSharedFlow.emit(message)
+                            }.onError { error ->
+                                errorSharedFlow.emit(error.getMessage())
+                            }
+                        }
                     }.onMessage {
+                        loadingSharedFlow.emit(false)
                         messageSharedFlow.emit(it)
                     }.onError {
+                        loadingSharedFlow.emit(false)
                         errorSharedFlow.emit(it.getMessage())
                     }
                 }

@@ -2,7 +2,6 @@ package uz.gita.saiga_driver.presentation.ui.direction.add
 
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import uz.gita.saiga_driver.data.remote.response.AddressData
 import uz.gita.saiga_driver.utils.BaseViewModel
 import java.sql.Timestamp
 

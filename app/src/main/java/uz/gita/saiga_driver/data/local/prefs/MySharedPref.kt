@@ -8,11 +8,9 @@ import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/13/2022
 class MySharedPref @Inject constructor(
-    private val ctx: Context,
-    private val sharedPreferences: SharedPreferences
+    ctx: Context,
+    sharedPreferences: SharedPreferences
 ) : SharedPreference(ctx, sharedPreferences) {
-
-    var verifyToken: String by Strings("")
 
     var token: String by Strings("")
 
@@ -24,7 +22,11 @@ class MySharedPref @Inject constructor(
 
     var phoneNumber: String by Strings("")
 
-    var language: Int by Ints(1)
+    var language: Int by Ints(0)
+
+    var isVerify:Boolean by Booleans(false)
+
+    var userId:Long by Longs()
 
 
 }

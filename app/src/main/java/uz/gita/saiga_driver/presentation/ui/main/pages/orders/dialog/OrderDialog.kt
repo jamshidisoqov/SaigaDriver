@@ -5,7 +5,6 @@ import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import uz.gita.saiga_driver.R
-import uz.gita.saiga_driver.data.remote.response.OrderData
 import uz.gita.saiga_driver.databinding.DialogOrderAcceptBinding
 import uz.gita.saiga_driver.utils.extensions.include
 

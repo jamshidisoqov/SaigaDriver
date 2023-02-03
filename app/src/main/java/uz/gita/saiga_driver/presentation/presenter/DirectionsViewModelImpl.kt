@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import uz.gita.saiga_driver.data.remote.response.DirectionalTaxiData
 import uz.gita.saiga_driver.directions.DirectionsScreenDirection
 import uz.gita.saiga_driver.domain.repository.directions.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionsViewModel

@@ -1,4 +1,4 @@
-package uz.gita.saiga_user.presentation.dialogs
+package uz.gita.saiga_driver.presentation.dialogs
 
 import android.app.Dialog
 import android.content.Context

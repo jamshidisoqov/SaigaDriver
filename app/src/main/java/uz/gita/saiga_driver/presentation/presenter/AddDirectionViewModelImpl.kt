@@ -5,13 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import uz.gita.saiga_driver.data.remote.request.AddressDto
-import uz.gita.saiga_driver.data.remote.request.DirectionalTaxiDto
-import uz.gita.saiga_driver.data.remote.request.DirectionsDto
-import uz.gita.saiga_driver.data.remote.response.AddressData
 import uz.gita.saiga_driver.domain.repository.directions.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage

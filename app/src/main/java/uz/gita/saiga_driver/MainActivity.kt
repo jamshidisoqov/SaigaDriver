@@ -18,9 +18,12 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigationHandler: NavigationHandler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        activity = this
 
         val fragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -39,5 +42,9 @@ class MainActivity : AppCompatActivity() {
 
     fun hideProgress() {
         dialog.cancel()
+    }
+
+    companion object {
+        lateinit var activity: MainActivity
     }
 }

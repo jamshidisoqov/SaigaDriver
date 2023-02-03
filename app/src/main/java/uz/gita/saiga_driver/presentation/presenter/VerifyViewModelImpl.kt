@@ -7,8 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.directions.VerifyScreenDirection
-import uz.gita.saiga_driver.domain.repository.auth.AuthRepository
+import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.presentation.ui.verify.VerifyViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class VerifyViewModelImpl @Inject constructor(
     private val direction: VerifyScreenDirection,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val mySharedPref: MySharedPref
 ) : VerifyViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -26,7 +28,9 @@ class VerifyViewModelImpl @Inject constructor(
     override val errorSharedFlow = MutableSharedFlow<String>()
 
     override fun resendCode() {
-
+        viewModelScope.launch {
+            authRepository.resendCode()
+        }
     }
 
     override fun verifyCode(code: String) {
@@ -35,7 +39,8 @@ class VerifyViewModelImpl @Inject constructor(
             authRepository.verifyCode(code).collectLatest { result ->
                 loadingSharedFlow.emit(false)
                 result.onSuccess {
-                    //TODO navigate and save shared prefs
+                    mySharedPref.isVerify = true
+                    direction.navigateToPermissionChecker()
                 }.onMessage {
                     messageSharedFlow.emit(it)
                 }.onError {

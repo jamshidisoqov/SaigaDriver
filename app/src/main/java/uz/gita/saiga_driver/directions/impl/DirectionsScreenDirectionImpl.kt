@@ -1,6 +1,5 @@
 package uz.gita.saiga_driver.directions.impl
 
-import uz.gita.saiga_driver.data.remote.response.DirectionalTaxiData
 import uz.gita.saiga_driver.directions.DirectionsScreenDirection
 
 class DirectionsScreenDirectionImpl : DirectionsScreenDirection {

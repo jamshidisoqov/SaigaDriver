@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.saiga_driver.R
-import uz.gita.saiga_driver.data.remote.response.AddressData
 import uz.gita.saiga_driver.databinding.ScreenAddDirectionBinding
 import uz.gita.saiga_driver.presentation.presenter.AddDirectionViewModelImpl
 import uz.gita.saiga_driver.utils.extensions.*
