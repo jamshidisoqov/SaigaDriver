@@ -61,7 +61,8 @@
         tools:layout="@layout/screen_permissions_check">
         <action
             android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            app:destination="@id/mainScreen"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/mainScreen"

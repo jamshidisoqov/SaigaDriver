@@ -23,13 +23,7 @@ class MainScreen : Fragment(R.layout.screen_main) {
             pagerMain.isUserInputEnabled = false
 
             bnvMain.setOnItemSelectedListener {
-                val pos = when (it.itemId) {
-                    R.id.menu_home -> 0
-                    R.id.menu_orders -> 1
-                    else -> 2
-                }
-                pagerMain.setCurrentItem(pos, true)
-                true
+                pagerMain.setCurrentItem(it, true)
             }
         }
 }

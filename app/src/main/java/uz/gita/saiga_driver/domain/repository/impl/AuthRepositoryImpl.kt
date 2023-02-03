@@ -85,7 +85,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun sendSms(phone: String): Flow<ResultData<String>> = callbackFlow {
         val options =
-            PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(phone.replace(" ", ""))
+            PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(phone)
                 .setTimeout(0L, TimeUnit.SECONDS)
                 .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     override fun onVerificationCompleted(p0: PhoneAuthCredential) {

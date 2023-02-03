@@ -9,7 +9,7 @@
     <color name="black_light">#292828</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#FC9E4C</color>
-    <color name="primary_trans">#F4C499</color>
+    <color name="primary_trans">#BFF8D0AD</color>
     <color name="primary_trans_click">#A17852</color>
     <color name="primary_click">#975C28</color>
     <color name="error_color">#D61E1E</color>
