@@ -14,8 +14,10 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageHomeBinding
+import uz.gita.saiga_driver.presentation.dialogs.date.DialogChooseWheel
 import uz.gita.saiga_driver.presentation.presenter.HomeViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionalTaxiAdapter
+import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -35,6 +37,7 @@ class HomePage : Fragment(R.layout.page_home) {
 
         listDirections.adapter = adapter
 
+        //observers
         viewModel.loadingSharedFlow.onEach {
             if (it) showProgress() else hideProgress()
         }.launchIn(lifecycleScope)
@@ -68,27 +71,48 @@ class HomePage : Fragment(R.layout.page_home) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.myDirectionsFlow.onEach {
+            if (it.isEmpty()) {
+                addDirectionContainer.visible()
+            } else addDirectionContainer.gone()
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        viewModel.nameSharedFlow.onEach {
+            tvTitleHome.text = getStringResource(R.string.hello).combine(it)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+        //events
         imageNotification.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToNotifications()
+                val dialog = DialogChooseWheel()
+                dialog.show(childFragmentManager, "date")
             }.launchIn(lifecycleScope)
 
         cardOrderContainer.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToOrders()
             }.launchIn(lifecycleScope)
 
         cardIncomeContainer.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToFinance()
             }.launchIn(lifecycleScope)
 
         cardExpanseContainer.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToFinance()
+            }.launchIn(lifecycleScope)
+
+        addDirectionContainer.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                viewModel.navigateToAddDirection()
             }.launchIn(lifecycleScope)
 
         adapter.setItemClickListener {

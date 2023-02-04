@@ -13,5 +13,7 @@ interface HomeScreenDirection {
 
     suspend fun navigateToDirectionDetails(orderResponse: OrderResponse)
 
+    suspend fun navigateToAddDirection()
+
 
 }

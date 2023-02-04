@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/action_bar_container"
@@ -20,16 +20,16 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_where_from"
         style="@style/ExposeDropDownTextField"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="24dp"
         android:hint="@string/where_from"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_map_from"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/action_bar_container"
-        app:layout_constraintVertical_bias="0.05">
+        app:layout_constraintVertical_bias="0">
 
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -42,15 +42,29 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_map_from"
+        android:layout_width="52dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/margin_component"
+        android:background="@drawable/bg_stroke"
+        android:padding="14dp"
+        android:src="@drawable/ic_location"
+        app:layout_constraintBottom_toBottomOf="@id/til_where_from"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/til_where_from"
+        app:tint="@color/purple_500" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_where_to"
         style="@style/ExposeDropDownTextField"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="24dp"
         android:hint="@string/where_to"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_map_to"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_where_from"
         app:layout_constraintVertical_bias="0.1">
@@ -66,14 +80,29 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_map_to"
+        android:layout_width="52dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/margin_component"
+        android:background="@drawable/bg_stroke"
+        android:padding="14dp"
+        android:src="@drawable/ic_location"
+        app:layout_constraintBottom_toBottomOf="@id/til_where_to"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/til_where_to"
+        app:tint="@color/error_color" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_amount"
+        android:id="@+id/til_date"
         style="@style/OutlineTextField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="24dp"
-        android:hint="@string/amount"
+        android:hint="@string/date"
+        app:helperText="Optional"
         app:layout_constraintEnd_toStartOf="@id/til_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_where_to"
@@ -81,12 +110,11 @@
 
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_amount"
+            android:id="@+id/input_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:text="1 234 000 sum"
-            android:inputType="number" />
+            android:inputType="none" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -99,8 +127,9 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="24dp"
         android:hint="@string/time_to_leave"
-        app:layout_constraintStart_toEndOf="@id/til_amount"
+        app:helperText="Optional"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/til_date"
         app:layout_constraintTop_toBottomOf="@id/til_where_to"
         app:layout_constraintVertical_bias="0.1">
 
@@ -110,21 +139,69 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:text="12:00"
-            android:inputType="none" />
+            android:inputType="none"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_amount"
+        style="@style/OutlineTextField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/amount"
+        app:helperText="@string/required"
+        app:layout_constraintEnd_toEndOf="@id/til_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_time">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_amount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="number"
+            tools:text="1 234 000 sum" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_comment"
+        style="@style/OutlineTextField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/comment"
+        app:helperText="Optional"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_amount">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/comment"
+            android:inputType="textMultiLine" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_direction"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_margin="16dp"
-        android:background="@drawable/bg_main_btn"
-        android:fontFamily="@font/comfortaa_bold"
-        android:text="@string/next"
-        android:textSize="18sp"
+        android:text="@string/add_direction"
+        app:cornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,8 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.HomeScreenDirection
 import uz.gita.saiga_driver.domain.repository.AuthRepository
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class HomeViewModelImpl @Inject constructor(
     private val orderRepository: OrderRepository,
     private val direction: HomeScreenDirection,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val mySharedPref: MySharedPref
 ) : HomeViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -37,10 +40,14 @@ class HomeViewModelImpl @Inject constructor(
 
     override val expanseBalance = MutableStateFlow(0.0)
 
+
     override val myDirectionsFlow = MutableStateFlow(emptyList<OrderResponse>())
+
+    override val nameSharedFlow = MutableSharedFlow<String>()
 
     override fun getData() {
         viewModelScope.launch {
+            nameSharedFlow.emit(mySharedPref.firstName)
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
             } else {
@@ -90,6 +97,12 @@ class HomeViewModelImpl @Inject constructor(
     override fun navigateToNotifications() {
         viewModelScope.launch {
             direction.navigateToNotification()
+        }
+    }
+
+    override fun navigateToAddDirection() {
+        viewModelScope.launch {
+            direction.navigateToAddDirection()
         }
     }
 }

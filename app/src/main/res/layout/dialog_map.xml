@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/design_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_language">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapFragment"
+        android:name="uz.gita.saiga_driver.utils.MapHelper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_centre_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_centre_location" />
+
+
+    <View
+        android:id="@+id/swipe_view"
+        android:layout_width="80dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@drawable/bg_profile" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/progress_spin_kit"
+            style="@style/SpinKitView.FadingCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/primary"
+            app:layout_constraintBottom_toBottomOf="@id/image_my_location"
+            app:layout_constraintEnd_toEndOf="@id/image_my_location"
+            app:layout_constraintStart_toStartOf="@id/image_my_location"
+            app:layout_constraintTop_toTopOf="@id/image_my_location" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_my_location"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/margin_component"
+            android:background="@drawable/bg_circle"
+            android:clickable="true"
+            android:elevation="1dp"
+            android:focusable="true"
+            android:src="@drawable/ic_my_location"
+            app:contentPadding="10dp"
+            app:layout_constraintBottom_toTopOf="@id/container_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/container_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardElevation="@dimen/margin_std"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.InnerTop">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_component"
+                android:background="@drawable/bg_profile"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_component">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_to_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/where_to"
+                    android:paddingStart="@dimen/margin_std"
+                    android:textColor="@color/black"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageView
+                    android:id="@+id/image_save"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_stroke"
+                    android:padding="@dimen/margin_std"
+                    android:src="@drawable/ic_next"
+                    app:tint="@color/dark_grey"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

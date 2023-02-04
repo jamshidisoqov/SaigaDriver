@@ -117,4 +117,5 @@ fun Fragment.toast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
+fun Fragment.getStringResource(resId:Int):String = resources.getString(resId)
 

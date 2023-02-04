@@ -14,12 +14,13 @@ interface OrderRepository {
         whereFromLatLng: LatLng,
         whereTo: String?=null,
         whereToLatLng: LatLng?=null,
+        price: Double,
+        schedule: String?,
+        comment: String?
     ):Flow<ResultData<OrderResponse>>
 
-    fun addFavourite(whereFrom: String, whereFromLatLng: LatLng, whereTo: String):Flow<ResultData<Boolean>>
 
     fun getAllOrders():Flow<List<OrderResponse>>
-
 
     suspend fun socketConnect()
 

@@ -68,7 +68,11 @@
         android:id="@+id/mainScreen"
         android:name="uz.gita.saiga_driver.presentation.ui.main.MainScreen"
         android:label="MainScreen"
-        tools:layout="@layout/screen_main" />
+        tools:layout="@layout/screen_main" >
+        <action
+            android:id="@+id/action_mainScreen_to_addDirectionScreen"
+            app:destination="@id/addDirectionScreen" />
+    </fragment>
     <fragment
         android:id="@+id/settingsScreen"
         android:name="uz.gita.saiga_driver.presentation.ui.settings.SettingsScreen"
@@ -79,6 +83,7 @@
         android:label="DirectionDetailScreen" />
     <fragment
         android:id="@+id/addDirectionScreen"
+        tools:layout="@layout/screen_add_direction"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionScreen"
         android:label="AddDirectionScreen" />
     <fragment

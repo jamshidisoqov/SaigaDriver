@@ -55,5 +55,10 @@
     <string name="phone">Phone</string>
     <string name="birthday">Birthday</string>
     <string name="confirm">Save</string>
+    <string name="hello">Hello</string>
+    <string name="comment">Comment</string>
+    <string name="required">Required*</string>
+    <string name="date">Date</string>
+    <string name="default_time">12:00</string>
 
 </resources>

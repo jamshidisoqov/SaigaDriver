@@ -34,6 +34,14 @@
         <item name="boxCornerRadiusBottomStart">@dimen/margin_component</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.MaterialCardView.InnerTop" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/margin_large</item>
+        <item name="cornerSizeTopLeft">@dimen/margin_large</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
 
     <style name="FabShapeStyle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">@dimen/margin_component</item>

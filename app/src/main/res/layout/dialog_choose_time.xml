@@ -1,60 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="320dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/margin_std"
     app:cardCornerRadius="@dimen/margin_component">
 
     <LinearLayout
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="12dp">
 
-        <TextView
+        <TimePicker
+            android:id="@+id/spinner_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textColor="@color/black"
-            android:text="@string/choose_date"/>
-
-        <DatePicker
-            android:id="@+id/calendar_view"
-            android:layout_width="match_parent"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
-            android:layout_marginTop="12dp"
-            android:layout_height="wrap_content" />
+            android:numbersTextColor="@color/white"
+            android:timePickerMode="spinner" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp">
+            android:padding="4dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_cancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless"
                 android:text="@string/cancel"
-                android:textColor="@color/black" />
+                android:textAllCaps="false"
+                android:textColor="@color/dark_grey" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginHorizontal="4dp"
-                app:cornerRadius="@dimen/margin_component"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                app:cornerRadius="@dimen/margin_component"
                 android:text="@string/save"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
-
         </LinearLayout>
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

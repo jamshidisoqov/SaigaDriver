@@ -12,5 +12,4 @@ interface OrderApi {
 
     @POST("orders/user-order")
     suspend fun orderByTaxi(@Body orderRequest: OrderRequest): Response<BaseResponse<BaseOrderResponse>>
-
 }

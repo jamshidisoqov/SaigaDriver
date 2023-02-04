@@ -27,4 +27,26 @@ fun String.toDate(): Date {
 
 fun String.combine(s2: String) = "$this $s2"
 
+@SuppressLint("SimpleDateFormat")
+fun String.getTimeWhenFormat(): String {
+    val date = this.toDate()
+    return SimpleDateFormat("dd-MM-yyyy").format(date).uppercase()
+}
+
+fun getCurrentTimeFormat() = getCurrentDate().getTimeWhenFormat()
+
+fun String.getDigitOnly(): Int {
+    val builder = StringBuilder()
+    for (i in this) {
+        if (i.isDigit()) {
+            builder.append(i)
+        }
+    }
+    return builder.toString().toInt()
+}
+
+fun String.toTime(): List<String> {
+    return this.split(":")
+}
+
 

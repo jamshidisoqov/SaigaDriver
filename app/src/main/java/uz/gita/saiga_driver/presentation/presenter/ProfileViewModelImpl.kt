@@ -29,7 +29,6 @@ class ProfileViewModelImpl @Inject constructor(
 
     override val phoneFlow = MutableStateFlow("")
 
-
     override fun navigateToDirections() {
         viewModelScope.launch {
             direction.navigateToDirections()

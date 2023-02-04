@@ -13,11 +13,13 @@ import uz.gita.saiga_driver.data.remote.api.SocketOrderApi
 import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
-import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.utils.ResultData
 import uz.gita.saiga_driver.utils.extensions.func
+import uz.gita.saiga_driver.utils.extensions.getCurrentTimeFormat
+import uz.gita.saiga_driver.utils.extensions.getFinanceType
+import uz.gita.saiga_driver.utils.extensions.getTimeWhenFormat
 import javax.inject.Inject
 
 class OrderRepositoryImpl @Inject constructor(
@@ -29,7 +31,13 @@ class OrderRepositoryImpl @Inject constructor(
 
 
     override fun order(
-        whereFrom: String, whereFromLatLng: LatLng, whereTo: String?, whereToLatLng: LatLng?
+        whereFrom: String,
+        whereFromLatLng: LatLng,
+        whereTo: String?,
+        whereToLatLng: LatLng?,
+        price: Double,
+        schedule: String?,
+        comment: String?
     ): Flow<ResultData<OrderResponse>> = flow<ResultData<OrderResponse>> {
         orderApi.orderByTaxi(
             OrderRequest(
@@ -40,7 +48,10 @@ class OrderRepositoryImpl @Inject constructor(
                     addressTo = AddressRequest(
                         whereToLatLng?.latitude, whereToLatLng?.longitude, whereTo
                     ),
-                )
+                ),
+                amountOfMoney = price.getFinanceType(),
+                comment = comment,
+                timeWhen = schedule?.getTimeWhenFormat()?: getCurrentTimeFormat()
             )
         ).func(gson = gson).onSuccess {
             emit(ResultData.Success(it.body.data))
@@ -54,14 +65,8 @@ class OrderRepositoryImpl @Inject constructor(
         emit(ResultData.Error(error))
     }.flowOn(Dispatchers.IO)
 
-    override fun addFavourite(
-        whereFrom: String, whereFromLatLng: LatLng, whereTo: String
-    ): Flow<ResultData<Boolean>> = flow {
-
-    }
 
     override fun getAllOrders(): Flow<List<OrderResponse>> = socketOrderApi.getAllOrders()
-
 
     override suspend fun socketConnect() {
         if (moon.state.value == Moon.Status.DISCONNECT) {

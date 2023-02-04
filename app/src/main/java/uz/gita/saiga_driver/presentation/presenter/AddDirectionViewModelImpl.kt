@@ -2,19 +2,25 @@ package uz.gita.saiga_driver.presentation.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
 import uz.gita.saiga_driver.domain.repository.DirectionsRepository
+import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
-import java.sql.Timestamp
+import uz.gita.saiga_driver.utils.NUKUS
+import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
 class AddDirectionViewModelImpl @Inject constructor(
-    private val directionsRepository: DirectionsRepository
+    private val directionsRepository: DirectionsRepository,
+    private val orderRepository: OrderRepository
 ) : AddDirectionViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -27,20 +33,42 @@ class AddDirectionViewModelImpl @Inject constructor(
 
     override val allDirections = MutableStateFlow<List<DirectionResponse>>(emptyList())
 
-    init {
-        viewModelScope.launch {
-
-        }
-    }
 
     override fun addDirection(
-        whereFrom: String,
-        whereTo: String,
-        schedule: Timestamp,
-        price: Double
+        whereFrom: Pair<String, LatLng?>,
+        whereTo: Pair<String, LatLng?>,
+        price: Double,
+        schedule: String?,
+        comment: String?
     ) {
+
         viewModelScope.launch {
 
+            if (hasConnection()) {
+                orderRepository.order(
+                    whereFrom = whereFrom.first,
+                    whereFromLatLng = whereFrom.second ?: NUKUS,
+                    whereTo = whereTo.first,
+                    whereToLatLng = whereTo.second,
+                    price = price,
+                    schedule = schedule,
+                    comment = comment
+                ).collectLatest { result ->
+                    result.onSuccess {
+                        backFlow.emit(Unit)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
+                }
+            } else {
+                messageSharedFlow.emit("No internet connection")
+            }
+
         }
+
     }
+
+
 }
