@@ -72,10 +72,6 @@ fun Fragment.hasPermission(
 }
 
 
-fun Fragment.hasPermission(permission: String): Boolean {
-    return requireActivity().applicationContext.hasPermission(permission)
-}
-
 fun Context.hasPermission(permission: String): Boolean {
     if (permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION &&
         android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q

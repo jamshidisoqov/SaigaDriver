@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
-import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
@@ -19,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddDirectionViewModelImpl @Inject constructor(
-    private val directionsRepository: DirectionsRepository,
     private val orderRepository: OrderRepository
 ) : AddDirectionViewModel, ViewModel() {
 

@@ -2,7 +2,6 @@ package uz.gita.saiga_driver.domain.repository
 
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
-import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.utils.ResultData
 
@@ -12,15 +11,15 @@ interface OrderRepository {
     fun order(
         whereFrom: String,
         whereFromLatLng: LatLng,
-        whereTo: String?=null,
-        whereToLatLng: LatLng?=null,
+        whereTo: String? = null,
+        whereToLatLng: LatLng? = null,
         price: Double,
         schedule: String?,
         comment: String?
-    ):Flow<ResultData<OrderResponse>>
+    ): Flow<ResultData<OrderResponse>>
 
 
-    fun getAllOrders():Flow<List<OrderResponse>>
+    fun getAllOrders(): Flow<List<OrderResponse>>
 
     suspend fun socketConnect()
 

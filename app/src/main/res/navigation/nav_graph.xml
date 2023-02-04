@@ -72,13 +72,24 @@
         <action
             android:id="@+id/action_mainScreen_to_addDirectionScreen"
             app:destination="@id/addDirectionScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_directionsScreen"
+            app:destination="@id/directionsScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_settingsScreen"
+            app:destination="@id/settingsScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_financeScreen"
+            app:destination="@id/financeScreen" />
     </fragment>
     <fragment
         android:id="@+id/settingsScreen"
+        tools:layout="@layout/screen_settings"
         android:name="uz.gita.saiga_driver.presentation.ui.settings.SettingsScreen"
         android:label="SettingsScreen" />
     <fragment
         android:id="@+id/directionDetailScreen"
+        tools:layout="@layout/screen_directions_detail"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionDetailScreen"
         android:label="DirectionDetailScreen" />
     <fragment
@@ -88,10 +99,19 @@
         android:label="AddDirectionScreen" />
     <fragment
         android:id="@+id/directionsScreen"
+        tools:layout="@layout/screen_directions"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.DirectionsScreen"
-        android:label="DirectionsScreen" />
+        android:label="DirectionsScreen" >
+        <action
+            android:id="@+id/action_directionsScreen_to_addDirectionScreen"
+            app:destination="@id/addDirectionScreen" />
+        <action
+            android:id="@+id/action_directionsScreen_to_directionDetailScreen"
+            app:destination="@id/directionDetailScreen" />
+    </fragment>
     <fragment
         android:id="@+id/financeScreen"
+        tools:layout="@layout/screen_finance"
         android:name="uz.gita.saiga_driver.presentation.ui.finance.FinanceScreen"
         android:label="FinanceScreen" />
 </navigation>
