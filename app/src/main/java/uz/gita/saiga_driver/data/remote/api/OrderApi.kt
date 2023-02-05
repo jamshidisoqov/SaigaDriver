@@ -10,6 +10,6 @@ import uz.gita.saiga_driver.data.remote.response.order.BaseOrderResponse
 // Created by Jamshid Isoqov on 12/14/2022
 interface OrderApi {
 
-    @POST("orders/user-order")
+    @POST("/api/orders/driver-order")
     suspend fun orderByTaxi(@Body orderRequest: OrderRequest): Response<BaseResponse<BaseOrderResponse>>
 }

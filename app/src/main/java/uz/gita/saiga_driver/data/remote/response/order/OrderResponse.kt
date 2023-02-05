@@ -1,6 +1,8 @@
 package uz.gita.saiga_driver.data.remote.response.order
 
 import android.os.Parcelable
+import com.google.firebase.encoders.annotations.Encodable.Ignore
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
 import uz.gita.saiga_driver.domain.entity.TripWithDate
@@ -14,5 +16,7 @@ data class OrderResponse(
     val direction: DirectionResponse,
     val toUser: UserResponse? = null,
     val comment: String? = null,
-    val timeWhen: String? = null
+    val timeWhen: String? = null,
+    @IgnoredOnParcel
+    var distance:String = ""
 ):TripWithDate,Parcelable

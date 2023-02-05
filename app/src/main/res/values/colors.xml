@@ -14,6 +14,7 @@
     <color name="primary_trans_click">#A17852</color>
     <color name="primary_click">#975C28</color>
     <color name="error_color">#D61E1E</color>
+    <color name="error_color_trans">#80D61E1E</color>
     <color name="light_grey">#EBEDF0</color>
     <color name="dark_grey">#818C99</color>
     <color name="bg_color">#F8F6FA</color>

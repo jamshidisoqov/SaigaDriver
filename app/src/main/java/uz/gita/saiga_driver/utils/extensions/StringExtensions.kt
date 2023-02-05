@@ -35,14 +35,14 @@ fun String.getTimeWhenFormat(): String {
 
 fun getCurrentTimeFormat() = getCurrentDate().getTimeWhenFormat()
 
-fun String.getDigitOnly(): Int {
+fun String.getDigitOnly(): Double {
     val builder = StringBuilder()
     for (i in this) {
         if (i.isDigit()) {
             builder.append(i)
         }
     }
-    return builder.toString().toInt()
+    return builder.toString().toDouble()
 }
 
 fun String.toTime(): List<String> {

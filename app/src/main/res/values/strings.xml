@@ -60,5 +60,9 @@
     <string name="required">Required*</string>
     <string name="date">Date</string>
     <string name="default_time">12:00</string>
+    <string name="decline">Decline order</string>
+    <string name="help">Help</string>
+    <string name="call">Call</string>
+    <string name="km_h">km/h</string>
 
 </resources>

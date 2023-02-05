@@ -39,4 +39,7 @@ interface DirectionsModule {
     @Binds
     fun bindProfileScreen(impl:ProfileScreenDirectionImpl):ProfileScreenDirection
 
+    @Binds
+    fun bindOrderSPage(impl: OrderPageDirectionsImpl):OrderPageDirections
+
 }

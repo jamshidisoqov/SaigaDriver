@@ -2,7 +2,9 @@ package uz.gita.saiga_driver.utils
 
 import android.Manifest
 import android.os.Build
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 // Created by Jamshid Isoqov on 12/18/2022
 
@@ -19,3 +21,5 @@ val NOTIFICATION_PERMISSION: String = if (Build.VERSION.SDK_INT >= Build.VERSION
 
 
 val NUKUS = LatLng(42.460168, 59.607280)
+
+val currentLocation:MutableLiveData<LatLng> = MutableLiveData()

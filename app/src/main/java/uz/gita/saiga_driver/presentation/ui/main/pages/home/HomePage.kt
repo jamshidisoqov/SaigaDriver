@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageHomeBinding
-import uz.gita.saiga_driver.presentation.dialogs.date.DialogChooseWheel
 import uz.gita.saiga_driver.presentation.presenter.HomeViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionalTaxiAdapter
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
@@ -43,13 +42,11 @@ class HomePage : Fragment(R.layout.page_home) {
         }.launchIn(lifecycleScope)
 
         viewModel.errorSharedFlow
-            .debounce(1000L)
             .onEach {
                 showErrorDialog(it)
             }.launchIn(lifecycleScope)
 
         viewModel.messageSharedFlow
-            .debounce(1000L)
             .onEach {
                 showMessageDialog(it)
             }.launchIn(lifecycleScope)
@@ -87,8 +84,6 @@ class HomePage : Fragment(R.layout.page_home) {
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToNotifications()
-                val dialog = DialogChooseWheel()
-                dialog.show(childFragmentManager, "date")
             }.launchIn(lifecycleScope)
 
         cardOrderContainer.clicks()

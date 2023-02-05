@@ -13,6 +13,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.getTimeWhenFormat
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -41,7 +42,6 @@ class AddDirectionViewModelImpl @Inject constructor(
     ) {
 
         viewModelScope.launch {
-
             if (hasConnection()) {
                 orderRepository.order(
                     whereFrom = whereFrom.first,
@@ -49,7 +49,7 @@ class AddDirectionViewModelImpl @Inject constructor(
                     whereTo = whereTo.first,
                     whereToLatLng = whereTo.second,
                     price = price,
-                    schedule = schedule,
+                    schedule = schedule?.getTimeWhenFormat(),
                     comment = comment
                 ).collectLatest { result ->
                     result.onSuccess {

@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_mainScreen_to_financeScreen"
             app:destination="@id/financeScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_tripScreen"
+            app:destination="@id/tripScreen" />
     </fragment>
     <fragment
         android:id="@+id/settingsScreen"
@@ -114,4 +117,13 @@
         tools:layout="@layout/screen_finance"
         android:name="uz.gita.saiga_driver.presentation.ui.finance.FinanceScreen"
         android:label="FinanceScreen" />
+    <fragment
+        android:id="@+id/tripScreen"
+        tools:layout="@layout/screen_trip"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripScreen"
+        android:label="TripScreen" >
+        <argument
+            android:name="order"
+            app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
 </navigation>

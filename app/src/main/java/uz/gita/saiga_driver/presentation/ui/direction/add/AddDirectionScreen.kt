@@ -103,15 +103,17 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                 dialog.show(childFragmentManager, "to address")
             }.launchIn(lifecycleScope)
 
-        tilDate
+        inputDate.isFocusable = false
+        inputTime.isFocusable = false
+
+        inputDate
             .clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 openDate()
             }.launchIn(lifecycleScope)
 
-        tilTime
+        inputTime
             .clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
@@ -127,7 +129,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                     whereFrom = fromAddress!!,
                     whereTo = toAddress!!,
                     schedule = schedule,
-                    price = inputAmount.text.toString().getDigitOnly().toDouble(),
+                    price = inputAmount.text.toString().getDigitOnly(),
                     comment = inputComment.text.toString()
                 )
             }.launchIn(lifecycleScope)
