@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.orders
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,23 +12,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
-import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.adapter.OrdersAdapter
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
+import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
+import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
-import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/12/2022
 @AndroidEntryPoint
 class OrdersPage : Fragment(R.layout.page_orders) {
 
     val viewModel: OrdersViewModel by viewModels<OrdersViewModelImpl>()
-
-    @Inject
-    lateinit var repository: MapRepository
 
     private val viewBinding: PageOrdersBinding by viewBinding()
 
@@ -42,10 +41,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             findNavController().navigateUp()
         }
 
-        viewModel.loadingSharedFlow.onEach {
-            if (it) showProgress() else hideProgress()
-        }.launchIn(lifecycleScope)
-
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
         }.launchIn(lifecycleScope)
@@ -56,11 +51,17 @@ class OrdersPage : Fragment(R.layout.page_orders) {
 
         viewModel.allOrderFlow.onEach {
             adapter.submitList(it)
-            listOrders.scrollToPosition(adapter.itemCount-1)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.currentLocationFlow.observe(viewLifecycleOwner) {
-            adapter.setCurrentLocation(it)
+        startGps()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getAllData()
+            while (true) {
+                delay(5000)
+                listOrders.scrollToPosition(adapter.itemCount - 1)
+                viewModel.getAllData()
+            }
         }
 
         adapter.setItemClickListener {
@@ -70,7 +71,13 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
             dialog.show(childFragmentManager, "order")
         }
-
     }
 
+    private fun startGps() {
+        val intent = Intent(requireContext(), GpsService::class.java)
+        requireContext().startService(intent)
+        currentLocation.observe(viewLifecycleOwner) {
+            viewModel.setCurrentLocation(it)
+        }
+    }
 }

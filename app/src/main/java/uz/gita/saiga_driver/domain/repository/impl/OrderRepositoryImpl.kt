@@ -51,7 +51,7 @@ class OrderRepositoryImpl @Inject constructor(
                 ),
                 amountOfMoney = price.getFinanceType(),
                 comment = comment,
-                timeWhen = schedule?.getTimeWhenFormat()?: getCurrentTimeFormat()
+                timeWhen = schedule?.getTimeWhenFormat() ?: getCurrentTimeFormat()
             )
         ).func(gson = gson).onSuccess {
             emit(ResultData.Success(it.body.data))
@@ -60,13 +60,37 @@ class OrderRepositoryImpl @Inject constructor(
         }.onError {
             emit(ResultData.Error(it))
         }
-        moon.state
     }.catch { error ->
         emit(ResultData.Error(error))
     }.flowOn(Dispatchers.IO)
 
 
-    override fun getAllOrders(): Flow<List<OrderResponse>> = socketOrderApi.getAllOrders()
+    override fun getAllOrders(): Flow<ResultData<List<OrderResponse>>> =
+        flow<ResultData<List<OrderResponse>>> {
+            orderApi.getAllUserOrders().func(gson).onSuccess {
+                emit(ResultData.Success(it.body))
+            }.onMessage {
+                emit(ResultData.Message(it))
+            }.onError {
+                emit(ResultData.Error(it))
+            }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
+
+    override fun receiveOrder(orderId: Long): Flow<ResultData<OrderResponse>> =
+        flow<ResultData<OrderResponse>> {
+            orderApi.receiveOrder(orderId).func(gson)
+                .onSuccess {
+                    emit(ResultData.Success(it.body.data))
+                }.onMessage {
+                    emit(ResultData.Message(it))
+                }.onError {
+                    emit(ResultData.Error(it))
+                }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun socketConnect() {
         if (moon.state.value == Moon.Status.DISCONNECT) {

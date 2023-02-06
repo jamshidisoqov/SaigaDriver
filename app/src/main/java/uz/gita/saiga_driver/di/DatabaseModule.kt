@@ -20,6 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.AuthApi
+import uz.gita.saiga_driver.data.remote.api.DirectionsApi
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -79,6 +80,12 @@ object DatabaseModule {
     @[Provides Singleton]
     fun provideOrderApi(retrofit: Retrofit): OrderApi =
         retrofit.create(OrderApi::class.java)
+
+    @[Provides Singleton]
+    fun provideDirectionsApi(retrofit: Retrofit): DirectionsApi =
+        retrofit.create(DirectionsApi::class.java)
+
+
 
     @[Provides Singleton]
     fun provideConverterFactory(gson: Gson): EventConvertor.Factory {

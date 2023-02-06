@@ -25,6 +25,7 @@ class OrderDialog(private val orderData: OrderResponse) :
         tvFromOrder.text = orderData.direction.addressFrom.title
         tvToOrder.text = orderData.direction.addressTo?.title?:"Hе указан"
         btnAccept.setOnClickListener {
+            dismiss()
             acceptListener?.invoke(orderData)
         }
     }

@@ -31,7 +31,7 @@ class DirectionViewModelImpl @Inject constructor(
 
 
     override fun delete(directionalTaxiData: OrderResponse) {
-
+        //TODO not impl
     }
 
     override fun findRoutes(directionalTaxiData: OrderResponse) {

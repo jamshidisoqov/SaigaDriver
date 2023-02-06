@@ -14,6 +14,6 @@ class DirectionsScreenDirectionImpl @Inject constructor(
     }
 
     override suspend fun navigateToDirectionDetail(directionalTaxiData: OrderResponse) {
-        //TODO navigate to directional detail
+       navigation.navigateTo(DirectionsScreenDirections.actionDirectionsScreenToDirectionDetailScreen(directionalTaxiData))
     }
 }

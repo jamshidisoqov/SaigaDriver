@@ -12,6 +12,7 @@ import uz.gita.saiga_driver.directions.DirectionsScreenDirection
 import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionsViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +43,20 @@ class DirectionsViewModelImpl @Inject constructor(
 
     override fun getAllDirection() {
         viewModelScope.launch {
-
+            if (hasConnection()) {
+                repository.getAllMyDirections()
+                    .collectLatest { result ->
+                        result.onSuccess {
+                            allDirections.emit(it)
+                        }.onMessage {
+                            messageSharedFlow.emit(it)
+                        }.onError {
+                            errorSharedFlow.emit(it.getMessage())
+                        }
+                    }
+            } else {
+                messageSharedFlow.emit("No internet connection")
+            }
         }
     }
 }

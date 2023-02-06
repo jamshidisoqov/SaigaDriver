@@ -32,14 +32,6 @@ class OrdersAdapter :
     ListAdapter<OrderResponse, OrdersAdapter.ViewHolder>(listItemCallback) {
 
 
-    private var lastLatLng: LatLng = NUKUS
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setCurrentLocation(latLng: LatLng) {
-        this.lastLatLng = latLng
-        notifyDataSetChanged()
-
-    }
 
     private var itemClickListener: ((OrderResponse) -> Unit)? = null
 
@@ -60,7 +52,7 @@ class OrdersAdapter :
             val data = getItem(absoluteAdapterPosition)
             tvFromOrder.text = data.direction.addressFrom.title
             tvToOrder.text = data.direction.addressTo?.title ?: "Not specified"
-            tvDistance.text = data.distance.toString()
+            tvDistance.text = data.distance.combine("km")
         }
     }
 

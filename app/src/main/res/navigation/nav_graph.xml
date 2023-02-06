@@ -94,7 +94,11 @@
         android:id="@+id/directionDetailScreen"
         tools:layout="@layout/screen_directions_detail"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionDetailScreen"
-        android:label="DirectionDetailScreen" />
+        android:label="DirectionDetailScreen" >
+        <argument
+            android:name="order"
+            app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
     <fragment
         android:id="@+id/addDirectionScreen"
         tools:layout="@layout/screen_add_direction"

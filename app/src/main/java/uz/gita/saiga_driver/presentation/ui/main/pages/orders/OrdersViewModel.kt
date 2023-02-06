@@ -15,6 +15,8 @@ interface OrdersViewModel : BaseViewModel {
 
     fun getAllData()
 
+    fun setCurrentLocation(currentLocation:LatLng)
+
     fun accept(orderData: OrderResponse)
 
 }

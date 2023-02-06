@@ -5,4 +5,7 @@ import uz.gita.saiga_driver.R
 
 // Created by Jamshid Isoqov on 12/13/2022
 class FinanceScreen : Fragment(R.layout.screen_finance) {
+
+
+
 }

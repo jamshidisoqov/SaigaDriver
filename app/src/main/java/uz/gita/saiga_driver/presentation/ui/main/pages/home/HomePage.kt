@@ -78,6 +78,9 @@ class HomePage : Fragment(R.layout.page_home) {
             tvTitleHome.text = getStringResource(R.string.hello).combine(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        viewModel.getData()
+
+        viewModel.getAllMyDirections()
 
         //events
         imageNotification.clicks()
@@ -113,5 +116,15 @@ class HomePage : Fragment(R.layout.page_home) {
         adapter.setItemClickListener {
             viewModel.navigateToDirectionDetail(it)
         }
+
+        imageRefreshMoney.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                imageRefreshMoney.animate().apply {
+                    duration = 2000
+                    this.rotation(720f)
+                }.start()
+                viewModel.refreshUserBalance()
+            }.launchIn(lifecycleScope)
     }
 }

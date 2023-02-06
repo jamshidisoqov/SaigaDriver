@@ -3,10 +3,15 @@ package uz.gita.saiga_driver.utils.extensions
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.LocationManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -115,3 +120,13 @@ fun Fragment.toast(message: String) {
 
 fun Fragment.getStringResource(resId:Int):String = resources.getString(resId)
 
+fun Fragment.bitmapFromVector(vectorResId: Int): BitmapDescriptor {
+    val vectorDrawable = ContextCompat.getDrawable(requireContext(), vectorResId)
+    vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+    val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
+        vectorDrawable.intrinsicHeight,
+        Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    vectorDrawable.draw(canvas)
+    return BitmapDescriptorFactory.fromBitmap(bitmap)
+}

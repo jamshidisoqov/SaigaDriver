@@ -24,6 +24,8 @@ interface HomeViewModel : BaseViewModel {
 
     fun refreshUserBalance()
 
+    fun getAllMyDirections()
+
     fun navigateToOrders()
 
     fun navigateToFinance()

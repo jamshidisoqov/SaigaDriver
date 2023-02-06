@@ -17,9 +17,9 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-        <!-- <androidx.fragment.app.FragmentContainerView
+         <androidx.fragment.app.FragmentContainerView
              android:id="@+id/trip_detail_map_container"
-             android:name="uz.gita.my_taxi_jamshid.presentation.screens.main.MapHelper"
+             android:name="uz.gita.saiga_driver.utils.MapHelper"
              android:layout_width="match_parent"
              android:layout_height="0dp"
              android:background="@color/white"
@@ -27,7 +27,7 @@
              app:layout_constraintBottom_toTopOf="@id/spacer_map"
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent" />-->
+             app:layout_constraintTop_toTopOf="parent" />
 
         <Space
             android:id="@+id/spacer_map"

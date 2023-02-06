@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
-import uz.gita.saiga_driver.data.remote.response.auth.enums.Status
-import uz.gita.saiga_driver.data.remote.response.order.AddressResponse
-import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
+import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.OrderPageDirections
 import uz.gita.saiga_driver.domain.repository.MapRepository
@@ -21,13 +20,13 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.getFormat
+import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModelImpl @Inject constructor(
     private val orderRepository: OrderRepository,
-    private val mapRepository: MapRepository,
     private val directions: OrderPageDirections
 ) : OrdersViewModel, ViewModel() {
 
@@ -42,49 +41,6 @@ class OrdersViewModelImpl @Inject constructor(
     override val currentLocationFlow = MutableLiveData<LatLng>()
 
     private var currentLocation: LatLng = NUKUS
-
-    init {
-        //TODO delete
-        viewModelScope.launch {
-            val orderList = arrayListOf<OrderResponse>()
-            for (i in 0..100) {
-                delay(2000)
-                orderList.add(
-                    OrderResponse(
-                        id = i.toLong(),
-                        fromUser = UserResponse(
-                            i.toLong(),
-                            "+99890",
-                            "Jamshid",
-                            "Isoqov",
-                            Status.ACTIVE
-                        ),
-                        123.0,
-                        DirectionResponse(
-                            1,
-                            AddressResponse(1, 42.460168, 59.607280, "Nukus"),
-                            null
-                        )
-                    )
-                )
-                allOrderFlow.emit(orderList.toMutableList())
-                updateDistances(currentLocation)
-            }
-        }
-
-        viewModelScope.launch(Dispatchers.Default) {
-            while (true) {
-                delay(5000L)
-                mapRepository.requestCurrentLocation()
-                    .collectLatest { result ->
-                        result.onSuccess {
-                            currentLocation = it
-                            updateDistances(currentLocation)
-                        }
-                    }
-            }
-        }
-    }
 
     private suspend fun updateDistances(currentLocation: LatLng) {
         viewModelScope.launch {
@@ -111,15 +67,46 @@ class OrdersViewModelImpl @Inject constructor(
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
                 orderRepository.getAllOrders().collectLatest { result ->
-                    allOrderFlow.emit(result)
+                    result.onSuccess {
+                        allOrderFlow.emit(it)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
                 }
+            } else {
+                messageSharedFlow.emit("No internet connection")
             }
+        }
+    }
+
+    override fun setCurrentLocation(currentLocation: LatLng) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val distance =
+                calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
+            if (distance > 0.05)
+                updateDistances(currentLocation)
+            this@OrdersViewModelImpl.currentLocation = currentLocation
         }
     }
 
     override fun accept(orderData: OrderResponse) {
         viewModelScope.launch {
-            directions.navigateToTrip(orderData)
+            if (hasConnection()) {
+                orderRepository.receiveOrder(orderData.id)
+                    .collectLatest { result ->
+                        result.onSuccess {
+                            directions.navigateToTrip(it)
+                        }.onMessage {
+                            messageSharedFlow.emit(it)
+                        }.onError {
+                            errorSharedFlow.emit(it.getMessage())
+                        }
+                    }
+            }else{
+                messageSharedFlow.emit("No internet connection")
+            }
         }
     }
 }
