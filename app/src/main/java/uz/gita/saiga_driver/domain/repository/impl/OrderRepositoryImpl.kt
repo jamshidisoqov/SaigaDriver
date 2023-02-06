@@ -14,12 +14,10 @@ import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.domain.entity.TripWithDate
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.utils.ResultData
-import uz.gita.saiga_driver.utils.extensions.func
-import uz.gita.saiga_driver.utils.extensions.getCurrentTimeFormat
-import uz.gita.saiga_driver.utils.extensions.getFinanceType
-import uz.gita.saiga_driver.utils.extensions.getTimeWhenFormat
+import uz.gita.saiga_driver.utils.extensions.*
 import javax.inject.Inject
 
 class OrderRepositoryImpl @Inject constructor(
@@ -39,6 +37,8 @@ class OrderRepositoryImpl @Inject constructor(
         schedule: String?,
         comment: String?
     ): Flow<ResultData<OrderResponse>> = flow<ResultData<OrderResponse>> {
+        log(schedule ?: "")
+        log(schedule?.getTimeWhenFormat() ?: getCurrentTimeFormat())
         orderApi.orderByTaxi(
             OrderRequest(
                 DirectionRequest(
@@ -68,13 +68,15 @@ class OrderRepositoryImpl @Inject constructor(
     override fun getAllOrders(): Flow<ResultData<List<OrderResponse>>> =
         flow<ResultData<List<OrderResponse>>> {
             orderApi.getAllUserOrders().func(gson).onSuccess {
-                emit(ResultData.Success(it.body))
+                emit(ResultData.Success(it.body.data))
             }.onMessage {
                 emit(ResultData.Message(it))
             }.onError {
                 emit(ResultData.Error(it))
             }
         }.catch { error ->
+            log("shu jerda")
+            println("Shu jerda")
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
@@ -83,6 +85,20 @@ class OrderRepositoryImpl @Inject constructor(
             orderApi.receiveOrder(orderId).func(gson)
                 .onSuccess {
                     emit(ResultData.Success(it.body.data))
+                }.onMessage {
+                    emit(ResultData.Message(it))
+                }.onError {
+                    emit(ResultData.Error(it))
+                }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
+
+    override fun getAllHistory(): Flow<ResultData<List<TripWithDate>>> =
+        flow<ResultData<List<TripWithDate>>> {
+            orderApi.getAllHistory().func(gson)
+                .onSuccess {
+                    emit(ResultData.Success(it.body))
                 }.onMessage {
                     emit(ResultData.Message(it))
                 }.onError {

@@ -16,7 +16,7 @@ import uz.gita.saiga_driver.utils.currentLocation
 
 // Created by Jamshid Isoqov on 2/5/2023
 class GpsService : Service(), LocationListener {
-    var locationManager: LocationManager? = null
+    private var locationManager: LocationManager? = null
     override fun onBind(p0: Intent?): IBinder? = null
 
     @SuppressLint("MissingPermission")
@@ -30,8 +30,10 @@ class GpsService : Service(), LocationListener {
         )
         return START_STICKY
     }
+
     override fun onLocationChanged(p0: Location) {
         currentLocation.value = LatLng(p0.latitude, p0.longitude)
     }
+
 
 }

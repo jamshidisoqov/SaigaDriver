@@ -23,7 +23,7 @@ class DirectionsRepositoryImpl @Inject constructor(
         flow<ResultData<List<OrderResponse>>> {
             directionsApi.getAllDirections().func(gson = gson)
                 .onSuccess {
-                    val direction = it.body.filter {order->
+                    val direction = it.body.data.filter {order->
                         order.fromUser.id==mySharedPref.userId
                     }.toList()
                     emit(ResultData.Success(direction))
@@ -33,6 +33,7 @@ class DirectionsRepositoryImpl @Inject constructor(
                     emit(ResultData.Error(it))
                 }
         }.catch { error ->
+            println("QATA")
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 }

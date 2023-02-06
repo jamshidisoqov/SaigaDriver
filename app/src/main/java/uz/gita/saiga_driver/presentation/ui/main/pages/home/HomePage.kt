@@ -123,6 +123,8 @@ class HomePage : Fragment(R.layout.page_home) {
                 imageRefreshMoney.animate().apply {
                     duration = 2000
                     this.rotation(720f)
+                }.withEndAction {
+                    imageRefreshMoney.rotation = 0f
                 }.start()
                 viewModel.refreshUserBalance()
             }.launchIn(lifecycleScope)

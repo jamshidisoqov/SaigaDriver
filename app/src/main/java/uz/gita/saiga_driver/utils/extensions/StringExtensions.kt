@@ -25,7 +25,7 @@ fun String.toDate(): Date {
     return format.calendar.time
 }
 
-fun String.combine(s2: String) = "$this $s2"
+fun String?.combine(s2: String) = "$this $s2"
 
 @SuppressLint("SimpleDateFormat")
 fun String.getTimeWhenFormat(): String {

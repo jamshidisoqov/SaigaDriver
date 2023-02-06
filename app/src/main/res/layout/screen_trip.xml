@@ -96,7 +96,7 @@
         android:elevation="0dp"
         app:cardCornerRadius="@dimen/margin_large"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@id/card_decline_container"
+        app:layout_constraintBottom_toTopOf="@id/card_end_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_order_container"
         app:layout_constraintVertical_bias="0.2">
@@ -161,11 +161,11 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_decline_container"
+        android:id="@+id/card_end_container"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_margin="@dimen/margin_component"
-        app:cardBackgroundColor="@color/error_color_trans"
+        app:cardBackgroundColor="#000"
         app:cardCornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -178,7 +178,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/decline"
+                android:text="@string/end_order"
                 android:textColor="@color/error_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />
