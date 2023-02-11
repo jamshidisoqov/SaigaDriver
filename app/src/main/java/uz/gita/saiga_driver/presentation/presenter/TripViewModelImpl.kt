@@ -7,12 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.directions.TripScreenDirection
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import javax.inject.Inject
 
 @HiltViewModel
-class TripViewModelImpl @Inject constructor() : TripViewModel, ViewModel() {
+class TripViewModelImpl @Inject constructor(
+    private val direction: TripScreenDirection
+) : TripViewModel, ViewModel() {
 
     private var lastLocation: LatLng? = null
 
@@ -42,6 +46,12 @@ class TripViewModelImpl @Inject constructor() : TripViewModel, ViewModel() {
                 currentSpeed.emit(speed.toInt())
             }
             lastLocation = currentLocation
+        }
+    }
+
+    override fun navigateToMap(orderResponse: OrderResponse) {
+        viewModelScope.launch {
+            direction.navigateToMap(orderResponse)
         }
     }
 }

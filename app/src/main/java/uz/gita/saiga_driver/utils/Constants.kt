@@ -23,3 +23,4 @@ val NOTIFICATION_PERMISSION: String = if (Build.VERSION.SDK_INT >= Build.VERSION
 val NUKUS = LatLng(42.460168, 59.607280)
 
 val currentLocation:MutableLiveData<LatLng> = MutableLiveData()
+val currentLocationBearing:MutableLiveData<Pair<LatLng,Float>> = MutableLiveData()

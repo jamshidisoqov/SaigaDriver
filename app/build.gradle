@@ -24,6 +24,11 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField "String","MAP_API_KEY","\"AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ\""
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

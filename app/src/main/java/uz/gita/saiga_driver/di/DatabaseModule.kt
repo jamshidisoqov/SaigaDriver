@@ -13,13 +13,14 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.AuthApi
 import uz.gita.saiga_driver.data.remote.api.DirectionsApi
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlin.math.floor
 
 // Created by Jamshid Isoqov on 12/12/2022
 @Module
@@ -29,8 +30,7 @@ object DatabaseModule {
     private const val SHARED_NAME: String = "app_data"
     private const val SHARED_MODE: Int = Context.MODE_PRIVATE
     private const val BASE_URL: String = "http://157.230.38.77:5001"
-    private val token = "user" + (floor((Math.random() * 1000) + 1))
-    private val SOCKET_BASE_URL: String = "https://5413-37-110-215-227.ap.ngrok.io?token=${token}"
+    private val SOCKET_BASE_URL: String = "http://157.230.38.77:5002"
 
 
     @[Provides Singleton]
@@ -59,7 +59,6 @@ object DatabaseModule {
             }
             .build()
 
-
     @[Provides Singleton]
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
@@ -82,6 +81,12 @@ object DatabaseModule {
     @[Provides Singleton]
     fun provideDirectionsApi(retrofit: Retrofit): DirectionsApi =
         retrofit.create(DirectionsApi::class.java)
+
+    @[Provides Singleton]
+    fun provideStomp(mySharedPref: MySharedPref, okHttpClient: OkHttpClient): StompClient {
+        val headers = mapOf("Authorization" to "Bearer ${mySharedPref.token}")
+        return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, headers, okHttpClient)
+    }
 
 
 }

@@ -16,8 +16,6 @@ import uz.gita.saiga_driver.navigation.NavigationHandler
 import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import javax.inject.Inject
 
-
-@Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

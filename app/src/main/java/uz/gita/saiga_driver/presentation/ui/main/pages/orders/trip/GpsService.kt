@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.android.gms.maps.model.LatLng
 import uz.gita.saiga_driver.utils.currentLocation
+import uz.gita.saiga_driver.utils.currentLocationBearing
 
 // Created by Jamshid Isoqov on 2/5/2023
 class GpsService : Service(), LocationListener {
@@ -32,7 +33,9 @@ class GpsService : Service(), LocationListener {
     }
 
     override fun onLocationChanged(p0: Location) {
-        currentLocation.value = LatLng(p0.latitude, p0.longitude)
+        val latLng = LatLng(p0.latitude, p0.longitude)
+        currentLocation.value = latLng
+        currentLocationBearing.value = Pair(latLng,p0.bearing)
     }
 
 

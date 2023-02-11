@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.utils.extensions
 
 import com.google.gson.Gson
 import retrofit2.Response
+import uz.gita.saiga_driver.utils.MessageData
 import uz.gita.saiga_driver.utils.ResultData
 
 // Created by Jamshid Isoqov on 12/25/2022
