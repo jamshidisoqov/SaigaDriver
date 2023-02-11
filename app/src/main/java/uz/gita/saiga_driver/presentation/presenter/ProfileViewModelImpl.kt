@@ -49,7 +49,7 @@ class ProfileViewModelImpl @Inject constructor(
 
     override fun navigateToCustomerCare() {
         viewModelScope.launch {
-            direction.navigateToSettings()
+            direction.navigateToCustomerCare()
         }
     }
 

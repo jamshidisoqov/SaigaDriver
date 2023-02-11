@@ -80,6 +80,8 @@ class HomePage : Fragment(R.layout.page_home) {
 
         viewModel.getData()
 
+        viewModel.refreshUserBalance()
+
         viewModel.getAllMyDirections()
 
         //events

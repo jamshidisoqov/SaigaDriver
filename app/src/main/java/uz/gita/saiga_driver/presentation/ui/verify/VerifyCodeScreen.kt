@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.fraggjkee.smsconfirmationview.SmsConfirmationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,9 @@ class VerifyCodeScreen : Fragment(R.layout.screen_verify_code) {
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         viewBinding.include {
+            viewModel.openPermissionChecker.onEach {
+                findNavController().navigate(R.id.permissionsCheckScreen)
+            }.launchIn(lifecycleScope)
 
             smsChecker.onChangeListener = SmsConfirmationView.OnChangeListener { _, isComplete ->
                 isCompletedSms = isComplete

@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.orders
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,10 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
@@ -53,16 +52,9 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        startGps()
+        viewModel.getAllData()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getAllData()
-            while (true) {
-                delay(5000)
-                listOrders.scrollToPosition(adapter.itemCount - 1)
-                viewModel.getAllData()
-            }
-        }
+        startGps()
 
         adapter.setItemClickListener {
             val dialog = OrderDialog(it)
@@ -71,12 +63,20 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
             dialog.show(childFragmentManager, "order")
         }
+
+        root.setOnRefreshListener {
+            viewModel.getAllData()
+            root.isRefreshing = false
+        }
     }
 
     private fun startGps() {
-        val intent = Intent(requireContext(), GpsService::class.java)
-        requireContext().startService(intent)
+        hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
+            val intent = Intent(requireContext(), GpsService::class.java)
+            requireContext().startService(intent)
+        }) {}
         currentLocation.observe(viewLifecycleOwner) {
+            log("Location")
             viewModel.setCurrentLocation(it)
         }
     }

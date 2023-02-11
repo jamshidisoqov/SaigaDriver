@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.ScreenFinanceBinding
+import uz.gita.saiga_driver.presentation.presenter.FinanceViewModelImpl
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.extensions.*
 
@@ -23,7 +24,7 @@ import uz.gita.saiga_driver.utils.extensions.*
 @AndroidEntryPoint
 class FinanceScreen : Fragment(R.layout.screen_finance) {
 
-    private val viewModel: FinanceViewModel by viewModels()
+    private val viewModel: FinanceViewModel by viewModels<FinanceViewModelImpl>()
 
     private val viewBinding: ScreenFinanceBinding by viewBinding()
 

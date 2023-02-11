@@ -65,5 +65,6 @@
     <string name="call">Call</string>
     <string name="km_h">km/h</string>
     <string name="end_order">End order</string>
+    <string name="start_pick_up">Start pick up</string>
 
 </resources>

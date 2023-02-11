@@ -157,5 +157,4 @@ class AuthRepositoryImpl @Inject constructor(
             onSuccess.invoke()
         }
     }
-
 }

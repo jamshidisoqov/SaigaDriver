@@ -50,22 +50,12 @@ class HomeViewModelImpl @Inject constructor(
             nameSharedFlow.emit(mySharedPref.firstName)
         }
     }
-
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
                 authRepository.topUpBalance(0.0).collectLatest { result ->
                     result.onSuccess {
                         currentBalanceFlow.emit(it.balance.toDouble())
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                }
-                orderRepository.getAllOrders().collectLatest { result ->
-                    result.onSuccess {
-                        ordersFlow.emit(it.size)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {
@@ -91,6 +81,16 @@ class HomeViewModelImpl @Inject constructor(
                             errorSharedFlow.emit(it.getMessage())
                         }
                     }
+
+                orderRepository.getAllOrders().collectLatest { result ->
+                    result.onSuccess {
+                        ordersFlow.emit(it.size)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
+                }
             } else {
                 messageSharedFlow.emit("No internet connection")
             }

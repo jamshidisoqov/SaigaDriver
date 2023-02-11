@@ -52,16 +52,7 @@
         tools:layout="@layout/screen_verify_code">
         <action
             android:id="@+id/action_verifyCodeScreen_to_permissionsCheckScreen"
-            app:destination="@id/permissionsCheckScreen" />
-    </fragment>
-    <fragment
-        android:id="@+id/permissionsCheckScreen"
-        android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
-        android:label="PermissionsCheckScreen"
-        tools:layout="@layout/screen_permissions_check">
-        <action
-            android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
-            app:destination="@id/mainScreen"
+            app:destination="@id/permissionsCheckScreen"
             app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
@@ -84,6 +75,15 @@
         <action
             android:id="@+id/action_mainScreen_to_tripScreen"
             app:destination="@id/tripScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_profileDetailScreen"
+            app:destination="@id/profileDetailScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_tripMapScreen"
+            app:destination="@id/tripMapScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_customerCareScreen"
+            app:destination="@id/customerCareScreen" />
     </fragment>
     <fragment
         android:id="@+id/settingsScreen"
@@ -129,5 +129,28 @@
         <argument
             android:name="order"
             app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
+    <fragment
+        android:id="@+id/tripMapScreen"
+        tools:layout="@layout/screen_map_trip"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.orders.map.TripMapScreen"
+        android:label="TripMapScreen" />
+    <fragment
+        android:id="@+id/profileDetailScreen"
+        tools:layout="@layout/screen_profile_detail"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.profile.detail.ProfileDetailScreen"
+        android:label="ProfileDetailScreen" />
+    <fragment
+        android:id="@+id/customerCareScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.customerCare.CustomerCareScreen"
+        android:label="CustomerCareScreen" />
+    <fragment
+        android:id="@+id/permissionsCheckScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
+        android:label="PermissionsCheckScreen" >
+        <action
+            android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
+            app:destination="@id/mainScreen"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
 </navigation>

@@ -208,14 +208,14 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_decline"
+                android:id="@+id/card_start_pick_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="#FFEAE9"
+                app:cardBackgroundColor="#C6F6C8"
                 app:cardCornerRadius="@dimen/margin_component"
                 app:cardElevation="0dp"
                 app:cardUseCompatPadding="true">
@@ -227,7 +227,7 @@
                     android:layout_marginVertical="@dimen/margin_component"
                     android:drawablePadding="@dimen/margin_component"
                     android:gravity="center"
-                    android:text="@string/decline"
+                    android:text="@string/start_pick_up"
                     android:textColor="#FF453A"
                     android:textSize="17sp"
                     app:drawableTint="@color/dark_grey" />
