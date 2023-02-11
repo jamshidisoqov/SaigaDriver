@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.map.RouteData
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import javax.inject.Inject
@@ -29,20 +30,20 @@ class DirectionViewModelImpl @Inject constructor(
     override val routes = MutableSharedFlow<RouteData>()
 
 
-    override fun delete(directionalTaxiData: DirectionalTaxiData) {
-
+    override fun delete(directionalTaxiData: OrderResponse) {
+        //TODO not impl
     }
 
-    override fun findRoutes(directionalTaxiData: DirectionalTaxiData) {
-        val from = directionalTaxiData.directionsData.addressFrom
-        val to = directionalTaxiData.directionsData.addressTo
+    override fun findRoutes(directionalTaxiData: OrderResponse) {
+        val from = directionalTaxiData.direction.addressFrom
+        val to = directionalTaxiData.direction.addressTo
         val routeData = Routing.Builder()
             .travelMode(AbstractRouting.TravelMode.DRIVING)
             .withListener(this)
             .alternativeRoutes(true)
             .waypoints(
                 LatLng(from.lat ?: 21.0, from.lon ?: 23.32),
-                LatLng(to.lat ?: 21.0, to.lon ?: 23.32),
+                LatLng(to?.lat ?: 21.0, to?.lon ?: 23.32),
             )
             .key("")
             .build()

@@ -17,9 +17,9 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-        <!-- <androidx.fragment.app.FragmentContainerView
+         <androidx.fragment.app.FragmentContainerView
              android:id="@+id/trip_detail_map_container"
-             android:name="uz.gita.my_taxi_jamshid.presentation.screens.main.MapHelper"
+             android:name="uz.gita.saiga_driver.utils.MapHelper"
              android:layout_width="match_parent"
              android:layout_height="0dp"
              android:background="@color/white"
@@ -27,7 +27,7 @@
              app:layout_constraintBottom_toTopOf="@id/spacer_map"
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent" />-->
+             app:layout_constraintTop_toTopOf="parent" />
 
         <Space
             android:id="@+id/spacer_map"
@@ -39,10 +39,11 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/icon_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="@dimen/margin_std"
             android:layout_marginTop="@dimen/margin_large"
+            app:contentPadding="@dimen/margin_std"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_left"

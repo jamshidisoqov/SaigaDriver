@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "699991940935",
+    "project_id": "max-way-clone-b289c",
+    "storage_bucket": "max-way-clone-b289c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699991940935:android:6b1f642d801a141f9fb662",
+        "android_client_info": {
+          "package_name": "uz.gita.maxway_compose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699991940935-ukeunp5jltfq75qc6h80as4al9a2ui8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.gita.maxway_compose",
+            "certificate_hash": "c474a909e8a7c5aaf2f77458b0948472767845d8"
+          }
+        },
+        {
+          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699991940935:android:12ad58df06e4f74c9fb662",
+        "android_client_info": {
+          "package_name": "uz.gita.saiga_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

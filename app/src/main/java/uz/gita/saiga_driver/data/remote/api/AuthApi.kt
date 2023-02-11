@@ -5,11 +5,13 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import uz.gita.saiga_driver.data.remote.request.auth.BalanceRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
+import uz.gita.saiga_driver.data.remote.response.auth.BalanceBaseResponse
 
 // Created by Jamshid Isoqov on 12/14/2022
 interface AuthApi {
@@ -29,5 +31,9 @@ interface AuthApi {
     suspend fun login(
         @Body loginRequest: LoginRequest
     ): Response<BaseResponse<AuthResponse>>
+
+    @POST("/api/users/top-up-balance")
+    suspend fun topUpBalance(@Body balanceRequest: BalanceRequest):Response<BaseResponse<BalanceBaseResponse>>
+
 
 }

@@ -112,13 +112,12 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/image_car_type"
-                    android:layout_width="60dp"
+                    android:layout_width="100dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_car"
+                    android:src="@drawable/saiga_yellow_car"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/primary" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

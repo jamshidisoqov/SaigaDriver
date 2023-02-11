@@ -2,13 +2,14 @@ package uz.gita.saiga_driver.data.local.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import uz.gita.saiga_driver.utils.SharedPreference
 import uz.gita.saiga_driver.utils.extensions.getCurrentDate
 import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/13/2022
 class MySharedPref @Inject constructor(
-    ctx: Context,
+    @ApplicationContext ctx: Context,
     sharedPreferences: SharedPreferences
 ) : SharedPreference(ctx, sharedPreferences) {
 

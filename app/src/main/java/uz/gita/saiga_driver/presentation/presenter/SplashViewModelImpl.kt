@@ -18,7 +18,6 @@ class SplashViewModelImpl @Inject constructor(
 ) : SplashViewModel, ViewModel() {
     override fun navigateToScreen() {
         viewModelScope.launch {
-            delay(1000L)
             when (authRepository.getStartScreen()) {
                 StartScreen.MAIN -> direction.navigateToMain()
                 StartScreen.LOGIN -> direction.navigateToLogin()

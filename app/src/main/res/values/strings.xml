@@ -1,7 +1,4 @@
 <resources>
-
-    <string name="map_key" translatable="false">AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ</string>
-
     <string name="app_name">Saiga Driver</string>
     <string name="phone_number">Phone number</string>
     <string name="enter_the_phone_number">Enter the phone number</string>
@@ -58,5 +55,16 @@
     <string name="phone">Phone</string>
     <string name="birthday">Birthday</string>
     <string name="confirm">Save</string>
+    <string name="hello">Hello</string>
+    <string name="comment">Comment</string>
+    <string name="required">Required*</string>
+    <string name="date">Date</string>
+    <string name="default_time">12:00</string>
+    <string name="decline">Decline order</string>
+    <string name="help">Help</string>
+    <string name="call">Call</string>
+    <string name="km_h">km/h</string>
+    <string name="end_order">End order</string>
+    <string name="start_pick_up">Start pick up</string>
 
 </resources>

@@ -27,6 +27,8 @@ class VerifyViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
+    override val openPermissionChecker = MutableSharedFlow<Unit>()
+
     override fun resendCode() {
         viewModelScope.launch {
             authRepository.resendCode()
@@ -40,7 +42,7 @@ class VerifyViewModelImpl @Inject constructor(
                 loadingSharedFlow.emit(false)
                 result.onSuccess {
                     mySharedPref.isVerify = true
-                    direction.navigateToPermissionChecker()
+                    openPermissionChecker.emit(Unit)
                 }.onMessage {
                     messageSharedFlow.emit(it)
                 }.onError {

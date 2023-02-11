@@ -2,24 +2,25 @@ package uz.gita.saiga_driver.directions.impl
 
 import uz.gita.saiga_driver.directions.ProfileScreenDirection
 import uz.gita.saiga_driver.navigation.Navigator
+import uz.gita.saiga_driver.presentation.ui.main.MainScreenDirections
 import javax.inject.Inject
 
 class ProfileScreenDirectionImpl @Inject constructor(
     private val navigator: Navigator
 ) : ProfileScreenDirection {
     override suspend fun navigateToDirections() {
-        //TODO
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToDirectionsScreen())
     }
 
     override suspend fun navigateToFinance() {
-        //TODO
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToFinanceScreen())
     }
 
     override suspend fun navigateToSettings() {
-        //TODO
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToSettingsScreen())
     }
 
     override suspend fun navigateToCustomerCare() {
-        //TODO
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToCustomerCareScreen())
     }
 }

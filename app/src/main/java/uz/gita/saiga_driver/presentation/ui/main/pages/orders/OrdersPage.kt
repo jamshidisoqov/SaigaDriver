@@ -1,5 +1,7 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.orders
 
+import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -15,6 +17,8 @@ import uz.gita.saiga_driver.databinding.PageOrdersBinding
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.adapter.OrdersAdapter
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
+import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
+import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -30,16 +34,11 @@ class OrdersPage : Fragment(R.layout.page_orders) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
-
         listOrders.adapter = adapter
 
         imageBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        viewModel.loadingSharedFlow.onEach {
-            if (it) showProgress() else hideProgress()
-        }.launchIn(lifecycleScope)
 
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
@@ -53,6 +52,10 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        viewModel.getAllData()
+
+        startGps()
+
         adapter.setItemClickListener {
             val dialog = OrderDialog(it)
             dialog.setAcceptListener { order ->
@@ -61,6 +64,20 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             dialog.show(childFragmentManager, "order")
         }
 
+        root.setOnRefreshListener {
+            viewModel.getAllData()
+            root.isRefreshing = false
+        }
     }
 
+    private fun startGps() {
+        hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
+            val intent = Intent(requireContext(), GpsService::class.java)
+            requireContext().startService(intent)
+        }) {}
+        currentLocation.observe(viewLifecycleOwner) {
+            log("Location")
+            viewModel.setCurrentLocation(it)
+        }
+    }
 }

@@ -6,10 +6,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.utils.ResultData
 import uz.gita.saiga_driver.utils.hasConnection
@@ -23,15 +20,21 @@ class MapRepositoryImpl @Inject constructor(
     override fun getAddressByLocation(latLng: LatLng): Flow<ResultData<String>> =
         flow<ResultData<String>> {
             if (hasConnection()) {
-                val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-                if (address != null) {
-                    emit(ResultData.Success(address[0].getAddressLine(0)))
-                } else {
-                    emit(ResultData.Success("е указан"))
+                try {
+                    val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    if (address != null) {
+                        emit(ResultData.Success(address[0].getAddressLine(0)))
+                    } else {
+                        emit(ResultData.Success("Hе указан"))
+                    }
+                } catch (e: Exception) {
+                    emit(ResultData.Error(e))
                 }
             } else {
                 emit(ResultData.Message("No internet connection"))
             }
+        }.catch { error ->
+            emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
     @SuppressLint("MissingPermission")
@@ -47,6 +50,8 @@ class MapRepositoryImpl @Inject constructor(
             } else {
                 trySend(ResultData.Message("No internet connection"))
             }
-            awaitClose { }
+            awaitClose()
+        }.catch { error ->
+            emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 }

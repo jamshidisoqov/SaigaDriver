@@ -41,7 +41,7 @@
             android:minEms="4"
             android:textColor="@color/black"
             app:keep_hint="false"
-            app:mask="+99 8(##) ### ## ##"
+            app:mask="+99 8## ### ## ##"
             tools:ignore="TextFields" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -109,15 +109,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_margin="16dp"
-        android:background="@drawable/bg_main_btn"
         android:fontFamily="@font/comfortaa_bold"
         android:text="@string/next"
         android:textSize="18sp"
+        android:enabled="false"
+        app:cornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

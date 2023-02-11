@@ -72,7 +72,7 @@ class RegisterScreen : Fragment(R.layout.screen_register) {
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.register(
-                    phone = inputPhone.text.toString(),
+                    phone = inputPhone.text.toString().replace(Regex("[() ]"), ""),
                     firstName = inputName.text.toString(),
                     lastName = inputLastName.text.toString()
                 )

@@ -104,12 +104,13 @@
                 android:id="@+id/image_refresh_money"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:backgroundTint="?selectableItemBackground"
+                android:background="?selectableItemBackground"
                 android:padding="@dimen/margin_std"
                 android:src="@drawable/ic_refresh"
+                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:tint="@color/light_grey" />
+                android:tint="@color/light_grey" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -291,5 +292,38 @@
         app:layout_constraintTop_toBottomOf="@id/card_income_container"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/list_item_directions" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_direction_container"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/card_income_container"
+        app:layout_constraintStart_toStartOf="@id/list_directions"
+        app:layout_constraintEnd_toEndOf="@id/list_directions">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_add_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_add"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/image_add_direction"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/add_direction"
+            android:textColor="@color/dark_grey"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

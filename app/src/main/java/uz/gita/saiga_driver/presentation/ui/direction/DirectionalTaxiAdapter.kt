@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.ListItemDirectionsBinding
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
 import uz.gita.saiga_driver.utils.extensions.include
@@ -12,27 +13,25 @@ import uz.gita.saiga_driver.utils.extensions.inflate
 
 // Created by Jamshid Isoqov on 12/17/2022
 
-val directionItemCallback = object : DiffUtil.ItemCallback<DirectionalTaxiData>() {
+val directionItemCallback = object : DiffUtil.ItemCallback<OrderResponse>() {
     override fun areItemsTheSame(
-        oldItem: DirectionalTaxiData,
-        newItem: DirectionalTaxiData
+        oldItem: OrderResponse,
+        newItem: OrderResponse
     ): Boolean = oldItem.id == newItem.id
 
     override fun areContentsTheSame(
-        oldItem: DirectionalTaxiData,
-        newItem: DirectionalTaxiData
-    ): Boolean = oldItem.directionsData == newItem.directionsData &&
-            oldItem.price == newItem.price &&
-            oldItem.scheduleTime == newItem.scheduleTime
+        oldItem: OrderResponse,
+        newItem: OrderResponse
+    ): Boolean = oldItem.id == newItem.id
 
 }
 
 class DirectionalTaxiAdapter :
-    ListAdapter<DirectionalTaxiData, DirectionalTaxiAdapter.ViewHolder>(directionItemCallback) {
+    ListAdapter<OrderResponse, DirectionalTaxiAdapter.ViewHolder>(directionItemCallback) {
 
-    private var itemClickListener: ((DirectionalTaxiData) -> Unit)? = null
+    private var itemClickListener: ((OrderResponse) -> Unit)? = null
 
-    fun setItemClickListener(block: (DirectionalTaxiData) -> Unit) {
+    fun setItemClickListener(block: (OrderResponse) -> Unit) {
         itemClickListener = block
     }
 
@@ -47,10 +46,10 @@ class DirectionalTaxiAdapter :
 
         fun onBind() = binding.include {
             val data = getItem(absoluteAdapterPosition)
-            tvFirstAddress.text = data.directionsData.addressFrom.title
-            tvSecondAddress.text = data.directionsData.addressTo.title
-            tvTime.text = data.scheduleTime.toString()
-            tvMoney.text = data.price.getFinanceType()
+            tvFirstAddress.text = data.direction.addressFrom.title
+            tvSecondAddress.text = data.direction.addressTo?.title ?: "Not Specified"
+            tvTime.text = data.timeWhen.toString()
+            tvMoney.text = data.money.getFinanceType()
         }
     }
 

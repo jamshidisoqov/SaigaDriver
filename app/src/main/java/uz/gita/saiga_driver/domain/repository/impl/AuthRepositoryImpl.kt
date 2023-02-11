@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.*
 import uz.gita.saiga_driver.MainActivity
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.AuthApi
+import uz.gita.saiga_driver.data.remote.request.auth.BalanceRequest
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
+import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
 import uz.gita.saiga_driver.domain.enums.StartScreen
 import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.utils.ResultData
@@ -85,7 +87,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun sendSms(phone: String): Flow<ResultData<String>> = callbackFlow {
         val options =
-            PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(phone.replace(" ", ""))
+            PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(phone)
                 .setTimeout(0L, TimeUnit.SECONDS)
                 .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     override fun onVerificationCompleted(p0: PhoneAuthCredential) {
@@ -127,6 +129,23 @@ class AuthRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
+    override fun getUserData(): Flow<ResultData<AuthResponse>> = flow {
+
+    }
+
+    override fun topUpBalance(amount: Double): Flow<ResultData<BalanceResponse>> = flow<ResultData<BalanceResponse>> {
+        authApi.topUpBalance(BalanceRequest(amount.toString(), mySharedPref.userId)).func(gson)
+            .onSuccess {
+                emit(ResultData.Success(it.body.data))
+            }.onMessage {
+                emit(ResultData.Message(it))
+            }.onError {
+                emit(ResultData.Error(it))
+            }
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
+
     private fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential, onSuccess: () -> Unit, onFailure: (Exception) -> Unit
     ) {
@@ -138,5 +157,4 @@ class AuthRepositoryImpl @Inject constructor(
             onSuccess.invoke()
         }
     }
-
 }

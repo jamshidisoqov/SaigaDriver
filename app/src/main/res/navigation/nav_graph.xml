@@ -52,40 +52,105 @@
         tools:layout="@layout/screen_verify_code">
         <action
             android:id="@+id/action_verifyCodeScreen_to_permissionsCheckScreen"
-            app:destination="@id/permissionsCheckScreen" />
-    </fragment>
-    <fragment
-        android:id="@+id/permissionsCheckScreen"
-        android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
-        android:label="PermissionsCheckScreen"
-        tools:layout="@layout/screen_permissions_check">
-        <action
-            android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            app:destination="@id/permissionsCheckScreen"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/mainScreen"
         android:name="uz.gita.saiga_driver.presentation.ui.main.MainScreen"
         android:label="MainScreen"
-        tools:layout="@layout/screen_main" />
+        tools:layout="@layout/screen_main" >
+        <action
+            android:id="@+id/action_mainScreen_to_addDirectionScreen"
+            app:destination="@id/addDirectionScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_directionsScreen"
+            app:destination="@id/directionsScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_settingsScreen"
+            app:destination="@id/settingsScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_financeScreen"
+            app:destination="@id/financeScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_tripScreen"
+            app:destination="@id/tripScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_profileDetailScreen"
+            app:destination="@id/profileDetailScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_tripMapScreen"
+            app:destination="@id/tripMapScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_customerCareScreen"
+            app:destination="@id/customerCareScreen" />
+    </fragment>
     <fragment
         android:id="@+id/settingsScreen"
+        tools:layout="@layout/screen_settings"
         android:name="uz.gita.saiga_driver.presentation.ui.settings.SettingsScreen"
         android:label="SettingsScreen" />
     <fragment
         android:id="@+id/directionDetailScreen"
+        tools:layout="@layout/screen_directions_detail"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionDetailScreen"
-        android:label="DirectionDetailScreen" />
+        android:label="DirectionDetailScreen" >
+        <argument
+            android:name="order"
+            app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
     <fragment
         android:id="@+id/addDirectionScreen"
+        tools:layout="@layout/screen_add_direction"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionScreen"
         android:label="AddDirectionScreen" />
     <fragment
         android:id="@+id/directionsScreen"
+        tools:layout="@layout/screen_directions"
         android:name="uz.gita.saiga_driver.presentation.ui.direction.DirectionsScreen"
-        android:label="DirectionsScreen" />
+        android:label="DirectionsScreen" >
+        <action
+            android:id="@+id/action_directionsScreen_to_addDirectionScreen"
+            app:destination="@id/addDirectionScreen" />
+        <action
+            android:id="@+id/action_directionsScreen_to_directionDetailScreen"
+            app:destination="@id/directionDetailScreen" />
+    </fragment>
     <fragment
         android:id="@+id/financeScreen"
+        tools:layout="@layout/screen_finance"
         android:name="uz.gita.saiga_driver.presentation.ui.finance.FinanceScreen"
         android:label="FinanceScreen" />
+    <fragment
+        android:id="@+id/tripScreen"
+        tools:layout="@layout/screen_trip"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripScreen"
+        android:label="TripScreen" >
+        <argument
+            android:name="order"
+            app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
+    <fragment
+        android:id="@+id/tripMapScreen"
+        tools:layout="@layout/screen_map_trip"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.orders.map.TripMapScreen"
+        android:label="TripMapScreen" />
+    <fragment
+        android:id="@+id/profileDetailScreen"
+        tools:layout="@layout/screen_profile_detail"
+        android:name="uz.gita.saiga_driver.presentation.ui.main.pages.profile.detail.ProfileDetailScreen"
+        android:label="ProfileDetailScreen" />
+    <fragment
+        android:id="@+id/customerCareScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.customerCare.CustomerCareScreen"
+        android:label="CustomerCareScreen" />
+    <fragment
+        android:id="@+id/permissionsCheckScreen"
+        android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
+        android:label="PermissionsCheckScreen" >
+        <action
+            android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
+            app:destination="@id/mainScreen"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
 </navigation>

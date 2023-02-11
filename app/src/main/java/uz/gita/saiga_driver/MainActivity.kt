@@ -1,16 +1,23 @@
 package uz.gita.saiga_driver
 
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.navigation.NavigationHandler
 import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import javax.inject.Inject
+
+
+@Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var navigationHandler: NavigationHandler
 
+    @SuppressLint("ServiceCast", "MissingPermission", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,11 +42,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     fun showProgress() {
         dialog.show()
     }
-
 
     fun hideProgress() {
         dialog.cancel()
