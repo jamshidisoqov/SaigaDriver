@@ -39,7 +39,7 @@ class DirectionalTaxiAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.tripCardView.setOnClickListener {
                 itemClickListener?.invoke(getItem(absoluteAdapterPosition))
             }
         }

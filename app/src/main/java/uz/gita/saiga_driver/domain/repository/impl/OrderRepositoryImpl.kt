@@ -90,7 +90,7 @@ class OrderRepositoryImpl @Inject constructor(
                     log(it.payload)
                     val order = fromGsonData(it.payload)
                     orders.add(order)
-                    ordersLiveData.value = ResultData.Success(orders)
+                    ordersLiveData.postValue(ResultData.Success(orders))
                 }
         } catch (e: Exception) {
             ordersLiveData.value = ResultData.Error(e)

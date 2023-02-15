@@ -61,7 +61,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         val intent = Intent(requireContext(), GpsService::class.java)
         requireContext().startService(intent)
         currentLocation.observe(viewLifecycleOwner) {
-            viewModel.setCurrentLocation(it)
+            viewModel.setCurrentLocation(it,!isOrderActive)
         }
 
         cardOrderStatus
@@ -94,7 +94,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         hasPermission(
             permission = Manifest.permission.CALL_PHONE,
             onPermissionGranted = {
-                callPhone(phone)
+                callPhoneNumber(phone)
             },
             onPermissionDenied = {
                 Snackbar.make(

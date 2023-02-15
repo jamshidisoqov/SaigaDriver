@@ -52,7 +52,6 @@ class DirectionDetailScreen : Fragment(R.layout.screen_directions_detail) {
             )
         )
 
-
         viewBinding.iconBack.setOnClickListener {
             findNavController().navigateUp()
         }

@@ -12,6 +12,7 @@ import uz.gita.saiga_driver.directions.DirectionsScreenDirection
 import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionsViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 

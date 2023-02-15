@@ -162,7 +162,7 @@ fun Fragment.bitmapFromVector(vectorResId: Int): BitmapDescriptor {
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }
 
-fun Fragment.callPhone(phone: String) {
+fun Fragment.callPhoneNumber(phone: String) {
     val uri = "tel:$phone"
     val intent = Intent(Intent.ACTION_CALL)
     intent.data = Uri.parse(uri)

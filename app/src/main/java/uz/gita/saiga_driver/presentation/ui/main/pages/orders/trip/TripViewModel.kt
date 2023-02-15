@@ -13,7 +13,7 @@ interface TripViewModel {
 
     val currentMoney: StateFlow<Double>
 
-    fun setCurrentLocation(currentLocation: LatLng)
+    fun setCurrentLocation(currentLocation: LatLng,isStartTrip:Boolean)
 
     fun navigateToMap(orderResponse: OrderResponse)
 }

@@ -48,7 +48,7 @@ class OrdersViewModelImpl @Inject constructor(
             delay(1000)
             mapRepository.requestCurrentLocation().collectLatest {
                 it.onSuccess {
-                    // updateDistances(it)
+                     updateDistances(it)
                 }
             }
         }
@@ -78,10 +78,6 @@ class OrdersViewModelImpl @Inject constructor(
                 loadingSharedFlow.emit(true)
                 orderRepository.ordersLiveData.observeForever { result ->
                     result.onSuccess {
-                        it.forEach {
-                            val addressFrom = it.direction.addressFrom
-                            println("-------Address${addressFrom.lat}----------${addressFrom.lon}-----")
-                        }
                         allOrderFlow.tryEmit(it)
                     }.onMessage {
                         messageSharedFlow.tryEmit(it)
@@ -111,7 +107,7 @@ class OrdersViewModelImpl @Inject constructor(
                     .collectLatest { result ->
                         loadingSharedFlow.emit(false)
                         result.onSuccess {
-                            directions.navigateToTrip(it)
+                            directions.navigateToTrip(orderData)
                         }.onMessage {
                             messageSharedFlow.emit(it)
                         }.onError {

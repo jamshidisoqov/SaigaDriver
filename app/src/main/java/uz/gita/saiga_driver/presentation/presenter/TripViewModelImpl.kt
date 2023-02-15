@@ -29,12 +29,14 @@ class TripViewModelImpl @Inject constructor(
     private var _way = 0.0
     private var _money = 7000.0
 
-    override fun setCurrentLocation(currentLocation: LatLng) {
+    override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             lastLocation?.let {
                 val way = calculationByDistance(it, currentLocation)
-                if (way > 0.003)
-                    _way += way
+                if (isStartTrip) {
+                    if (way > 0.003)
+                        _way += way
+                }
                 val speed: Double = way * 1000 * 3.6
                 if (_way > 5.0) {
                     val dMoney = (_way - 5.0) * 1000

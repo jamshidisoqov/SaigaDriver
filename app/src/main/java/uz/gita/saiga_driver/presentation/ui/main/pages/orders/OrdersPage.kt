@@ -36,9 +36,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
         listOrders.adapter = adapter
 
-        imageBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
