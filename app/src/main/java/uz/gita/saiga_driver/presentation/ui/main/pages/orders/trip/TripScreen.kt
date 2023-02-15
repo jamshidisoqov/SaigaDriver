@@ -1,6 +1,7 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip
 
 import android.Manifest
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -57,6 +58,12 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                 callPhone(args.order.fromUser.phoneNumber)
             }.launchIn(lifecycleScope)
 
+        val intent = Intent(requireContext(), GpsService::class.java)
+        requireContext().startService(intent)
+        currentLocation.observe(viewLifecycleOwner) {
+            viewModel.setCurrentLocation(it)
+        }
+
         cardOrderStatus
             .clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
@@ -80,9 +87,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     }
 
     private fun startTrip() {
-        currentLocation.observe(viewLifecycleOwner) {
-            viewModel.setCurrentLocation(it)
-        }
+
     }
 
     private fun callPhone(phone: String) {

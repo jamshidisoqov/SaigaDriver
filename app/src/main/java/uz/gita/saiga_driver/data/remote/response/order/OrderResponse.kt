@@ -17,6 +17,7 @@ data class OrderResponse(
     val direction: DirectionResponse,
     val toUser: UserResponse? = null,
     val comment: String? = null,
+    @Expose
     val timeWhen: String? = null,
     @Expose
     var distance:String = "0"

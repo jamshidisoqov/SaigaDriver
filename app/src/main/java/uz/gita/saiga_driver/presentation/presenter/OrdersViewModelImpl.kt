@@ -105,8 +105,11 @@ class OrdersViewModelImpl @Inject constructor(
     override fun accept(orderData: OrderResponse) {
         viewModelScope.launch {
             if (hasConnection()) {
+                //loadingSharedFlow.emit(true)
+                directions.navigateToTrip(orderData)
                 orderRepository.receiveOrder(orderData.id)
                     .collectLatest { result ->
+                        loadingSharedFlow.emit(false)
                         result.onSuccess {
                             directions.navigateToTrip(it)
                         }.onMessage {

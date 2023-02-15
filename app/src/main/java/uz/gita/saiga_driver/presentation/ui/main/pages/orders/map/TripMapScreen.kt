@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.saiga_driver.R
@@ -25,6 +26,7 @@ import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.currentLocationBearing
 import uz.gita.saiga_driver.utils.extensions.bitmapFromVector
 import uz.gita.saiga_driver.utils.extensions.include
+import uz.gita.saiga_driver.utils.extensions.log
 
 // Created by Jamshid Isoqov on 2/5/2023
 @AndroidEntryPoint
@@ -43,13 +45,14 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         val direction = args.order.direction
-        val addressTo = direction.addressFrom
-        val start = LatLng(addressTo.lat!!, addressTo.lon!!)
+        val addressFrom = direction.addressFrom
+        log(addressFrom.toString())
+        val start = LatLng(addressFrom.lat ?: 42.460168, addressFrom.lon ?: 59.607280)
         val end = currentLocation.value ?: NUKUS
         mapInit(
             DestinationData(
                 fromWhere = "Start address",
-                toWhere = addressTo.title!!,
+                toWhere = addressFrom.title!!,
                 start = start,
                 end = end,
             )
@@ -113,16 +116,17 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
                     .icon(bitmapFromVector(R.drawable.ic_target_blue))
             )
 
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(start, 16F))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(start, 10F))
 
             val options = MarkerOptions().position(end)
                 .title("Current location")
                 .flat(true)
-                .anchor(0.5f, 0.5f)
-                .position(currentLocation.value!!)
+                .anchor(1f, 1f)
+                .position(currentLocation.value ?: NUKUS)
                 .icon(bitmapFromVector(R.drawable.ic_navigation))
 
             val marker = googleMap.addMarker(options)
+
 
             currentLocationBearing.observe(viewLifecycleOwner) { pair ->
                 marker?.apply {
@@ -132,5 +136,4 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
             }
         }
     }
-
 }

@@ -1,11 +1,13 @@
 package uz.gita.saiga_driver.domain.repository.impl
 
+import android.annotation.SuppressLint
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
@@ -33,6 +35,10 @@ class OrderRepositoryImpl @Inject constructor(
         MutableStateFlow<ResultData<List<OrderResponse>>>(ResultData.Success(emptyList()))
 
     private val type by lazy { object : TypeToken<BaseResponse<List<OrderResponse>>>() {}.type }
+
+    init {
+        socketConnect()
+    }
 
 
     private var compositeDisposable: CompositeDisposable? = null
@@ -71,9 +77,10 @@ class OrderRepositoryImpl @Inject constructor(
         emit(ResultData.Error(error))
     }.flowOn(Dispatchers.IO)
 
+    @SuppressLint("CheckResult")
     override fun getAllOrders(): Flow<ResultData<List<OrderResponse>>> =
         callbackFlow<ResultData<List<OrderResponse>>> {
-            stompClient.topic("/api/orders/non-received/user")
+            stompClient.topic("/topic/received-order-from-driver")
                 .doOnError {
                     trySend(ResultData.Error(it))
                 }
@@ -82,6 +89,7 @@ class OrderRepositoryImpl @Inject constructor(
                     this@OrderRepositoryImpl.orders.tryEmit(orders)
                     trySend(orders)
                 }
+            awaitClose()
         }.catch { error ->
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
@@ -114,7 +122,7 @@ class OrderRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun socketConnect() {
+    override  fun socketConnect() {
         resetSubscriptions()
         stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
         resetSubscriptions()

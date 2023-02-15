@@ -26,7 +26,7 @@ interface OrderRepository {
 
     fun getAllHistory():Flow<ResultData<List<TripWithDate>>>
 
-    suspend fun socketConnect()
+     fun socketConnect()
 
     suspend fun socketDisconnect()
 

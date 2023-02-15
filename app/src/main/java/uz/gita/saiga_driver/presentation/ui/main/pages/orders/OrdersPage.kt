@@ -74,10 +74,11 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
             val intent = Intent(requireContext(), GpsService::class.java)
             requireContext().startService(intent)
+            currentLocation.observe(viewLifecycleOwner) {
+                log("Location")
+                viewModel.setCurrentLocation(it)
+            }
         }) {}
-        currentLocation.observe(viewLifecycleOwner) {
-            log("Location")
-            viewModel.setCurrentLocation(it)
-        }
+
     }
 }

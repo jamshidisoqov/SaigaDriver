@@ -1,6 +1,7 @@
 package uz.gita.saiga_driver
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.navigation.NavigationHandler
 import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
+import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,6 +39,9 @@ class MainActivity : AppCompatActivity() {
             .onEach { it.invoke(fragment.findNavController()) }
             .launchIn(lifecycleScope)
         dialog = ProgressDialog(this)
+
+        val intent = Intent(this, GpsService::class.java)
+       startService(intent)
 
     }
 
