@@ -1,13 +1,13 @@
 package uz.gita.saiga_driver.domain.repository.impl
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
@@ -16,6 +16,7 @@ import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
+import uz.gita.saiga_driver.data.remote.response.order.ActiveOrderResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.domain.entity.TripWithDate
 import uz.gita.saiga_driver.domain.repository.OrderRepository
@@ -31,15 +32,16 @@ class OrderRepositoryImpl @Inject constructor(
     private val stompClient: StompClient
 ) : OrderRepository {
 
-    private var orders =
-        MutableStateFlow<ResultData<List<OrderResponse>>>(ResultData.Success(emptyList()))
+    override var ordersLiveData: MutableLiveData<ResultData<List<OrderResponse>>> =
+        MutableLiveData()
 
-    private val type by lazy { object : TypeToken<BaseResponse<List<OrderResponse>>>() {}.type }
+    private var orders = arrayListOf<OrderResponse>()
+
+    private val type by lazy { object : TypeToken<BaseResponse<ActiveOrderResponse>>() {}.type }
 
     init {
         socketConnect()
     }
-
 
     private var compositeDisposable: CompositeDisposable? = null
 
@@ -78,21 +80,22 @@ class OrderRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     @SuppressLint("CheckResult")
-    override fun getAllOrders(): Flow<ResultData<List<OrderResponse>>> =
-        callbackFlow<ResultData<List<OrderResponse>>> {
-            stompClient.topic("/topic/received-order-from-driver")
+    override suspend fun getAllOrders() {
+        try {
+            stompClient.topic("/topic/new-order-from-user")
                 .doOnError {
-                    trySend(ResultData.Error(it))
+                    ordersLiveData.value = ResultData.Error(it)
                 }
                 .subscribe {
-                    val orders = fromGsonData(it.payload)
-                    this@OrderRepositoryImpl.orders.tryEmit(orders)
-                    trySend(orders)
+                    log(it.payload)
+                    val order = fromGsonData(it.payload)
+                    orders.add(order)
+                    ordersLiveData.value = ResultData.Success(orders)
                 }
-            awaitClose()
-        }.catch { error ->
-            emit(ResultData.Error(error))
-        }.flowOn(Dispatchers.IO)
+        } catch (e: Exception) {
+            ordersLiveData.value = ResultData.Error(e)
+        }
+    }
 
     override fun receiveOrder(orderId: Long): Flow<ResultData<OrderResponse>> =
         flow<ResultData<OrderResponse>> {
@@ -122,17 +125,28 @@ class OrderRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
-    override  fun socketConnect() {
+    override suspend fun getAllActiveOrders() {
+        orderApi.getAllUserOrders().func(gson).onSuccess {
+            orders.addAll(it.body.data)
+        }.onMessage {
+            ordersLiveData.value = ResultData.Message(it)
+        }.onError {
+            ordersLiveData.value = ResultData.Error(it)
+        }
+        ordersLiveData.value = ResultData.Success(orders)
+    }
+
+    override fun socketConnect() {
         resetSubscriptions()
         stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
         resetSubscriptions()
         val disLifecycle = stompClient.lifecycle()
             .doOnError {
-                orders.tryEmit(ResultData.Error(it))
+                ordersLiveData.value = (ResultData.Error(it))
             }
             .subscribeOn(Schedulers.io())
             .doOnError {
-                orders.tryEmit(ResultData.Error(it))
+                ordersLiveData.value = (ResultData.Error(it))
             }
             .subscribe { lifecycleEvent: LifecycleEvent ->
                 when (lifecycleEvent.type) {
@@ -168,13 +182,9 @@ class OrderRepositoryImpl @Inject constructor(
         compositeDisposable = CompositeDisposable()
     }
 
-    private fun fromGsonData(message: String): ResultData<List<OrderResponse>> {
-        val baseOrderResponse = gson.fromJson<BaseResponse<List<OrderResponse>>>(message, type)
-        return if (baseOrderResponse.active == true) {
-            ResultData.Success(baseOrderResponse.body)
-        } else {
-            ResultData.Message(baseOrderResponse.message ?: "No message")
-        }
+    private fun fromGsonData(message: String): OrderResponse {
+        val baseOrderResponse = gson.fromJson<BaseResponse<ActiveOrderResponse>>(message, type)
+        return baseOrderResponse.body.order
     }
 
 }

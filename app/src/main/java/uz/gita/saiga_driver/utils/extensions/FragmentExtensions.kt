@@ -1,6 +1,7 @@
 package uz.gita.saiga_driver.utils.extensions
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -77,6 +78,32 @@ fun Fragment.hasPermission(
 
         })
 }
+
+fun Activity.hasPermission(
+    permissions: List<String>,
+    onPermissionGranted: () -> Unit,
+    onPermissionDenied: () -> Unit
+) {
+    Dexter.withContext(this)
+        .withPermissions(permissions).withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
+                if (permissions.size == p0?.grantedPermissionResponses?.size) {
+                    onPermissionGranted.invoke()
+                } else {
+                    onPermissionDenied.invoke()
+                }
+            }
+
+            override fun onPermissionRationaleShouldBeShown(
+                p0: MutableList<PermissionRequest>?,
+                p1: PermissionToken?
+            ) {
+                p1?.continuePermissionRequest()
+            }
+
+        })
+}
+
 
 
 fun Context.hasPermission(permission: String): Boolean {

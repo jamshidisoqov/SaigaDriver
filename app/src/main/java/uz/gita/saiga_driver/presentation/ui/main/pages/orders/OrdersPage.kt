@@ -63,11 +63,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
             dialog.show(childFragmentManager, "order")
         }
-
-        root.setOnRefreshListener {
-            viewModel.getAllData()
-            root.isRefreshing = false
-        }
     }
 
     private fun startGps() {
@@ -75,7 +70,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             val intent = Intent(requireContext(), GpsService::class.java)
             requireContext().startService(intent)
             currentLocation.observe(viewLifecycleOwner) {
-                log("Location")
                 viewModel.setCurrentLocation(it)
             }
         }) {}

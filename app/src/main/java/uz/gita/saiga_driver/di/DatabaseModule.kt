@@ -30,7 +30,7 @@ object DatabaseModule {
     private const val SHARED_NAME: String = "app_data"
     private const val SHARED_MODE: Int = Context.MODE_PRIVATE
     private const val BASE_URL: String = "http://157.230.38.77:5001"
-    private const val SOCKET_BASE_URL: String = "ws://157.230.38.77:5000"
+    private const val SOCKET_BASE_URL: String = "ws://157.230.38.77:5001/ws"
 
 
     @[Provides Singleton]

@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -8,14 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.navigation.NavigationHandler
 import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
+import uz.gita.saiga_driver.utils.extensions.hasPermission
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,8 +39,15 @@ class MainActivity : AppCompatActivity() {
             .launchIn(lifecycleScope)
         dialog = ProgressDialog(this)
 
-        val intent = Intent(this, GpsService::class.java)
-       startService(intent)
+        startGps()
+
+    }
+
+    private fun startGps() {
+        hasPermission(listOf(Manifest.permission.ACCESS_FINE_LOCATION), onPermissionGranted = {
+            val intent = Intent(this, GpsService::class.java)
+            startService(intent)
+        }) {}
 
     }
 
