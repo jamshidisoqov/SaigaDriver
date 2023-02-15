@@ -18,10 +18,12 @@ import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.order.ActiveOrderResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.domain.entity.TripDate
 import uz.gita.saiga_driver.domain.entity.TripWithDate
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.utils.ResultData
 import uz.gita.saiga_driver.utils.extensions.func
+import uz.gita.saiga_driver.utils.extensions.getBackendTimeFormat
 import uz.gita.saiga_driver.utils.extensions.log
 import javax.inject.Inject
 
@@ -115,7 +117,16 @@ class OrderRepositoryImpl @Inject constructor(
         flow<ResultData<List<TripWithDate>>> {
             orderApi.getAllHistory().func(gson)
                 .onSuccess {
-                    emit(ResultData.Success(it.body))
+                    val list = it.body.data
+                    val newTripList = arrayListOf<TripWithDate>()
+                    val entry = list.groupBy { order ->
+                        order.timeWhen?.getBackendTimeFormat()
+                    }
+                    entry.entries.forEach { entries ->
+                        newTripList.add(TripDate(entries.key!!))
+                        newTripList.addAll(entries.value)
+                    }
+                    emit(ResultData.Success(newTripList))
                 }.onMessage {
                     emit(ResultData.Message(it))
                 }.onError {

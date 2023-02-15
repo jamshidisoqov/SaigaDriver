@@ -24,7 +24,7 @@ interface OrderApi {
     suspend fun getAllUserOrders(): Response<BaseResponse<DataResponse<List<OrderResponse>>>>
 
     @GET("/api/orders/history")
-    suspend fun getAllHistory(): Response<BaseResponse<List<OrderResponse>>>
+    suspend fun getAllHistory(): Response<BaseResponse<DataResponse<List<OrderResponse>>>>
 
 
 }
