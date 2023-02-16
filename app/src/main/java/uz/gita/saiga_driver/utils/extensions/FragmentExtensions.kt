@@ -166,4 +166,5 @@ fun Fragment.callPhoneNumber(phone: String) {
     val uri = "tel:$phone"
     val intent = Intent(Intent.ACTION_CALL)
     intent.data = Uri.parse(uri)
+    startActivity(intent)
 }

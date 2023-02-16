@@ -139,12 +139,13 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getAllActiveOrders() {
         orderApi.getAllUserOrders().func(gson).onSuccess {
             orders.addAll(it.body.data)
+            log(orders.toString(),"XXX")
+            ordersLiveData.postValue(ResultData.Success(orders))
         }.onMessage {
             ordersLiveData.value = ResultData.Message(it)
         }.onError {
             ordersLiveData.value = ResultData.Error(it)
         }
-        ordersLiveData.value = ResultData.Success(orders)
     }
 
     override fun socketConnect() {

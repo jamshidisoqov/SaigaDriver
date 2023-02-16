@@ -52,7 +52,7 @@ class HomePage : Fragment(R.layout.page_home) {
             }.launchIn(lifecycleScope)
 
         viewModel.currentBalanceFlow.onEach {
-            tvTotalBalance.text = it.getFinanceType()
+            tvTotalBalance.text = it.getFormat(3).combine("sum")
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.expanseBalance.onEach {
@@ -63,9 +63,9 @@ class HomePage : Fragment(R.layout.page_home) {
             tvOrderIncome.text = it.getFinanceType()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.ordersFlow.onEach {
+        viewModel.ordersFlow.observe(viewLifecycleOwner) {
             tvOrderCount.text = it.toString().combine("Orders")
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
 
         viewModel.myDirectionsFlow.onEach {
             if (it.isEmpty()) {

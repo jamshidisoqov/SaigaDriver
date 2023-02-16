@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.ListItemDirectionsBinding
-import uz.gita.saiga_driver.utils.extensions.getFinanceType
-import uz.gita.saiga_driver.utils.extensions.include
-import uz.gita.saiga_driver.utils.extensions.inflate
+import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/17/2022
 
@@ -48,8 +46,8 @@ class DirectionalTaxiAdapter :
             val data = getItem(absoluteAdapterPosition)
             tvFirstAddress.text = data.direction.addressFrom.title
             tvSecondAddress.text = data.direction.addressTo?.title ?: "Not Specified"
-            tvTime.text = data.timeWhen.toString()
-            tvMoney.text = data.money.getFinanceType()
+            tvTime.text = data.timeWhen?.getBackendTimeFormat()?:""
+            tvMoney.text = data.money.getFormat(3).combine("sum")
         }
     }
 

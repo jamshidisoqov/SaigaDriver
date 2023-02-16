@@ -114,7 +114,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="16dp"
-        android:fontFamily="@font/comfortaa_bold"
         android:text="@string/next"
         android:textSize="18sp"
         android:enabled="false"

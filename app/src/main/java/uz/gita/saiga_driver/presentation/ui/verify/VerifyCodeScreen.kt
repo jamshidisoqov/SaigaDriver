@@ -36,7 +36,7 @@ class VerifyCodeScreen : Fragment(R.layout.screen_verify_code) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         viewBinding.include {
             viewModel.openPermissionChecker.onEach {
-                findNavController().navigate(VerifyCodeScreenDirections.actionVerifyCodeScreenToMainScreen())
+                findNavController().navigate(R.id.permissionsCheckScreen)
             }.launchIn(lifecycleScope)
 
             smsChecker.onChangeListener = SmsConfirmationView.OnChangeListener { _, isComplete ->

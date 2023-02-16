@@ -13,7 +13,7 @@ import uz.gita.saiga_driver.domain.entity.TripWithDate
 data class OrderResponse(
     val id: Long,
     val fromUser: UserResponse,
-    val money: Double,
+    val money: String,
     val direction: DirectionResponse,
     val toUser: UserResponse? = null,
     val comment: String? = null,

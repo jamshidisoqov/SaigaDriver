@@ -1,6 +1,5 @@
 package uz.gita.saiga_driver.domain.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +10,7 @@ import uz.gita.saiga_driver.utils.ResultData
 // Created by Jamshid Isoqov on 12/14/2022
 interface OrderRepository {
 
-    var ordersLiveData:MutableLiveData<ResultData<List<OrderResponse>>>
+    var ordersLiveData: MutableLiveData<ResultData<List<OrderResponse>>>
 
     fun order(
         whereFrom: String,
