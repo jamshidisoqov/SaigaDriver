@@ -78,6 +78,8 @@ class AuthRepositoryImpl @Inject constructor(
                 trySend(ResultData.Error(it))
             }
             awaitClose()
+        }.catch { error ->
+            emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
 
