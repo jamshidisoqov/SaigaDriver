@@ -33,8 +33,6 @@ fun String.getTimeWhenFormat(): String {
     return SimpleDateFormat("dd-MM-yyyy").format(date)
 }
 
-fun getCurrentTimeFormat() = getCurrentDate().getTimeWhenFormat()
-
 fun String.getDigitOnly(): Double {
     val builder = StringBuilder()
     for (i in this) {
@@ -53,6 +51,15 @@ fun String.toTime(): List<String> {
 fun String.getBackendTimeFormat(): String {
     val date = SimpleDateFormat("dd MMM yyyy HH:mm").parse(this)!!
     return SimpleDateFormat("dd MMM yyyy").format(date)
+}
+
+fun String.getFormat(count: Int): String {
+    val index = this.indexOf('.')
+    val form = if (index > 0) this.substring(0, index) else this
+    val builder = StringBuilder(form.reversed())
+    val formatterString = StringBuilder()
+    builder.chunked(count).forEach { formatterString.append(it.plus(' ')) }
+    return formatterString.reversed().toString().trim(' ')
 }
 
 

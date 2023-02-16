@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver.presentation.presenter
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,9 +34,9 @@ class HomeViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-    override val currentBalanceFlow = MutableStateFlow(0.0)
+    override val currentBalanceFlow = MutableStateFlow("")
 
-    override val ordersFlow = MutableStateFlow(0)
+    override val ordersFlow = MediatorLiveData<Int>()
 
     override val incomeBalance = MutableStateFlow(0.0)
 
@@ -47,7 +48,6 @@ class HomeViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch {
-            orderRepository.getAllActiveOrders()
             orderRepository.getAllOrders()
         }
     }
@@ -57,12 +57,13 @@ class HomeViewModelImpl @Inject constructor(
             nameSharedFlow.emit(mySharedPref.firstName)
         }
     }
+
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
                 authRepository.topUpBalance(0.0).collectLatest { result ->
                     result.onSuccess {
-                        currentBalanceFlow.emit(it.balance.toDouble())
+                        currentBalanceFlow.emit(it.balance)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {
@@ -89,15 +90,17 @@ class HomeViewModelImpl @Inject constructor(
                         }
                     }
 
-                orderRepository.ordersLiveData.observeForever { result ->
+                ordersFlow.addSource(orderRepository.ordersLiveData) { result ->
                     result.onSuccess {
-                        ordersFlow.tryEmit(it.size)
+                        ordersFlow.postValue(it.size)
                     }.onMessage {
                         messageSharedFlow.tryEmit(it)
                     }.onError {
                         errorSharedFlow.tryEmit(it.getMessage())
                     }
                 }
+
+                orderRepository.getAllActiveOrders()
             } else {
                 messageSharedFlow.emit("No internet connection")
             }

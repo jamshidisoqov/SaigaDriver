@@ -13,7 +13,9 @@ import uz.gita.saiga_driver.databinding.ListItemHistoryBinding
 import uz.gita.saiga_driver.databinding.ListItemTripsHeaderBinding
 import uz.gita.saiga_driver.domain.entity.TripDate
 import uz.gita.saiga_driver.domain.entity.TripWithDate
+import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
+import uz.gita.saiga_driver.utils.extensions.getFormat
 import uz.gita.saiga_driver.utils.extensions.inflate
 
 // Created by Jamshid Isoqov on 11/29/2022
@@ -77,7 +79,7 @@ class ViewHolderTrips(private val binding: ListItemHistoryBinding) : BaseViewHol
         binding.apply {
             tvFromOrder.text = trip.direction.addressFrom.title
             tvToOrder.text = trip.direction.addressTo?.title ?: "Not specific"
-            tvMoney.text = trip.money.getFinanceType()
+            tvMoney.text = trip.money.getFormat(3).combine("sum")
         }
     }
 

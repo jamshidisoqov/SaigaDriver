@@ -43,12 +43,11 @@ class OrdersViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch {
-            orderRepository.getAllActiveOrders()
             orderRepository.getAllOrders()
             delay(1000)
             mapRepository.requestCurrentLocation().collectLatest {
                 it.onSuccess {
-                     updateDistances(it)
+                    updateDistances(it)
                 }
             }
         }
@@ -58,7 +57,6 @@ class OrdersViewModelImpl @Inject constructor(
         viewModelScope.launch {
             val orders = allOrderFlow.value.map {
                 val addressFrom = it.direction.addressFrom
-                ///println("-------Address${addressFrom.lat}----------${addressFrom.lon}-----")
                 it.copy(
                     distance = calculationByDistance(
                         LatLng(

@@ -5,12 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.ListItemOrdersBinding
-import uz.gita.saiga_driver.utils.NUKUS
-import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.include
 import uz.gita.saiga_driver.utils.extensions.inflate
@@ -30,7 +27,6 @@ private var listItemCallback = object : DiffUtil.ItemCallback<OrderResponse>() {
 
 class OrdersAdapter :
     ListAdapter<OrderResponse, OrdersAdapter.ViewHolder>(listItemCallback) {
-
 
 
     private var itemClickListener: ((OrderResponse) -> Unit)? = null
