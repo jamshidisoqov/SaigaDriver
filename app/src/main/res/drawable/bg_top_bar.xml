@@ -3,6 +3,6 @@
 
     <solid android:color="@color/white"/>
 
-   <corners android:bottomRightRadius="120dp" android:bottomLeftRadius="120dp"/>
+   <corners android:bottomRightRadius="@dimen/margin_large" android:bottomLeftRadius="@dimen/margin_large"/>
 
 </shape>

@@ -45,6 +45,13 @@ class HomeViewModelImpl @Inject constructor(
 
     override val nameSharedFlow = MutableSharedFlow<String>()
 
+    init {
+        viewModelScope.launch {
+            orderRepository.getAllActiveOrders()
+            orderRepository.getAllOrders()
+        }
+    }
+
     override fun getData() {
         viewModelScope.launch {
             nameSharedFlow.emit(mySharedPref.firstName)
@@ -82,13 +89,13 @@ class HomeViewModelImpl @Inject constructor(
                         }
                     }
 
-                orderRepository.getAllOrders().collectLatest { result ->
+                orderRepository.ordersLiveData.observeForever { result ->
                     result.onSuccess {
-                        ordersFlow.emit(it.size)
+                        ordersFlow.tryEmit(it.size)
                     }.onMessage {
-                        messageSharedFlow.emit(it)
+                        messageSharedFlow.tryEmit(it)
                     }.onError {
-                        errorSharedFlow.emit(it.getMessage())
+                        errorSharedFlow.tryEmit(it.getMessage())
                     }
                 }
             } else {

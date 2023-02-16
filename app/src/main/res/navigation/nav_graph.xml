@@ -79,9 +79,6 @@
             android:id="@+id/action_mainScreen_to_profileDetailScreen"
             app:destination="@id/profileDetailScreen" />
         <action
-            android:id="@+id/action_mainScreen_to_tripMapScreen"
-            app:destination="@id/tripMapScreen" />
-        <action
             android:id="@+id/action_mainScreen_to_customerCareScreen"
             app:destination="@id/customerCareScreen" />
     </fragment>
@@ -129,18 +126,26 @@
         <argument
             android:name="order"
             app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+        <action
+            android:id="@+id/action_tripScreen_to_tripMapScreen"
+            app:destination="@id/tripMapScreen" />
     </fragment>
     <fragment
         android:id="@+id/tripMapScreen"
         tools:layout="@layout/screen_map_trip"
         android:name="uz.gita.saiga_driver.presentation.ui.main.pages.orders.map.TripMapScreen"
-        android:label="TripMapScreen" />
+        android:label="TripMapScreen" >
+        <argument
+            android:name="order"
+            app:argType="uz.gita.saiga_driver.data.remote.response.order.OrderResponse" />
+    </fragment>
     <fragment
         android:id="@+id/profileDetailScreen"
         tools:layout="@layout/screen_profile_detail"
         android:name="uz.gita.saiga_driver.presentation.ui.main.pages.profile.detail.ProfileDetailScreen"
         android:label="ProfileDetailScreen" />
     <fragment
+        tools:layout="@layout/screen_customer_care"
         android:id="@+id/customerCareScreen"
         android:name="uz.gita.saiga_driver.presentation.ui.customerCare.CustomerCareScreen"
         android:label="CustomerCareScreen" />

@@ -5,13 +5,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.ScreenDirectionsBinding
 import uz.gita.saiga_driver.presentation.presenter.DirectionsViewModelImpl
+import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/13/2022
@@ -26,6 +31,7 @@ class DirectionsScreen : Fragment(R.layout.screen_directions) {
         DirectionalTaxiAdapter()
     }
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         listDirections.adapter = adapter
@@ -43,11 +49,25 @@ class DirectionsScreen : Fragment(R.layout.screen_directions) {
         }.launchIn(lifecycleScope)
 
         adapter.setItemClickListener {
-            viewModel.navigateToDirectionDetail(it)
+            log("KELDI$it")
+            viewModel.navigateToDirectionDetail(it.copy(distance = ""))
         }
+
         viewModel.allDirections.onEach {
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        imageBack.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                findNavController().navigateUp()
+            }.launchIn(lifecycleScope)
+
+        fabAddDirection.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                viewModel.navigateToAddDirections()
+            }.launchIn(lifecycleScope)
 
         viewModel.getAllDirection()
     }

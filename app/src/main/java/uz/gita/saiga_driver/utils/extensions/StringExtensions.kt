@@ -49,4 +49,10 @@ fun String.toTime(): List<String> {
     return this.split(":")
 }
 
+@SuppressLint("SimpleDateFormat")
+fun String.getBackendTimeFormat(): String {
+    val date = SimpleDateFormat("dd MMM yyyy HH:mm").parse(this)!!
+    return SimpleDateFormat("dd MMM yyyy").format(date)
+}
+
 

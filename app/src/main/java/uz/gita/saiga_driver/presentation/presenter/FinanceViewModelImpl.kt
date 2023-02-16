@@ -31,8 +31,10 @@ class FinanceViewModelImpl @Inject constructor(
     override fun getAllTrips() {
         viewModelScope.launch {
             if (hasConnection()) {
+                loadingSharedFlow.emit(true)
                 orderRepository.getAllHistory()
                     .collectLatest { result ->
+                        loadingSharedFlow.emit(false)
                         result.onSuccess {
                             allOrdersHistory.emit(it)
                         }.onMessage {

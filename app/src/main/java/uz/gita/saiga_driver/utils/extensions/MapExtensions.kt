@@ -6,7 +6,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 // Created by Jamshid Isoqov on 2/4/2023
-suspend fun calculationByDistance(from: LatLng, to: LatLng): Double {
+fun calculationByDistance(from: LatLng, to: LatLng): Double {
     val radius = 6371
     val lat1 = from.latitude
     val lat2 = to.latitude

@@ -36,9 +36,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
         listOrders.adapter = adapter
 
-        imageBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
@@ -63,21 +60,16 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
             dialog.show(childFragmentManager, "order")
         }
-
-        root.setOnRefreshListener {
-            viewModel.getAllData()
-            root.isRefreshing = false
-        }
     }
 
     private fun startGps() {
         hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
             val intent = Intent(requireContext(), GpsService::class.java)
             requireContext().startService(intent)
+            currentLocation.observe(viewLifecycleOwner) {
+                viewModel.setCurrentLocation(it)
+            }
         }) {}
-        currentLocation.observe(viewLifecycleOwner) {
-            log("Location")
-            viewModel.setCurrentLocation(it)
-        }
+
     }
 }

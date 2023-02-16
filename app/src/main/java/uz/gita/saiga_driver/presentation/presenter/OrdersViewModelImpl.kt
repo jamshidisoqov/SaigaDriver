@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.OrderPageDirections
 import uz.gita.saiga_driver.domain.repository.MapRepository
@@ -16,9 +18,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
-import uz.gita.saiga_driver.utils.extensions.getFormat
 import uz.gita.saiga_driver.utils.extensions.getMessage
-import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -43,10 +43,12 @@ class OrdersViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch {
+            orderRepository.getAllActiveOrders()
+            orderRepository.getAllOrders()
             delay(1000)
             mapRepository.requestCurrentLocation().collectLatest {
                 it.onSuccess {
-                    updateDistances(it)
+                     updateDistances(it)
                 }
             }
         }
@@ -54,22 +56,19 @@ class OrdersViewModelImpl @Inject constructor(
 
     private suspend fun updateDistances(currentLocation: LatLng) {
         viewModelScope.launch {
-            val orders = allOrderFlow.value.toMutableList()
-            val distances = mutableListOf<Deferred<Double>>()
-            orders.forEach { orderResponse ->
-                val direction = orderResponse.direction.addressFrom
-                distances.add(async {
-                    calculationByDistance(
-                        currentLocation,
-                        LatLng(direction.lat ?: NUKUS.latitude, direction.lon ?: NUKUS.longitude)
-                    )
-                })
-            }
-            for (index in orders.indices) {
-                orders[index] = orders[index].copy(distance = distances[index].await().getFormat(2))
-            }
+            val orders = allOrderFlow.value.map {
+                val addressFrom = it.direction.addressFrom
+                ///println("-------Address${addressFrom.lat}----------${addressFrom.lon}-----")
+                it.copy(
+                    distance = calculationByDistance(
+                        LatLng(
+                            addressFrom.lat ?: NUKUS.latitude,
+                            addressFrom.lon ?: NUKUS.longitude
+                        ), currentLocation
+                    ).toString()
+                )
+            }.toMutableList()
             allOrderFlow.emit(orders)
-
         }
     }
 
@@ -77,13 +76,13 @@ class OrdersViewModelImpl @Inject constructor(
         viewModelScope.launch {
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
-                orderRepository.getAllOrders().collectLatest { result ->
+                orderRepository.ordersLiveData.observeForever { result ->
                     result.onSuccess {
-                        allOrderFlow.emit(it)
+                        allOrderFlow.tryEmit(it)
                     }.onMessage {
-                        messageSharedFlow.emit(it)
+                        messageSharedFlow.tryEmit(it)
                     }.onError {
-                        errorSharedFlow.emit(it.getMessage())
+                        errorSharedFlow.tryEmit(it.getMessage())
                     }
                 }
             } else {
@@ -96,7 +95,6 @@ class OrdersViewModelImpl @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             val distance =
                 calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
-            log(distance.toString(), "VVV")
             if (distance > 0.03) updateDistances(currentLocation)
             this@OrdersViewModelImpl.currentLocation = currentLocation
         }
@@ -107,8 +105,9 @@ class OrdersViewModelImpl @Inject constructor(
             if (hasConnection()) {
                 orderRepository.receiveOrder(orderData.id)
                     .collectLatest { result ->
+                        loadingSharedFlow.emit(false)
                         result.onSuccess {
-                            directions.navigateToTrip(it)
+                            directions.navigateToTrip(orderData)
                         }.onMessage {
                             messageSharedFlow.emit(it)
                         }.onError {

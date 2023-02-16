@@ -104,10 +104,8 @@
                 android:id="@+id/image_refresh_money"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="?selectableItemBackground"
                 android:padding="@dimen/margin_std"
                 android:src="@drawable/ic_refresh"
-                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:tint="@color/light_grey" />
