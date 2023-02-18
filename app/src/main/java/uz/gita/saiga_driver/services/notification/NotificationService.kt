@@ -26,6 +26,7 @@ import uz.gita.saiga_driver.utils.OrderStatus
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.fromJsonData
+import uz.gita.saiga_driver.utils.extensions.toJsonData
 import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 2/17/2023
@@ -79,6 +80,7 @@ class NotificationService @Inject constructor() : Service() {
 
         val accept =
             Intent(baseContext, orderBroadcast.javaClass).setAction(OrderStatus.ACCEPT.name)
+        accept.putExtra("order",gson.toJsonData(orderResponse))
         val acceptPendingIntent = PendingIntent.getBroadcast(
             baseContext,
             0,

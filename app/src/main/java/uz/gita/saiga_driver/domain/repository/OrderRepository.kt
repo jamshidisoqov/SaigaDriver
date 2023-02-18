@@ -3,6 +3,7 @@ package uz.gita.saiga_driver.domain.repository
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
+import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.domain.entity.TripWithDate
 import uz.gita.saiga_driver.utils.ResultData
@@ -25,14 +26,18 @@ interface OrderRepository {
 
     suspend fun getAllOrders()
 
-    fun receiveOrder(orderId:Long):Flow<ResultData<OrderResponse>>
+    fun receiveOrder(orderId: Long): Flow<ResultData<OrderResponse>>
 
-    fun getAllHistory():Flow<ResultData<List<TripWithDate>>>
+    fun getAllHistory(): Flow<ResultData<List<TripWithDate>>>
 
     suspend fun getAllActiveOrders()
 
-     fun socketConnect()
+    fun socketConnect()
 
     suspend fun socketDisconnect()
+
+    fun endOrder(endOrderRequest: EndOrderRequest): Flow<ResultData<Any>>
+
+    fun cancelOrder(id: Long):Flow<ResultData<Any>>
 
 }

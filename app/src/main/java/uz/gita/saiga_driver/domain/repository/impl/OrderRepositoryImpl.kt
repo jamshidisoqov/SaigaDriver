@@ -15,6 +15,7 @@ import uz.gita.saiga_driver.MainActivity
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
+import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.order.ActiveOrderResponse
@@ -161,7 +162,8 @@ class OrderRepositoryImpl @Inject constructor(
                 .subscribe {
                     log(it.payload)
                     val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(it.payload,
-                        object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type)
+                        object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type
+                    )
                     orders.removeIf { response ->
                         order.body.order.id == response.id
                     }
@@ -214,6 +216,18 @@ class OrderRepositoryImpl @Inject constructor(
         stompClient.disconnect()
         compositeDisposable?.dispose()
     }
+
+    override fun endOrder(endOrderRequest: EndOrderRequest): Flow<ResultData<Any>> = flow {
+        emit(orderApi.endOrder(endOrderRequest = endOrderRequest).func(gson))
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
+
+    override fun cancelOrder(id: Long): Flow<ResultData<Any>> = flow {
+        emit(orderApi.cancelOrder(id).func(gson))
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
 
     private fun resetSubscriptions() {
         if (compositeDisposable != null) {

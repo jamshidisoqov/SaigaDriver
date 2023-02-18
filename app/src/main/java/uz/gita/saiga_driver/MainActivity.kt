@@ -65,8 +65,6 @@ class MainActivity : AppCompatActivity() {
             .launchIn(lifecycleScope)
         dialog = ProgressDialog(this)
 
-
-
         controller = fragment.navController
 
     }
@@ -83,8 +81,9 @@ class MainActivity : AppCompatActivity() {
         lateinit var activity: MainActivity
     }
 
-    fun createNotification(orderResponse: OrderResponse) {
-        showAlerter(orderResponse)
+    fun createNotification(orderResponse: OrderResponse, showNotification: Boolean = false) {
+        if (!showNotification)
+            showAlerter(orderResponse)
         val intent = Intent(this, NotificationService::class.java)
         intent.putExtra("order", gson.toJsonData(orderResponse))
         startService(intent)
