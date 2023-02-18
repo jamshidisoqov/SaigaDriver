@@ -143,7 +143,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getAllActiveOrders() {
         orderApi.getAllUserOrders().func(gson).onSuccess {
             orders.addAll(it.body.data)
-            orders.forEach { order -> MainActivity.activity.createNotification(order) }
             ordersLiveData.postValue(ResultData.Success(orders))
         }.onMessage {
             ordersLiveData.value = ResultData.Message(it)

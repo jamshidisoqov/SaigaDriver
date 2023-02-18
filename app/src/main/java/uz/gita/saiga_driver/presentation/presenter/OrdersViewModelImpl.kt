@@ -1,12 +1,11 @@
 package uz.gita.saiga_driver.presentation.presenter
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -37,14 +36,12 @@ class OrdersViewModelImpl @Inject constructor(
 
     override val allOrderFlow = MutableStateFlow<List<OrderResponse>>(emptyList())
 
-    override val currentLocationFlow = MutableLiveData<LatLng>()
+    override val currentLocationFlow = MediatorLiveData<LatLng>()
 
     private var currentLocation: LatLng = NUKUS
 
     init {
         viewModelScope.launch {
-            orderRepository.getAllOrders()
-            delay(1000)
             mapRepository.requestCurrentLocation().collectLatest {
                 it.onSuccess {
                     updateDistances(it)
@@ -53,36 +50,41 @@ class OrdersViewModelImpl @Inject constructor(
         }
     }
 
-    private suspend fun updateDistances(currentLocation: LatLng) {
+    private suspend fun updateDistances(currentLocation: LatLng?) {
         viewModelScope.launch {
-            val orders = allOrderFlow.value.map {
-                val addressFrom = it.direction.addressFrom
-                it.copy(
-                    distance = calculationByDistance(
-                        LatLng(
-                            addressFrom.lat ?: NUKUS.latitude,
-                            addressFrom.lon ?: NUKUS.longitude
-                        ), currentLocation
-                    ).toString()
-                )
-            }.toMutableList()
-            allOrderFlow.emit(orders)
+            if (currentLocation != null) {
+                val orders = allOrderFlow.value.map {
+                    val addressFrom = it.direction.addressFrom
+                    it.copy(
+                        distance = calculationByDistance(
+                            LatLng(
+                                addressFrom.lat ?: NUKUS.latitude,
+                                addressFrom.lon ?: NUKUS.longitude
+                            ), currentLocation
+                        ).toString()
+                    )
+                }.toMutableList()
+                allOrderFlow.emit(orders)
+            }
         }
     }
 
     override fun getAllData() {
         viewModelScope.launch {
             if (hasConnection()) {
-                loadingSharedFlow.emit(true)
-                orderRepository.ordersLiveData.observeForever { result ->
+                currentLocationFlow.addSource(orderRepository.ordersLiveData) { result ->
                     result.onSuccess {
                         allOrderFlow.tryEmit(it)
+                        viewModelScope.launch {
+                            updateDistances(currentLocation)
+                        }
                     }.onMessage {
                         messageSharedFlow.tryEmit(it)
                     }.onError {
                         errorSharedFlow.tryEmit(it.getMessage())
                     }
                 }
+
             } else {
                 messageSharedFlow.emit("No internet connection")
             }
