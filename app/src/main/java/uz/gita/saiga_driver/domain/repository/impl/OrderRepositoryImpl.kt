@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import uz.gita.saiga_driver.MainActivity
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
@@ -91,6 +92,7 @@ class OrderRepositoryImpl @Inject constructor(
                 .subscribe {
                     log(it.payload)
                     val order = fromGsonData(it.payload)
+                    MainActivity.activity.createNotification(order)
                     orders.add(order)
                     ordersLiveData.postValue(ResultData.Success(orders))
                 }
@@ -139,7 +141,7 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getAllActiveOrders() {
         orderApi.getAllUserOrders().func(gson).onSuccess {
             orders.addAll(it.body.data)
-            log(orders.toString(),"XXX")
+            orders.forEach { order -> MainActivity.activity.createNotification(order) }
             ordersLiveData.postValue(ResultData.Success(orders))
         }.onMessage {
             ordersLiveData.value = ResultData.Message(it)

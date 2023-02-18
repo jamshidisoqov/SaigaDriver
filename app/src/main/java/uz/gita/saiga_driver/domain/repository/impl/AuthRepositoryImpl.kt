@@ -111,6 +111,8 @@ class AuthRepositoryImpl @Inject constructor(
                 }).setActivity(MainActivity.activity).build()
         PhoneAuthProvider.verifyPhoneNumber(options)
         awaitClose()
+    }.catch { error ->
+        emit(ResultData.Error(error))
     }.flowOn(Dispatchers.IO)
 
     override fun updateUser(firstName: String, lastName: String): Flow<ResultData<AuthResponse>> =
@@ -135,7 +137,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    override fun topUpBalance(amount: Double): Flow<ResultData<BalanceResponse>> = flow<ResultData<BalanceResponse>> {
+    override fun topUpBalance(amount: Long): Flow<ResultData<BalanceResponse>> = flow<ResultData<BalanceResponse>> {
         authApi.topUpBalance(BalanceRequest(amount.toString(), mySharedPref.userId)).func(gson)
             .onSuccess {
                 emit(ResultData.Success(it.body.data))
