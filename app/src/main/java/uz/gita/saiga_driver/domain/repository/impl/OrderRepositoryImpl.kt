@@ -19,10 +19,12 @@ import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.order.ActiveOrderResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.domain.entity.ReceivedOrderResponse
 import uz.gita.saiga_driver.domain.entity.TripDate
 import uz.gita.saiga_driver.domain.entity.TripWithDate
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.utils.ResultData
+import uz.gita.saiga_driver.utils.extensions.fromJsonData
 import uz.gita.saiga_driver.utils.extensions.func
 import uz.gita.saiga_driver.utils.extensions.getBackendTimeFormat
 import uz.gita.saiga_driver.utils.extensions.log
@@ -150,38 +152,63 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
+    @SuppressLint("CheckResult")
+    private fun receivedOrders() {
+        try {
+            stompClient.topic("/topic/received-order-from-user")
+                .doOnError {
+                    ordersLiveData.value = ResultData.Error(it)
+                }
+                .subscribe {
+                    log(it.payload)
+                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(it.payload,
+                        object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type)
+                    orders.removeIf { response ->
+                        order.body.order.id == response.id
+                    }
+                    ordersLiveData.postValue(ResultData.Success(orders))
+                }
+        } catch (e: Exception) {
+            ordersLiveData.value = ResultData.Error(e)
+        }
+    }
+
     override fun socketConnect() {
-        resetSubscriptions()
-        stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
-        resetSubscriptions()
-        val disLifecycle = stompClient.lifecycle()
-            .doOnError {
-                ordersLiveData.value = (ResultData.Error(it))
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnError {
-                ordersLiveData.value = (ResultData.Error(it))
-            }
-            .subscribe { lifecycleEvent: LifecycleEvent ->
-                when (lifecycleEvent.type) {
-                    LifecycleEvent.Type.OPENED -> {
-                        log("Connect")
-                    }
-                    LifecycleEvent.Type.ERROR -> {
-                        log("Error")
-                    }
-                    LifecycleEvent.Type.CLOSED -> {
-                        resetSubscriptions()
-                    }
-                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
-                        log("FAILED")
+        try {
+            resetSubscriptions()
+            stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
+            resetSubscriptions()
+            val disLifecycle = stompClient.lifecycle()
+                .doOnError {
+                    ordersLiveData.value = (ResultData.Error(it))
+                }
+                .subscribeOn(Schedulers.io())
+                .doOnError {
+                    ordersLiveData.value = (ResultData.Error(it))
+                }
+                .subscribe { lifecycleEvent: LifecycleEvent ->
+                    when (lifecycleEvent.type) {
+                        LifecycleEvent.Type.OPENED -> {
+                            receivedOrders()
+                        }
+                        LifecycleEvent.Type.ERROR -> {
+                            log("Error")
+                        }
+                        LifecycleEvent.Type.CLOSED -> {
+                            resetSubscriptions()
+                        }
+                        LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
+                            log("FAILED")
+                        }
                     }
                 }
-            }
 
-        compositeDisposable?.add(disLifecycle)
+            compositeDisposable?.add(disLifecycle)
 
-        stompClient.connect()
+            stompClient.connect()
+        } catch (_: Exception) {
+
+        }
     }
 
     override suspend fun socketDisconnect() {

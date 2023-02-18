@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -27,6 +28,7 @@ import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.combine
+import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.toJsonData
 import javax.inject.Inject
 
@@ -120,9 +122,21 @@ class MainActivity : AppCompatActivity() {
                                         result.onSuccess {
                                             controller.navigate(
                                                 NavGraphDirections.actionGlobalTripScreen(
-                                                    orderResponse
+                                                    orderResponse.copy(distance = "")
                                                 )
                                             )
+                                        }.onMessage { message ->
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                message,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }.onError {
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                it.getMessage(),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                             }
