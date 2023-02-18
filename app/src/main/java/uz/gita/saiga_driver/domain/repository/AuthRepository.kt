@@ -30,6 +30,6 @@ interface AuthRepository {
 
     fun getUserData():Flow<ResultData<AuthResponse>>
 
-    fun topUpBalance(amount:Double):Flow<ResultData<BalanceResponse>>
+    fun topUpBalance(amount:Long):Flow<ResultData<BalanceResponse>>
 
 }

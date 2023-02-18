@@ -49,7 +49,6 @@ class DirectionsScreen : Fragment(R.layout.screen_directions) {
         }.launchIn(lifecycleScope)
 
         adapter.setItemClickListener {
-            log("KELDI$it")
             viewModel.navigateToDirectionDetail(it.copy(distance = ""))
         }
 

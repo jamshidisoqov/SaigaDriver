@@ -1,10 +1,8 @@
 package uz.gita.saiga_driver.data.remote.api
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
+import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
 import uz.gita.saiga_driver.data.remote.request.order.OrderRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.DataResponse
@@ -25,6 +23,12 @@ interface OrderApi {
 
     @GET("/api/orders/history")
     suspend fun getAllHistory(): Response<BaseResponse<DataResponse<List<OrderResponse>>>>
+
+    @PUT("/api/orders/end-order")
+    suspend fun endOrder(@Body endOrderRequest: EndOrderRequest): Response<Any>
+
+    @PUT("/api/orders/cancel-order/{id}")
+    suspend fun cancelOrder(@Path("id") id: Long):Response<Any>
 
 
 }

@@ -38,8 +38,6 @@ class LoginViewModelImpl @Inject constructor(
     override fun login(phone: String) {
         viewModelScope.launch(Dispatchers.IO) {
             loadingSharedFlow.emit(true)
-            log(phone,"Phone")
-            println("Phone->$phone")
             authRepository.login(phone)
                 .collectLatest { result ->
                     result.onSuccess {

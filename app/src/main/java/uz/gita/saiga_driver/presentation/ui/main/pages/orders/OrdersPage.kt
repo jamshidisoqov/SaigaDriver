@@ -7,17 +7,19 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.adapter.OrdersAdapter
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
+import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
 
@@ -34,6 +36,7 @@ class OrdersPage : Fragment(R.layout.page_orders) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
+
         listOrders.adapter = adapter
 
 
@@ -49,6 +52,15 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
+        viewModel.currentLocationFlow.observe(viewLifecycleOwner) {}
+
+        root.setOnRefreshListener {
+            lifecycleScope.launch {
+                delay(2000)
+                root.isRefreshing = false
+            }
+        }
+
         viewModel.getAllData()
 
         startGps()
@@ -56,7 +68,7 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         adapter.setItemClickListener {
             val dialog = OrderDialog(it)
             dialog.setAcceptListener { order ->
-                viewModel.accept(order)
+                viewModel.accept(order.copy(distance = ""))
             }
             dialog.show(childFragmentManager, "order")
         }
@@ -71,5 +83,10 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
         }) {}
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setCurrentLocation(currentLocation.value?: NUKUS)
     }
 }

@@ -33,7 +33,6 @@ class DirectionsRepositoryImpl @Inject constructor(
                     emit(ResultData.Error(it))
                 }
         }.catch { error ->
-            println("QATA")
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 }

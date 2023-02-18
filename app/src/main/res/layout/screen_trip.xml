@@ -123,12 +123,11 @@
                 android:id="@+id/tv_from_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Jamshid Isoqov"
-                android:textColor="@color/black"
-                android:textStyle="bold"
                 android:layout_margin="@dimen/margin_std"
+                android:textColor="@color/black"
                 android:textSize="24sp"
-                />
+                android:textStyle="bold"
+                tools:text="Jamshid Isoqov" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -183,7 +182,6 @@
                 android:layout_marginVertical="@dimen/margin_std">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_help"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_std"
@@ -192,6 +190,7 @@
                     app:cardElevation="0dp">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/card_back_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -215,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_small"
                             android:gravity="center_vertical"
-                            android:text="@string/help"
+                            android:text="@string/back_order"
                             android:textColor="#EDB118" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -223,7 +222,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_call"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_std"
@@ -232,6 +231,7 @@
                     app:cardElevation="0dp">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/card_call"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#EEF9F2"

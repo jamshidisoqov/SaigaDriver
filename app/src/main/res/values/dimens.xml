@@ -6,4 +6,5 @@
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_extra_small">2dp</dimen>
     <dimen name="margin_component">12dp</dimen>
+    <dimen name="icon_size_alerter">64dp</dimen>
 </resources>

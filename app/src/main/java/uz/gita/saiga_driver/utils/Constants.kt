@@ -24,3 +24,7 @@ val NUKUS = LatLng(42.460168, 59.607280)
 
 val currentLocation:MutableLiveData<LatLng> = MutableLiveData()
 val currentLocationBearing:MutableLiveData<Pair<LatLng,Float>> = MutableLiveData()
+
+enum class OrderStatus{
+    ACCEPT,BACK
+}

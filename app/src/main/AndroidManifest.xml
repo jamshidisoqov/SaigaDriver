@@ -42,6 +42,10 @@
         </activity>
 
         <service android:name=".presentation.ui.main.pages.orders.trip.GpsService" />
+        <service android:name=".services.notification.NotificationService"/>
+
+        <receiver android:name=".broadcast.OrderBroadcast"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

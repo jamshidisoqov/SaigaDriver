@@ -67,5 +67,9 @@
     <string name="end_order">End order</string>
     <string name="start_pick_up">Start pick up</string>
     <string name="back_order">Order back</string>
+    <string name="trip_ended">Your trip has ended</string>
+    <string name="distance">Distance</string>
+    <string name="money">Money</string>
+    <string name="close">Close</string>
 
 </resources>
