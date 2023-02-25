@@ -76,6 +76,8 @@
     <string name="not_order_back">Kechirasiz, endi bu buyurtmani qaytarib bera olmaysiz. Ma`muriyat bilan bog`lanishga harakat qiling.</string>
     <string name="end_order_really">Haqiqatan ham bu buyruqni tugatmoqchimisiz? 1. Buyurtma tugallangan bo`lsa, uni davom ettirish mumkin emas!</string>
     <string name="kalpak">Karakalpak</string>
+    <string name="order">Order</string>
+    <string name="order_near">Sizge jaqın buyırta</string>
 
 
 </resources>

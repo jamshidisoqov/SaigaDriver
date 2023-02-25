@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
+import uz.gita.saiga_driver.presentation.dialogs.NearAddressDialog
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.adapter.OrdersAdapter
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
@@ -42,7 +44,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
 
         listOrders.adapter = adapter
 
-
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
         }.launchIn(lifecycleScope)
@@ -56,6 +57,10 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.currentLocationFlow.observe(viewLifecycleOwner) {}
+
+        viewModel.openOrderDialog.onEach {
+            showNearDialog(it)
+        }.launchIn(lifecycleScope)
 
         root.setOnRefreshListener {
             lifecycleScope.launch {
@@ -75,6 +80,14 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
             dialog.show(childFragmentManager, "order")
         }
+    }
+
+    private fun showNearDialog(orderResponse: OrderResponse) {
+        val dialog = NearAddressDialog(orderResponse)
+        dialog.setAcceptListener { order ->
+            viewModel.accept(order.copy(distance = ""))
+        }
+        dialog.show(childFragmentManager, "showNearDialog")
     }
 
     private fun startGps() {
