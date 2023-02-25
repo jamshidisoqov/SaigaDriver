@@ -32,6 +32,7 @@ import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.toJsonData
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -90,6 +91,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var activity: MainActivity
+
+        private val language = listOf("uz", "en", "kaa", "ru")
     }
 
     fun createNotification(orderResponse: OrderResponse, showNotification: Boolean = false) {
@@ -156,5 +159,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setLocale() {
+        val localeName = language[mySharedPref.language]
+        val locale = Locale(localeName)
+        val res = resources
+        val dm = res.displayMetrics
+        val conf = res.configuration
+        conf.setLocale(locale)
+        res.updateConfiguration(conf, dm)
+    }
+
+    fun setNewLocale() {
+        val refresh = Intent(this, MainActivity::class.java)
+        refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        this.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(refresh)
     }
 }

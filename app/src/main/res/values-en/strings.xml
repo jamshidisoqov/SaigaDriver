@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Saiga Driver</string>
     <string name="phone_number">Phone number</string>
     <string name="enter_the_phone_number">Enter the phone number</string>
@@ -76,4 +78,5 @@
     <string name="end_order_really">Are you sure you want to complete this command? 1. If the order is completed, it is not possible to resume it!</string>
     <string name="kalpak" translatable="false">Karakalpak</string>
     <string name="light">Light</string>
+
 </resources>
