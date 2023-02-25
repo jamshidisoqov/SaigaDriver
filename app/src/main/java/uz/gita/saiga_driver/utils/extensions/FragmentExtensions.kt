@@ -9,7 +9,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.LocationManager
 import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -167,4 +169,27 @@ fun Fragment.callPhoneNumber(phone: String) {
     val intent = Intent(Intent.ACTION_CALL)
     intent.data = Uri.parse(uri)
     startActivity(intent)
+}
+
+fun Context.checkLocation(dialogIsShowing:Boolean,onCancelListener:(Boolean)->Unit){
+    val manager =
+        getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+    if (manager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        onCancelListener.invoke(true)
+    } else {
+        if (!dialogIsShowing) {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { _, _ ->
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    onCancelListener.invoke(false)
+                    dialog.cancel()
+                }
+            val alert: AlertDialog = builder.create()
+            alert.show()
+        }
+    }
 }

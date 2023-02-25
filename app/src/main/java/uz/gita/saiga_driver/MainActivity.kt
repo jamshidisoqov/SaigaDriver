@@ -2,7 +2,9 @@ package uz.gita.saiga_driver
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.broadcast.LocationManageBroadcast
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.di.DatabaseModule
@@ -28,10 +31,7 @@ import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import uz.gita.saiga_driver.services.notification.NotificationService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
-import uz.gita.saiga_driver.utils.extensions.calculationByDistance
-import uz.gita.saiga_driver.utils.extensions.combine
-import uz.gita.saiga_driver.utils.extensions.getMessage
-import uz.gita.saiga_driver.utils.extensions.toJsonData
+import uz.gita.saiga_driver.utils.extensions.*
 import java.util.*
 import javax.inject.Inject
 
@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity() {
             fragment.navController.navigate(R.id.action_global_loginScreen)
         }
 
+        setLocale()
+
+        registerLocationManager()
+
 
     }
 
@@ -93,6 +97,35 @@ class MainActivity : AppCompatActivity() {
         lateinit var activity: MainActivity
 
         private val language = listOf("uz", "en", "kaa", "ru")
+    }
+
+    private fun registerLocationManager() {
+        val locationManagerReceiver = LocationManageBroadcast()
+
+        locationManagerReceiver.setReceiverCallBack { s, b ->
+            when (s) {
+                Intent.ACTION_PROVIDER_CHANGED -> {
+                    if (!b) {
+                        statusCheck()
+                    } else {
+                        controller.navigate(R.id.action_global_splashScreen)
+                    }
+                }
+                Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
+
+                }
+                WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
+
+                }
+            }
+        }
+        registerReceiver(
+            locationManagerReceiver,
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PROVIDER_CHANGED)
+                addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+            })
     }
 
     fun createNotification(orderResponse: OrderResponse, showNotification: Boolean = false) {
@@ -178,4 +211,13 @@ class MainActivity : AppCompatActivity() {
         this.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(refresh)
     }
+
+    private fun statusCheck() {
+        checkLocation(true) {
+            if (!it) {
+                statusCheck()
+            }
+        }
+    }
+
 }
