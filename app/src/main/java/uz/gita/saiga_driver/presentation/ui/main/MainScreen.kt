@@ -15,10 +15,15 @@ class MainScreen : Fragment(R.layout.screen_main) {
 
     private val viewBinding: ScreenMainBinding by viewBinding()
 
+    private var lastPage = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         viewBinding.include {
 
-            pagerMain.adapter = MainAdapter(requireActivity())
+            pagerMain.adapter = MainAdapter(requireActivity()) {
+                viewBinding.bnvMain.itemActiveIndex = it
+                pagerMain.setCurrentItem(it, true)
+            }
 
             pagerMain.isUserInputEnabled = false
 
@@ -26,4 +31,14 @@ class MainScreen : Fragment(R.layout.screen_main) {
                 pagerMain.setCurrentItem(it, true)
             }
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        lastPage = viewBinding.pagerMain.currentItem
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewBinding.bnvMain.itemActiveIndex = lastPage
+    }
 }

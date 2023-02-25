@@ -236,9 +236,9 @@ class OrderRepositoryImpl @Inject constructor(
         compositeDisposable = CompositeDisposable()
     }
 
-    private fun fromGsonData(message: String): OrderResponse {
-        val baseOrderResponse = gson.fromJson<BaseResponse<ActiveOrderResponse>>(message, type)
-        return baseOrderResponse.body.order
-    }
+        private fun fromGsonData(message: String): OrderResponse {
+            val baseOrderResponse = gson.fromJson<BaseResponse<ActiveOrderResponse>>(message, type)
+            return baseOrderResponse.body.order
+        }
 
 }

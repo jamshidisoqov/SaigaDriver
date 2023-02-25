@@ -57,7 +57,7 @@ class LoginScreen : Fragment(R.layout.screen_login) {
         btnLogin.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                viewModel.login(inputPhone.text.toString().replace(Regex("[() ]"),""))
+                viewModel.login(inputPhone.text.toString().replace(Regex("[() ]"), ""))
             }.launchIn(lifecycleScope)
 
     }

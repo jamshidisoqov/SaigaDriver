@@ -18,7 +18,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.di.DatabaseModule
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.navigation.NavigationHandler
@@ -34,6 +36,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var mySharedPref: MySharedPref
 
     private lateinit var dialog: ProgressDialog
 
@@ -66,6 +71,12 @@ class MainActivity : AppCompatActivity() {
         dialog = ProgressDialog(this)
 
         controller = fragment.navController
+
+        DatabaseModule.unauthorizedLiveData.observe(this) {
+            mySharedPref.isVerify = false
+            fragment.navController.navigate(R.id.action_global_loginScreen)
+        }
+
 
     }
 

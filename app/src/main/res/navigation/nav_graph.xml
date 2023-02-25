@@ -161,5 +161,5 @@
             android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
             app:destination="@id/mainScreen"
             app:popUpTo="@id/nav_graph" />
-    </fragment><action android:id="@+id/action_global_tripScreen" app:destination="@id/tripScreen"/>
+    </fragment><action android:id="@+id/action_global_tripScreen" app:destination="@id/tripScreen"/><action android:id="@+id/action_global_loginScreen" app:destination="@id/loginScreen"/>
 </navigation>

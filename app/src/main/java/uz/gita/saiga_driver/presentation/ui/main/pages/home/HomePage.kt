@@ -31,6 +31,12 @@ class HomePage : Fragment(R.layout.page_home) {
         DirectionalTaxiAdapter()
     }
 
+    private var navigateToOrder: ((Int) -> Unit)? = null
+
+    fun setNavigateToOrder(block:(Int)->Unit){
+        navigateToOrder = block
+    }
+
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
@@ -95,6 +101,7 @@ class HomePage : Fragment(R.layout.page_home) {
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToOrders()
+                navigateToOrder?.invoke(1)
             }.launchIn(lifecycleScope)
 
         cardIncomeContainer.clicks()

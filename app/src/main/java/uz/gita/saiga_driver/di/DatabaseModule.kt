@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.MutableLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -32,6 +33,8 @@ object DatabaseModule {
     private const val BASE_URL: String = "http://157.230.38.77:5001"
     private const val SOCKET_BASE_URL: String = "ws://157.230.38.77:5001/ws"
 
+    val unauthorizedLiveData: MutableLiveData<Unit> = MutableLiveData()
+
 
     @[Provides Singleton]
     fun provideSharedPreferences(@ApplicationContext ctx: Context): SharedPreferences {
@@ -56,6 +59,14 @@ object DatabaseModule {
                 if (mySharedPref.token.isNotEmpty())
                     requestBuilder.addHeader("Authorization", "Bearer ${mySharedPref.token}")
                 chain.proceed(requestBuilder.build())
+            }
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val response = chain.proceed(request)
+                if (response.code == 403) {
+                    unauthorizedLiveData.postValue(Unit)
+                }
+                response
             }
             .build()
 
