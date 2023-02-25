@@ -71,5 +71,7 @@
     <string name="distance">Distance</string>
     <string name="money">Money</string>
     <string name="close">Close</string>
-
+    <string name="not_specified">address is not specified</string>
+    <string name="not_order_back">Sorry, you can no longer return this order. Try contacting the administration.</string>
+    <string name="end_order_really">Are you sure you want to complete this command? 1. If the order is completed, it is not possible to resume it!</string>
 </resources>

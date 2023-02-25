@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.presentation.ui.main.pages.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope

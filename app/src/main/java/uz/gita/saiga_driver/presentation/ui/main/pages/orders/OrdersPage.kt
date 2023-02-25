@@ -21,7 +21,10 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
-import uz.gita.saiga_driver.utils.extensions.*
+import uz.gita.saiga_driver.utils.extensions.hasPermission
+import uz.gita.saiga_driver.utils.extensions.include
+import uz.gita.saiga_driver.utils.extensions.showErrorDialog
+import uz.gita.saiga_driver.utils.extensions.showMessageDialog
 
 // Created by Jamshid Isoqov on 12/12/2022
 @AndroidEntryPoint
@@ -87,6 +90,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setCurrentLocation(currentLocation.value?: NUKUS)
+        viewModel.setCurrentLocation(currentLocation.value ?: NUKUS)
     }
 }

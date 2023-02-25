@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.ScreenTripBinding
 import uz.gita.saiga_driver.presentation.presenter.TripViewModelImpl
+import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.ChooseEndOrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrderDialog
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.currentLocation
@@ -44,6 +46,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
+
         viewModel.currentMoney.onEach {
             price = it
             tvSum.text = it.getFinanceType()
@@ -64,10 +67,15 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
         tvFromUserName.text = with(args.order.fromUser) { this.firstName.combine(this.lastName) }
 
+        tvFirstAddress.text = args.order.direction.addressFrom.title
+
+        tvSecondAddress.text =
+            args.order.direction.addressTo?.title ?: resources.getString(R.string.not_specified)
+
         cardCall.setOnClickListener {
-                log("cardCall")
-                callPhone(args.order.fromUser.phoneNumber)
-            }
+            log("cardCall")
+            callPhone(args.order.fromUser.phoneNumber)
+        }
 
         val intent = Intent(requireContext(), GpsService::class.java)
         requireContext().startService(intent)
@@ -91,10 +99,28 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             }.launchIn(lifecycleScope)
 
         cardBackOrder.setOnClickListener {
-                log("cardBackOrder")
+            if (isOrderActive)
                 viewModel.cancelOrder(args.order)
-            }
+            else Snackbar.make(
+                cardBackOrder,
+                resources.getString(R.string.not_order_back),
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(resources.getString(R.string.phone)) {
+                    callPhoneNumber("+998907144102")
+                }
+                .show()
+        }
 
+        val backPresentCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showChooseEndOrder()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPresentCallback
+        )
 
         fabMapOrder.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
@@ -113,6 +139,14 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
     private fun startTrip() {
 
+    }
+
+    private fun showChooseEndOrder() {
+        val dialog = ChooseEndOrderDialog()
+        dialog.setEndOrderDialog {
+            showEndOrderDialog()
+        }
+        dialog.show(childFragmentManager, "ChooseEndOrderDialog")
     }
 
     private fun callPhone(phone: String) {

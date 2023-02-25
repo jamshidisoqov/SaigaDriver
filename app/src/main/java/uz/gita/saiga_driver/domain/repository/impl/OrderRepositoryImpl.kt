@@ -46,7 +46,7 @@ class OrderRepositoryImpl @Inject constructor(
     private val type by lazy { object : TypeToken<BaseResponse<ActiveOrderResponse>>() {}.type }
 
     init {
-        socketConnect()
+      socketConnect()
     }
 
     private var compositeDisposable: CompositeDisposable? = null

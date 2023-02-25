@@ -19,8 +19,10 @@ import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.AuthApi
 import uz.gita.saiga_driver.data.remote.api.DirectionsApi
+import uz.gita.saiga_driver.data.remote.api.NominationApi
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -81,6 +83,13 @@ object DatabaseModule {
             .client(okHttpClient)
             .build()
 
+    @[Provides Singleton Named("nomination_api")]
+    fun provideNominationRetrofit(gson: Gson): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://nominatim.openstreetmap.org/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
     @[Provides Singleton]
     fun provideAuthApi(retrofit: Retrofit): AuthApi =
         retrofit.create(AuthApi::class.java)
@@ -99,5 +108,8 @@ object DatabaseModule {
         return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, headers, okHttpClient)
     }
 
+    @[Provides Singleton]
+    fun provideNominationApi(@Named("nomination_api") retrofit: Retrofit): NominationApi =
+        retrofit.create(NominationApi::class.java)
 
 }

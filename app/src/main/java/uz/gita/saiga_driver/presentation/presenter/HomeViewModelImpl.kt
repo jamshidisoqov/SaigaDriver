@@ -61,7 +61,7 @@ class HomeViewModelImpl @Inject constructor(
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
-                authRepository.topUpBalance(0L).collectLatest { result ->
+                authRepository.topUpBalance(10000L).collectLatest { result ->
                     result.onSuccess {
                         currentBalanceFlow.emit(it.balance)
                     }.onMessage {
@@ -79,6 +79,7 @@ class HomeViewModelImpl @Inject constructor(
     override fun getAllMyDirections() {
         viewModelScope.launch {
             if (hasConnection()) {
+
                 directionsRepository.getAllMyDirections()
                     .collectLatest { result ->
                         result.onSuccess {
@@ -101,6 +102,7 @@ class HomeViewModelImpl @Inject constructor(
                 }
 
                 orderRepository.getAllActiveOrders()
+
             } else {
                 messageSharedFlow.emit("No internet connection")
             }

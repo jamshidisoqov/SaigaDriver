@@ -113,7 +113,7 @@ class MapDialog(
             false
         }
         mapInit()
-        imageSave.clicks()
+        btnSave.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 mapListener?.invoke(inputToAddress.text.toString(), center)
@@ -133,6 +133,7 @@ class MapDialog(
         }
 
         viewModel.address.onEach { text ->
+            mapListener?.invoke(text, center)
             inputToAddress.setText(text)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
