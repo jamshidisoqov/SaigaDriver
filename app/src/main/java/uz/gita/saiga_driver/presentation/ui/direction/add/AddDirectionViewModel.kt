@@ -3,6 +3,7 @@ package uz.gita.saiga_driver.presentation.ui.direction.add
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
 import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
 import uz.gita.saiga_driver.utils.BaseViewModel
 
@@ -11,7 +12,7 @@ interface AddDirectionViewModel : BaseViewModel {
 
     val backFlow: SharedFlow<Unit>
 
-    val allDirections: StateFlow<List<DirectionResponse>>
+    val allDirections: StateFlow<List<StaticAddressResponse>>
 
     fun addDirection(
         whereFrom: Pair<String, LatLng?>,

@@ -12,6 +12,6 @@ interface MapRepository {
 
     fun requestCurrentLocation(): Flow<ResultData<LatLng>>
 
-    fun getAddressProperties():Flow<ResultData<NominationResponse>>
+    fun getAddressProperties(latLng:LatLng):Flow<ResultData<NominationResponse>>
 
 }

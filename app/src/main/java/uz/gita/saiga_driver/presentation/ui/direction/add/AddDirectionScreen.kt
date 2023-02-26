@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.presentation.ui.direction.add
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,9 +15,10 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
+import ru.ldralighieri.corbind.widget.itemClickEvents
 import ru.ldralighieri.corbind.widget.textChanges
 import uz.gita.saiga_driver.R
-import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
+import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
 import uz.gita.saiga_driver.databinding.ScreenAddDirectionBinding
 import uz.gita.saiga_driver.presentation.dialogs.ChooseDateDialog
 import uz.gita.saiga_driver.presentation.dialogs.ChooseTimeDialog
@@ -39,16 +41,41 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
     private var toAddress: Pair<String, LatLng>? = null
     private var date: Date? = null
     private var time: String? = null
-    private var allDirection = emptyList<DirectionResponse>()
+    private var allDirection = emptyList<StaticAddressResponse>()
     private var boolFromAddress: Boolean = false
     private var boolToAddress: Boolean = false
     private var boolPrice: Boolean = false
+
+    private var selectedPositionFrom = 0
+    private var selectedPositionTo = 0
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         viewModel.allDirections.onEach {
             allDirection = it
+            val adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.list_item_drop_down,
+                it.map { data -> data.title }
+            )
+
+            actWhereFrom.setAdapter(adapter)
+            actWhereTo.setAdapter(adapter)
+
+            actWhereFrom.itemClickEvents { adapterViewItemClickEvent ->
+                selectedPositionFrom = adapterViewItemClickEvent.position
+                fromAddress = with(allDirection[selectedPositionFrom]) {
+                    Pair(title, LatLng(lat,lat))
+                }
+            }
+            actWhereTo.itemClickEvents { adapterViewItemClickEvent ->
+                selectedPositionTo = adapterViewItemClickEvent.position
+                toAddress = with(allDirection[selectedPositionFrom]) {
+                    Pair(title,LatLng(lat,lat))
+                }
+            }
+
         }.launchIn(lifecycleScope)
 
         viewModel.loadingSharedFlow.onEach {

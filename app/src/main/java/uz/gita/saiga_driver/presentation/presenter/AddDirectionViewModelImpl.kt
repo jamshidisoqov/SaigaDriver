@@ -8,7 +8,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
+import uz.gita.saiga_driver.data.remote.request.direction.StaticAddressRequest
+import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
+import uz.gita.saiga_driver.domain.repository.DirectionsRepository
+import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
@@ -19,7 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddDirectionViewModelImpl @Inject constructor(
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val directionsRepository: DirectionsRepository,
+    private val mapRepository: MapRepository
 ) : AddDirectionViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -30,7 +35,7 @@ class AddDirectionViewModelImpl @Inject constructor(
 
     override val backFlow = MutableSharedFlow<Unit>()
 
-    override val allDirections = MutableStateFlow<List<DirectionResponse>>(emptyList())
+    override val allDirections = MutableStateFlow<List<StaticAddressResponse>>(emptyList())
 
 
     override fun addDirection(
@@ -43,6 +48,36 @@ class AddDirectionViewModelImpl @Inject constructor(
 
         viewModelScope.launch {
             if (hasConnection()) {
+                viewModelScope.launch {
+                    mapRepository.getAddressProperties(whereFrom.second ?: NUKUS).collectLatest {
+                        it.onSuccess { response ->
+                            val property = response.features[0].properties
+                            directionsRepository.addStaticAddress(
+                                StaticAddressRequest(
+                                    title = property.display_name!!.substring(0, 20),
+                                    district = property.address?.county ?: "Nukus",
+                                    whereFrom.second!!.latitude,
+                                    whereFrom.second!!.longitude
+                                )
+                            )
+                        }
+                    }
+
+                    mapRepository.getAddressProperties(whereTo.second ?: NUKUS).collectLatest {
+                        it.onSuccess { response ->
+                            val property = response.features[0].properties
+                            directionsRepository.addStaticAddress(
+                                StaticAddressRequest(
+                                    title = property.display_name!!.substring(0, 20),
+                                    district = property.address?.county ?: "Nukus",
+                                    whereFrom.second!!.latitude,
+                                    whereFrom.second!!.longitude
+                                )
+                            )
+                        }
+                    }
+                }
+
                 orderRepository.order(
                     whereFrom = whereFrom.first,
                     whereFromLatLng = whereFrom.second ?: NUKUS,
@@ -63,10 +98,6 @@ class AddDirectionViewModelImpl @Inject constructor(
             } else {
                 messageSharedFlow.emit("No internet connection")
             }
-
         }
-
     }
-
-
 }

@@ -58,7 +58,21 @@ class MapRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
-    override fun getAddressProperties(): Flow<ResultData<NominationResponse>> = flow {
-
-    }
+    override fun getAddressProperties(latLng:LatLng): Flow<ResultData<NominationResponse>> = flow<ResultData<NominationResponse>>{
+        if (hasConnection()) {
+            nominationApi.getNominationAddress(lat = latLng.latitude, lon = latLng.longitude)
+                .func(gson = gson)
+                .onSuccess {
+                    emit(ResultData.Success(it))
+                }.onMessage {
+                    emit(ResultData.Message("Undefined area"))
+                }.onError {
+                    emit(ResultData.Error(it))
+                }
+        } else {
+            emit(ResultData.Message("No internet connection"))
+        }
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
 }
