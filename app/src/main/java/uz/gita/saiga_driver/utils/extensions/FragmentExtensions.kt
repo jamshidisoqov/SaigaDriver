@@ -194,10 +194,10 @@ fun Context.checkLocation(dialogIsShowing: Boolean, onCancelListener: (Boolean) 
     }
 }
 
-fun Fragment.getMapType(type: Int): Int {
+fun getMapType(type: Int): Int {
     return when (type) {
-        1 -> GoogleMap.MAP_TYPE_NORMAL
-        2 -> GoogleMap.MAP_TYPE_SATELLITE
+        0 -> GoogleMap.MAP_TYPE_NORMAL
+        1 -> GoogleMap.MAP_TYPE_SATELLITE
         else -> GoogleMap.MAP_TYPE_HYBRID
     }
 }
