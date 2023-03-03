@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Saiga</string>
+    <string name="phone_number">Telefon nomer</string>
+    <string name="enter_the_phone_number">Telefon raqamni kiriting</string>
+    <string name="enter_name">Telefon nomerdi kiritiń</string>
+    <string name="enter_last_name">Famılıyańızdı kiritiń</string>
+    <string name="next">Kiyingi</string>
+    <string name="go_to_settings">Sazlanmalarga ótiń</string>
+    <string name="phone_hint">901234567</string>
+    <string name="register">Dizimnen ótiw</string>
+    <string name="login">Kirisiw</string>
+    <string name="permission_check">Ruxsatti tekseriw</string>
+    <string name="check">Tekseriw</string>
+    <string name="account_not">Ele dizimnen ótpedingizmi?</string>
+    <string name="already_account">Qashannan berli dizimnen ótkensizmi?</string>
+    <string name="enable_notification">Bildiriw xatılrni qosıw </string>
+    <string name="please_enable_notification">Ótinish, hár bir kiretuǵın buyırtpanı ótkerip jibermaslik ushın bildiriw xatılardı qosıń. Bul sizdiń qawipsizligińizdi buzmaydi.</string>
+    <string name="enable_location">Jaylasıwdı qosıw </string>
+    <string name="please_enable_location">Siz menen nátiyjeli ushırasıwımız ushın geolokatsiyani qosıń. Bul sizdiń qawipsizligińiz ushın hesh qanday qáwip tuwdırmaydi.</string>
+    <string name="home">Tiykarǵı </string>
+    <string name="default_from">Оққўрғон (маҳаллий) жомеъ масжиди</string>
+    <string name="default_to">Юнусабадский район, м-в юнусабад-19, ул. дехканабад, 17</string>
+    <string name="profile">Profil</string>
+    <string name="orders">Buyırtpalar </string>
+    <string name="total_balance">Ulıwma balans </string>
+    <string name="transfer_money">Pul ótkeriw</string>
+    <string name="customer_care">Paydalanıwshı shártleri</string>
+    <string name="settings">Sazlanmalar</string>
+    <string name="directions">Jónelisler</string>
+    <string name="finance">Finans</string>
+    <string name="delete_direction">Jónelisti óshiriw</string>
+    <string name="add_direction">Jónelis qosıw </string>
+    <string name="where_from">Qay jerden?</string>
+    <string name="where_to">Qayerga?</string>
+    <string name="amount">Qay jerge?</string>
+    <string name="time_to_leave">Jónew waqıtı </string>
+    <string name="cancel">Jabıw</string>
+    <string name="save">Saqlaw </string>
+    <string name="choose_date">Sanani saylań </string>
+    <string name="error">Qáte</string>
+    <string name="language">Til</string>
+    <string name="uzbek">Ózbek</string>
+    <string name="english">Ingliz</string>
+    <string name="message">Xabar</string>
+    <string name="success">Tabıslı </string>
+    <string name="edit_profile">Profildi sazlaw </string>
+    <string name="name">Atingiz</string>
+    <string name="phone">Telefon raqam</string>
+    <string name="birthday">Tuwılǵan kún</string>
+    <string name="confirm">Saqlaw </string>
+    <string name="first_name">Tema </string>
+    <string name="log_out">Akkountdan shıǵıw </string>
+    <string name="filter">Saralaw </string>
+    <string name="light">Jarıq </string>
+
+
+    <string name="hello">Xayrli kun</string>
+    <string name="comment">Comment</string>
+    <string name="required">Talab qilinadi*</string>
+    <string name="date">Sana</string>
+    <string name="default_time">12:00</string>
+    <string name="decline">Buyurtmani bekor qilish</string>
+    <string name="help">Yordam</string>
+    <string name="call">Telefon qilish</string>
+    <string name="km_h">km/h</string>
+    <string name="end_order">Buyurtmani tugatish</string>
+    <string name="start_pick_up">Buyurtamni boshlash</string>
+    <string name="back_order">Buyurtmani bekor qilish</string>
+    <string name="trip_ended">Buyurtma muvofaqqiyatli tugatildi</string>
+    <string name="distance">Oraliq masofa</string>
+    <string name="money">Pul</string>
+    <string name="close">Yopish</string>
+    <string name="not_specified">Joylashuv ko`rsatilmagan</string>
+    <string name="not_order_back">Kechirasiz, endi bu buyurtmani qaytarib bera olmaysiz. Ma`muriyat bilan bog`lanishga harakat qiling.</string>
+    <string name="end_order_really">Haqiqatan ham bu buyruqni tugatmoqchimisiz? 1. Buyurtma tugallangan bo`lsa, uni davom ettirish mumkin emas!</string>
+    <string name="kalpak">Karakalpak</string>
+    <string name="order">Order</string>
+    <string name="order_near">Sizge jaqın buyırta</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+
+
+</resources>

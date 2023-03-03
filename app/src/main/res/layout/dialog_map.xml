@@ -15,10 +15,24 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_centre_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_centre_location" />
+        android:src="@drawable/ic_pick" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_left"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:focusable="true"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        android:background="@drawable/bg_circle"
+        app:contentPadding="@dimen/margin_std"
+        android:layout_margin="@dimen/margin_component"
+        />
 
 
     <View
@@ -76,31 +90,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_component"
-                android:background="@drawable/bg_profile"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="@dimen/margin_component">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_to_address"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="@string/where_to"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:drawableStart="@drawable/ic_target_red"
+                    android:drawablePadding="@dimen/margin_std"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="@dimen/margin_std"
                     android:paddingStart="@dimen/margin_std"
                     android:textColor="@color/black"
                     tools:ignore="RtlSymmetry" />
 
-                <ImageView
-                    android:id="@+id/image_save"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_stroke"
-                    android:padding="@dimen/margin_std"
-                    android:src="@drawable/ic_next"
-                    app:tint="@color/dark_grey"
-                    tools:ignore="ContentDescription" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/save"
+                    app:backgroundTint="@color/black"
+                    app:cornerRadius="@dimen/margin_std" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

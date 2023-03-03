@@ -39,11 +39,16 @@ class ChooseLanguageDialog : BottomSheetDialogFragment() {
         checkLanguage()
         binding.containerUzbekLng.setOnClickListener {
             mySharedPref.language = 0
-            checkLanguage()
+            changeLanguageListener?.invoke()
         }
         binding.containerEnglishLng.setOnClickListener {
             mySharedPref.language = 1
-            checkLanguage()
+            changeLanguageListener?.invoke()
+        }
+
+        binding.containerKaaLng.setOnClickListener {
+            mySharedPref.language = 2
+            changeLanguageListener?.invoke()
         }
 
         return binding.root
@@ -52,14 +57,23 @@ class ChooseLanguageDialog : BottomSheetDialogFragment() {
     private fun checkLanguage() {
         val lan = mySharedPref.language
         binding.apply {
-            if (lan == 0) {
-                imageUzbCheck.visible()
-                imageEngCheck.inVisible()
-            } else {
-                imageUzbCheck.inVisible()
-                imageEngCheck.visible()
+            when (lan) {
+                0 -> {
+                    imageKaaCheck.inVisible()
+                    imageUzbCheck.visible()
+                    imageEngCheck.inVisible()
+                }
+                1 -> {
+                    imageKaaCheck.inVisible()
+                    imageUzbCheck.inVisible()
+                    imageEngCheck.visible()
+                }
+                else -> {
+                    imageKaaCheck.visible()
+                    imageUzbCheck.inVisible()
+                    imageEngCheck.inVisible()
+                }
             }
         }
-        changeLanguageListener?.invoke()
     }
 }

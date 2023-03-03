@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
@@ -32,7 +31,6 @@ class TripViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-
     private var lastLocation: LatLng? = null
 
     override val currentSpeed = MutableStateFlow(0)
@@ -43,7 +41,7 @@ class TripViewModelImpl @Inject constructor(
 
     override val backSharedFlow = MutableSharedFlow<Unit>()
 
-    override val endOrderDialog= MutableSharedFlow<Unit>()
+    override val endOrderDialog = MutableSharedFlow<Unit>()
 
     private var _way = 0.0
     private var _money = 7000.0
@@ -57,7 +55,7 @@ class TripViewModelImpl @Inject constructor(
                         _way += way
                 }
                 val speed: Double = way * 1000 * 3.6
-                if (_way > 5.0) {
+                if (_way > 3.0) {
                     val dMoney = (_way - 3.0) * 1000
                     _money += dMoney
                     currentMoney.emit(_money)

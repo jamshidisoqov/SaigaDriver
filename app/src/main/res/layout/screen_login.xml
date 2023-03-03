@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/account_not"
-        android:textColor="@color/black"
+        android:textColor="#116BB3"
         android:layout_marginBottom="@dimen/margin_large"
         app:layout_constraintBottom_toTopOf="@id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"

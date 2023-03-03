@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.presentation.ui.main.pages.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ import uz.gita.saiga_driver.databinding.PageHomeBinding
 import uz.gita.saiga_driver.presentation.presenter.HomeViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionalTaxiAdapter
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
+import uz.gita.saiga_driver.utils.driverStatusLiveData
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -31,10 +33,18 @@ class HomePage : Fragment(R.layout.page_home) {
         DirectionalTaxiAdapter()
     }
 
+    private var navigateToOrder: ((Int) -> Unit)? = null
+
+    fun setNavigateToOrder(block:(Int)->Unit){
+        navigateToOrder = block
+    }
+
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         listDirections.adapter = adapter
+
+        driverStatusLiveData.value = btnSocketState.isChecked
 
         //observers
         viewModel.loadingSharedFlow.onEach {
@@ -51,9 +61,9 @@ class HomePage : Fragment(R.layout.page_home) {
                 showMessageDialog(it)
             }.launchIn(lifecycleScope)
 
-        viewModel.currentBalanceFlow.onEach {
+        viewModel.currentBalanceFlow.observe(viewLifecycleOwner) {
             tvTotalBalance.text = it.getFormat(3).combine("sum")
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
 
         viewModel.expanseBalance.onEach {
             tvOrderExpanse.text = it.getFinanceType()
@@ -95,6 +105,7 @@ class HomePage : Fragment(R.layout.page_home) {
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToOrders()
+                navigateToOrder?.invoke(1)
             }.launchIn(lifecycleScope)
 
         cardIncomeContainer.clicks()
@@ -117,6 +128,10 @@ class HomePage : Fragment(R.layout.page_home) {
 
         adapter.setItemClickListener {
             viewModel.navigateToDirectionDetail(it)
+        }
+
+        btnSocketState.setOnCheckedChangeListener { _, bool ->
+            driverStatusLiveData.value = bool
         }
 
         imageRefreshMoney.clicks()

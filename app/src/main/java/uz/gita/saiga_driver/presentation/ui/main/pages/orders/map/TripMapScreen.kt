@@ -58,11 +58,9 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
             )
         )
 
-
         viewBinding.iconBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
         viewModel.routesFlow.onEach {
             val listPoints: List<LatLng> = it.route?.get(0)!!.points
             val options = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)

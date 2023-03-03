@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import uz.gita.saiga_driver.data.remote.response.order.DirectionResponse
+import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
+import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddDirectionViewModelImpl @Inject constructor(
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val directionsRepository: DirectionsRepository
 ) : AddDirectionViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -30,8 +32,7 @@ class AddDirectionViewModelImpl @Inject constructor(
 
     override val backFlow = MutableSharedFlow<Unit>()
 
-    override val allDirections = MutableStateFlow<List<DirectionResponse>>(emptyList())
-
+    override val allDirections = MutableStateFlow<List<StaticAddressResponse>>(emptyList())
 
     override fun addDirection(
         whereFrom: Pair<String, LatLng?>,
@@ -43,15 +44,19 @@ class AddDirectionViewModelImpl @Inject constructor(
 
         viewModelScope.launch {
             if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                val fromIndex = if (whereFrom.first.lastIndex > 30) 30 else whereFrom.first.lastIndex
+                val toAddress = whereTo.first.substring(0, if (whereTo.first.length > 30) 30 else whereTo.first.length)
                 orderRepository.order(
-                    whereFrom = whereFrom.first,
+                    whereFrom = whereFrom.first.substring(0, fromIndex),
                     whereFromLatLng = whereFrom.second ?: NUKUS,
-                    whereTo = whereTo.first,
+                    whereTo = toAddress,
                     whereToLatLng = whereTo.second,
                     price = price,
                     schedule = schedule?.getTimeWhenFormat(),
                     comment = comment
                 ).collectLatest { result ->
+                    loadingSharedFlow.emit(false)
                     result.onSuccess {
                         backFlow.emit(Unit)
                     }.onMessage {
@@ -63,10 +68,22 @@ class AddDirectionViewModelImpl @Inject constructor(
             } else {
                 messageSharedFlow.emit("No internet connection")
             }
-
         }
-
     }
 
-
+    override fun getAllStaticAddress() {
+        viewModelScope.launch {
+            loadingSharedFlow.emit(true)
+            directionsRepository.getAllStaticAddress().collectLatest { result ->
+                loadingSharedFlow.emit(false)
+                result.onSuccess {
+                    allDirections.emit(it)
+                }.onMessage {
+                    messageSharedFlow.emit(it)
+                }.onError {
+                    errorSharedFlow.emit(it.getMessage())
+                }
+            }
+        }
+    }
 }

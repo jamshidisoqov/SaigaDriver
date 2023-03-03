@@ -14,14 +14,19 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
+import uz.gita.saiga_driver.presentation.dialogs.NearAddressDialog
 import uz.gita.saiga_driver.presentation.presenter.OrdersViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.adapter.OrdersAdapter
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
-import uz.gita.saiga_driver.utils.extensions.*
+import uz.gita.saiga_driver.utils.extensions.hasPermission
+import uz.gita.saiga_driver.utils.extensions.include
+import uz.gita.saiga_driver.utils.extensions.showErrorDialog
+import uz.gita.saiga_driver.utils.extensions.showMessageDialog
 
 // Created by Jamshid Isoqov on 12/12/2022
 @AndroidEntryPoint
@@ -35,10 +40,11 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         OrdersAdapter()
     }
 
+    private var isShown = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         listOrders.adapter = adapter
-
 
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
@@ -53,6 +59,10 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.currentLocationFlow.observe(viewLifecycleOwner) {}
+
+        viewModel.openOrderDialog.onEach {
+            showNearDialog(it)
+        }.launchIn(lifecycleScope)
 
         root.setOnRefreshListener {
             lifecycleScope.launch {
@@ -74,6 +84,20 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }
     }
 
+    private fun showNearDialog(orderResponse: OrderResponse) {
+        if (!isShown) {
+            isShown = true
+            val dialog = NearAddressDialog(orderResponse)
+            dialog.setAcceptListener { order ->
+                viewModel.accept(order.copy(distance = ""))
+            }
+            dialog.dialog?.setOnDismissListener {
+                isShown = false
+            }
+            dialog.show(childFragmentManager, "showNearDialog")
+        }
+    }
+
     private fun startGps() {
         hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
             val intent = Intent(requireContext(), GpsService::class.java)
@@ -87,6 +111,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setCurrentLocation(currentLocation.value?: NUKUS)
+        viewModel.setCurrentLocation(currentLocation.value ?: NUKUS)
     }
 }

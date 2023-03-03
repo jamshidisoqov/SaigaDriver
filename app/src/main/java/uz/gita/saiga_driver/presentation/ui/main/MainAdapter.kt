@@ -8,12 +8,18 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersPage
 import uz.gita.saiga_driver.presentation.ui.main.pages.profile.ProfilePage
 
 // Created by Jamshid Isoqov on 12/19/2022
-class MainAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+class MainAdapter(fa: FragmentActivity, private val onNavigateCallback: (Int) -> Unit) :
+    FragmentStateAdapter(fa) {
+
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            0 -> HomePage()
+            0 -> HomePage().apply {
+                setNavigateToOrder {
+                    onNavigateCallback.invoke(it)
+                }
+            }
             1 -> OrdersPage()
             else -> ProfilePage()
         }

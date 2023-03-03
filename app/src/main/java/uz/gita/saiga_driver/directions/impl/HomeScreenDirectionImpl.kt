@@ -9,6 +9,7 @@ import javax.inject.Inject
 class HomeScreenDirectionImpl @Inject constructor(
     private val navigator: Navigator
 ) : HomeScreenDirection {
+
     override suspend fun navigateToOrders() {
 
     }

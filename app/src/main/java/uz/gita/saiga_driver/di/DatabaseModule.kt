@@ -2,6 +2,7 @@ package uz.gita.saiga_driver.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.MutableLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -18,8 +19,10 @@ import ua.naiksoftware.stomp.StompClient
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.AuthApi
 import uz.gita.saiga_driver.data.remote.api.DirectionsApi
+import uz.gita.saiga_driver.data.remote.api.NominationApi
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -29,8 +32,10 @@ object DatabaseModule {
 
     private const val SHARED_NAME: String = "app_data"
     private const val SHARED_MODE: Int = Context.MODE_PRIVATE
-    private const val BASE_URL: String = "http://157.230.38.77:5001"
-    private const val SOCKET_BASE_URL: String = "ws://157.230.38.77:5001/ws"
+    private const val BASE_URL: String = "http://saiga.1291833-cv25558.tw1.ru/"
+    private const val SOCKET_BASE_URL: String = "ws://185.211.170.109:5001/ws"
+
+    val unauthorizedLiveData: MutableLiveData<Unit> = MutableLiveData()
 
 
     @[Provides Singleton]
@@ -57,6 +62,14 @@ object DatabaseModule {
                     requestBuilder.addHeader("Authorization", "Bearer ${mySharedPref.token}")
                 chain.proceed(requestBuilder.build())
             }
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val response = chain.proceed(request)
+                if (response.code == 403) {
+                    unauthorizedLiveData.postValue(Unit)
+                }
+                response
+            }
             .build()
 
     @[Provides Singleton]
@@ -68,6 +81,13 @@ object DatabaseModule {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
+            .build()
+
+    @[Provides Singleton Named("nomination_api")]
+    fun provideNominationRetrofit(gson: Gson): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://nominatim.openstreetmap.org/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
     @[Provides Singleton]
@@ -88,5 +108,8 @@ object DatabaseModule {
         return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, headers, okHttpClient)
     }
 
+    @[Provides Singleton]
+    fun provideNominationApi(@Named("nomination_api") retrofit: Retrofit): NominationApi =
+        retrofit.create(NominationApi::class.java)
 
 }

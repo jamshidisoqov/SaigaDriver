@@ -24,7 +24,7 @@ interface OrderRepository {
     ): Flow<ResultData<OrderResponse>>
 
 
-    suspend fun getAllOrders()
+    fun getAllOrders()
 
     fun receiveOrder(orderId: Long): Flow<ResultData<OrderResponse>>
 
@@ -34,10 +34,10 @@ interface OrderRepository {
 
     fun socketConnect()
 
-    suspend fun socketDisconnect()
+    fun socketDisconnect()
 
     fun endOrder(endOrderRequest: EndOrderRequest): Flow<ResultData<Any>>
 
-    fun cancelOrder(id: Long):Flow<ResultData<Any>>
+    fun cancelOrder(id: Long): Flow<ResultData<Any>>
 
 }

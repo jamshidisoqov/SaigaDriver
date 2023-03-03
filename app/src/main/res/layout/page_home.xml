@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/action_bar_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,6 +28,19 @@
             tools:ignore="RelativeOverlap"
             tools:text="Hello Jamshid" />
 
+        <ToggleButton
+            android:id="@+id/btn_socket_state"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/bg_toggle"
+            android:textOff="@string/offline"
+            android:textOn="@string/online"
+            android:checked="false"
+            android:layout_marginHorizontal="@dimen/margin_component"
+            android:layout_marginVertical="@dimen/margin_std"
+            android:layout_height="match_parent"/>
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_notification"
             android:layout_width="40dp"
@@ -40,7 +55,7 @@
             android:src="@drawable/ic_notification"
             app:tint="@color/dark_grey" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_balance"
@@ -117,6 +132,8 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="0dp"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_height="30dp"
         app:cardBackgroundColor="@color/primary"
         app:cardCornerRadius="@dimen/margin_large"
@@ -170,7 +187,6 @@
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_icon_main"
                 android:padding="@dimen/margin_std"
                 android:src="@drawable/ic_right"
                 app:tint="@color/dark_grey" />

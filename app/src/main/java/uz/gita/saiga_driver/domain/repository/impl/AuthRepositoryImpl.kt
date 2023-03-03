@@ -16,6 +16,7 @@ import uz.gita.saiga_driver.data.remote.request.auth.BalanceRequest
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
+import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
 import uz.gita.saiga_driver.domain.enums.StartScreen
@@ -137,18 +138,33 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
-    override fun topUpBalance(amount: Long): Flow<ResultData<BalanceResponse>> = flow<ResultData<BalanceResponse>> {
-        authApi.topUpBalance(BalanceRequest(amount.toString(), mySharedPref.userId)).func(gson)
-            .onSuccess {
-                emit(ResultData.Success(it.body.data))
-            }.onMessage {
-                emit(ResultData.Message(it))
-            }.onError {
-                emit(ResultData.Error(it))
-            }
-    }.catch { error ->
-        emit(ResultData.Error(error))
-    }.flowOn(Dispatchers.IO)
+    override fun topUpBalance(amount: Long): Flow<ResultData<BalanceResponse>> =
+        flow<ResultData<BalanceResponse>> {
+            authApi.topUpBalance(BalanceRequest(amount.toString(), mySharedPref.userId)).func(gson)
+                .onSuccess {
+                    emit(ResultData.Success(it.body.data))
+                }.onMessage {
+                    emit(ResultData.Message(it))
+                }.onError {
+                    emit(ResultData.Error(it))
+                }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
+
+    override fun getUserBalance(): Flow<ResultData<DriverBalanceResponse>> =
+        flow<ResultData<DriverBalanceResponse>> {
+            authApi.getUserBalance().func(gson)
+                .onSuccess {
+                    emit(ResultData.Success(it.body.data))
+                }.onMessage {
+                    emit(ResultData.Message(it))
+                }.onError {
+                    emit(ResultData.Error(it))
+                }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
 
     private fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential, onSuccess: () -> Unit, onFailure: (Exception) -> Unit

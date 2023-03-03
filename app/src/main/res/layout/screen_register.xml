@@ -65,6 +65,8 @@
             android:id="@+id/input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="textShortMessage"
             android:hint="@string/enter_name"
             android:importantForAutofill="no"
             android:textColor="@color/black"
@@ -93,6 +95,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/enter_last_name"
             android:importantForAutofill="no"
+            android:maxLines="1"
+            android:inputType="textShortMessage"
             android:textColor="@color/black"
             tools:ignore="TextFields" />
 
@@ -103,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/already_account"
-        android:textColor="@color/black"
+        android:textColor="#116BB3"
         android:layout_marginBottom="@dimen/margin_large"
         app:layout_constraintBottom_toTopOf="@id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"

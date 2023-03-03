@@ -45,11 +45,8 @@ class OrderRepositoryImpl @Inject constructor(
 
     private val type by lazy { object : TypeToken<BaseResponse<ActiveOrderResponse>>() {}.type }
 
-    init {
-        socketConnect()
-    }
-
     private var compositeDisposable: CompositeDisposable? = null
+
 
     override fun order(
         whereFrom: String,
@@ -86,11 +83,11 @@ class OrderRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     @SuppressLint("CheckResult")
-    override suspend fun getAllOrders() {
+    override fun getAllOrders() {
         try {
             stompClient.topic("/topic/new-order-from-user")
                 .doOnError {
-                    ordersLiveData.value = ResultData.Error(it)
+                    ordersLiveData.postValue(ResultData.Error(it))
                 }
                 .subscribe {
                     log(it.payload)
@@ -143,6 +140,7 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun getAllActiveOrders() {
         orderApi.getAllUserOrders().func(gson).onSuccess {
+            orders.clear()
             orders.addAll(it.body.data)
             ordersLiveData.postValue(ResultData.Success(orders))
         }.onMessage {
@@ -161,7 +159,8 @@ class OrderRepositoryImpl @Inject constructor(
                 }
                 .subscribe {
                     log(it.payload)
-                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(it.payload,
+                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(
+                        it.payload,
                         object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type
                     )
                     orders.removeIf { response ->
@@ -191,6 +190,7 @@ class OrderRepositoryImpl @Inject constructor(
                     when (lifecycleEvent.type) {
                         LifecycleEvent.Type.OPENED -> {
                             receivedOrders()
+                            getAllOrders()
                         }
                         LifecycleEvent.Type.ERROR -> {
                             log("Error")
@@ -212,7 +212,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun socketDisconnect() {
+    override fun socketDisconnect() {
         stompClient.disconnect()
         compositeDisposable?.dispose()
     }

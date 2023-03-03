@@ -2,7 +2,9 @@ package uz.gita.saiga_driver
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +20,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.broadcast.LocationManageBroadcast
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.di.DatabaseModule
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.navigation.NavigationHandler
@@ -26,14 +31,16 @@ import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import uz.gita.saiga_driver.services.notification.NotificationService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
-import uz.gita.saiga_driver.utils.extensions.calculationByDistance
-import uz.gita.saiga_driver.utils.extensions.combine
-import uz.gita.saiga_driver.utils.extensions.getMessage
-import uz.gita.saiga_driver.utils.extensions.toJsonData
+import uz.gita.saiga_driver.utils.driverStatusLiveData
+import uz.gita.saiga_driver.utils.extensions.*
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var mySharedPref: MySharedPref
 
     private lateinit var dialog: ProgressDialog
 
@@ -67,6 +74,22 @@ class MainActivity : AppCompatActivity() {
 
         controller = fragment.navController
 
+        DatabaseModule.unauthorizedLiveData.observe(this) {
+            mySharedPref.isVerify = false
+            fragment.navController.navigate(R.id.action_global_loginScreen)
+        }
+
+        setLocale()
+
+        registerLocationManager()
+
+        driverStatusLiveData.observe(this) {
+            if (it) {
+                orderRepository.socketConnect()
+            } else {
+                orderRepository.socketDisconnect()
+            }
+        }
     }
 
     fun showProgress() {
@@ -79,6 +102,38 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var activity: MainActivity
+
+        private val language = listOf("uz", "en", "kaa", "ru")
+
+    }
+
+    private fun registerLocationManager() {
+        val locationManagerReceiver = LocationManageBroadcast()
+
+        locationManagerReceiver.setReceiverCallBack { s, b ->
+            when (s) {
+                Intent.ACTION_PROVIDER_CHANGED -> {
+                    if (!b) {
+                        statusCheck()
+                    } else {
+                        controller.navigate(R.id.action_global_splashScreen)
+                    }
+                }
+                Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
+
+                }
+                WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
+
+                }
+            }
+        }
+        registerReceiver(
+            locationManagerReceiver,
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PROVIDER_CHANGED)
+                addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+            })
     }
 
     fun createNotification(orderResponse: OrderResponse, showNotification: Boolean = false) {
@@ -146,4 +201,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setLocale() {
+        val localeName = language[mySharedPref.language]
+        val locale = Locale(localeName)
+        val res = resources
+        val dm = res.displayMetrics
+        val conf = res.configuration
+        conf.setLocale(locale)
+        res.updateConfiguration(conf, dm)
+    }
+
+    fun setNewLocale() {
+        val refresh = Intent(this, MainActivity::class.java)
+        refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        this.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(refresh)
+    }
+
+    private fun statusCheck() {
+        checkLocation(true) {
+            if (!it) {
+                statusCheck()
+            }
+        }
+    }
+
 }

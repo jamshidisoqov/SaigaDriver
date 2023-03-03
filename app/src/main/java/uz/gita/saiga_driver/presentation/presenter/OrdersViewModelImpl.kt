@@ -34,6 +34,8 @@ class OrdersViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
+    override val openOrderDialog = MutableSharedFlow<OrderResponse>()
+
     override val allOrderFlow = MutableStateFlow<List<OrderResponse>>(emptyList())
 
     override val currentLocationFlow = MediatorLiveData<LatLng>()
@@ -63,7 +65,12 @@ class OrdersViewModelImpl @Inject constructor(
                             ), currentLocation
                         ).toString()
                     )
-                }.toMutableList()
+                }.sortedBy { it.distance.toDouble() }.toMutableList()
+                if (orders.isNotEmpty()) {
+                    if (orders[0].distance.toDouble() < 1.0) {
+                        openOrderDialog.emit(orders[0])
+                    }
+                }
                 allOrderFlow.emit(orders)
             }
         }

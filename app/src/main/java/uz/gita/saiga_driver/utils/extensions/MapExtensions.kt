@@ -19,5 +19,5 @@ fun calculationByDistance(from: LatLng, to: LatLng): Double {
             * cos(Math.toRadians(lat2)) * sin(dLon / 2)
             * sin(dLon / 2)))
     val c = 2 * asin(sqrt(a))
-    return radius * c
+    return (radius * c).getFormat(2).toDouble()
 }
