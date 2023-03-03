@@ -23,10 +23,7 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.dialog.OrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.GpsService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
-import uz.gita.saiga_driver.utils.extensions.hasPermission
-import uz.gita.saiga_driver.utils.extensions.include
-import uz.gita.saiga_driver.utils.extensions.showErrorDialog
-import uz.gita.saiga_driver.utils.extensions.showMessageDialog
+import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
 @AndroidEntryPoint
@@ -55,6 +52,11 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }.launchIn(lifecycleScope)
 
         viewModel.allOrderFlow.onEach {
+            if (it.isEmpty()) {
+                imagePlaceHolder.visible()
+            } else {
+                imagePlaceHolder.gone()
+            }
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 

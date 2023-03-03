@@ -7,11 +7,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.PageProfileBinding
 import uz.gita.saiga_driver.presentation.presenter.ProfileViewModelImpl
+import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -22,6 +26,7 @@ class ProfilePage : Fragment(R.layout.page_profile) {
 
     private val viewBinding: PageProfileBinding by viewBinding()
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         viewModel.loadingSharedFlow.onEach {
@@ -58,6 +63,12 @@ class ProfilePage : Fragment(R.layout.page_profile) {
         containerSettings.setOnClickListener {
             viewModel.navigateToSettings()
         }
+
+        imageEdit.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                viewModel.navigateToProfileDetail()
+            }.launchIn(lifecycleScope)
 
         viewModel.getData()
     }

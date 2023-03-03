@@ -1,7 +1,6 @@
 package uz.gita.saiga_driver.presentation.ui.direction.detail
 
 import android.graphics.Color
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,15 +13,24 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.response.map.DestinationData
 import uz.gita.saiga_driver.databinding.ScreenDirectionsDetailBinding
 import uz.gita.saiga_driver.presentation.presenter.DirectionViewModelImpl
+import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.MapHelper
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.bitmapFromVector
+import uz.gita.saiga_driver.utils.extensions.combine
+import uz.gita.saiga_driver.utils.extensions.getMapType
+import uz.gita.saiga_driver.utils.extensions.include
+import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/13/2022
 @AndroidEntryPoint
@@ -37,12 +45,20 @@ class DirectionDetailScreen : Fragment(R.layout.screen_directions_detail) {
 
     private val args: DirectionDetailScreenArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    @Inject
+    lateinit var mySharedPref: MySharedPref
+
+    @OptIn(FlowPreview::class)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
         val direction = args.order.direction
         val addressFrom = direction.addressFrom
         val addressTo = direction.addressTo
-        val start =  LatLng(addressFrom.lat!!, addressFrom.lon!!)
-        val end =  LatLng(addressTo?.lat?: NUKUS.latitude, addressTo?.lon?: NUKUS.longitude)
+        val start = LatLng(addressFrom.lat!!, addressFrom.lon!!)
+        val end = LatLng(addressTo?.lat ?: NUKUS.latitude, addressTo?.lon ?: NUKUS.longitude)
+
+        tvFirstAddress.text = addressFrom.title ?: resources.getString(R.string.not_specified)
+        tvSecondAddress.text = addressTo?.title ?: resources.getString(R.string.not_specified)
+
         mapInit(
             DestinationData(
                 fromWhere = addressFrom.title!!,
@@ -52,13 +68,24 @@ class DirectionDetailScreen : Fragment(R.layout.screen_directions_detail) {
             )
         )
 
-        viewBinding.iconBack.setOnClickListener {
+        args.order.apply {
+            tvTime.text = this.timeWhen
+            tvMoney.text = this.money.combine("sum")
+        }
+
+        cardDeleteOrder.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                viewModel.delete(args.order)
+            }.launchIn(lifecycleScope)
+
+        iconBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
         viewModel.routes.onEach {
             val listPoints: List<LatLng> = it.route?.get(0)!!.points
-            val options = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)
+            val options = PolylineOptions().width(10f).color(Color.BLUE).geodesic(true)
             val iterator = listPoints.iterator()
             while (iterator.hasNext()) {
                 val data = iterator.next()
@@ -88,11 +115,10 @@ class DirectionDetailScreen : Fragment(R.layout.screen_directions_detail) {
 
         mapScreen.onMapReady {
             googleMap = it
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            googleMap.mapType = getMapType(mySharedPref.mapType)
             googleMap.uiSettings.apply {
                 isCompassEnabled = false
             }
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
             googleMap.clear()
             googleMap.addMarker(
                 MarkerOptions().position(start)

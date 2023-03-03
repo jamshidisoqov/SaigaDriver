@@ -25,9 +25,11 @@ class MySharedPref @Inject constructor(
 
     var language: Int by Ints(0)
 
-    var isVerify:Boolean by Booleans(false)
+    var isVerify: Boolean by Booleans(false)
 
-    var userId:Long by Longs()
+    var userId: Long by Longs()
+
+    var mapType: Int by Ints(0)
 
 
 }

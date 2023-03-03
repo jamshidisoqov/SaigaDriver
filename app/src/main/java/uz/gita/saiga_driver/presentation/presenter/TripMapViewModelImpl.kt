@@ -66,6 +66,7 @@ class TripMapViewModelImpl @Inject constructor(
         viewModelScope.launch {
             loadingSharedFlow.emit(false)
             routesFlow.emit(RouteData(p0, p1))
+
         }
     }
 

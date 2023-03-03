@@ -1,6 +1,8 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.orders.map
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,11 +15,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.remote.response.map.DestinationData
+import uz.gita.saiga_driver.data.remote.response.order.AddressResponse
 import uz.gita.saiga_driver.databinding.ScreenMapTripBinding
 import uz.gita.saiga_driver.presentation.presenter.TripMapViewModelImpl
 import uz.gita.saiga_driver.utils.MapHelper
@@ -26,7 +28,6 @@ import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.currentLocationBearing
 import uz.gita.saiga_driver.utils.extensions.bitmapFromVector
 import uz.gita.saiga_driver.utils.extensions.include
-import uz.gita.saiga_driver.utils.extensions.log
 
 // Created by Jamshid Isoqov on 2/5/2023
 @AndroidEntryPoint
@@ -43,12 +44,10 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
     private var line: Polyline? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
-
         val direction = args.order.direction
         val addressFrom = direction.addressFrom
-        log(addressFrom.toString())
-        val start = LatLng(addressFrom.lat ?: 42.460168, addressFrom.lon ?: 59.607280)
         val end = currentLocation.value ?: NUKUS
+        val start = LatLng(addressFrom.lat ?: 42.460168, addressFrom.lon ?: 59.607280)
         mapInit(
             DestinationData(
                 fromWhere = "Start address",
@@ -58,9 +57,14 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
             )
         )
 
-        viewBinding.iconBack.setOnClickListener {
+        iconBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        imageOpenGoogleMap.setOnClickListener {
+            openGoogleMap(addressFrom, end)
+        }
+
         viewModel.routesFlow.onEach {
             val listPoints: List<LatLng> = it.route?.get(0)!!.points
             val options = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)
@@ -83,8 +87,6 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
         viewModel.getRoutesByLocation(
             DestinationData("Start address", "To address", start, end)
         )
-
-
     }
 
     private fun mapInit(destination: DestinationData) {
@@ -98,10 +100,7 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
         mapScreen.onMapReady {
             googleMap = it
             googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-            googleMap.uiSettings.apply {
-                isCompassEnabled = false
-            }
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            googleMap.uiSettings.apply { isCompassEnabled = false }
             googleMap.clear()
             googleMap.addMarker(
                 MarkerOptions().position(start)
@@ -133,5 +132,12 @@ class TripMapScreen : Fragment(R.layout.screen_map_trip) {
                 }
             }
         }
+    }
+
+    private fun openGoogleMap(addressFrom: AddressResponse, end: LatLng) {
+        val uri =
+            "http://maps.google.com/maps?saddr=${addressFrom.lat},${addressFrom.lon}&daddr=${end.latitude},${end.longitude}"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(intent)
     }
 }

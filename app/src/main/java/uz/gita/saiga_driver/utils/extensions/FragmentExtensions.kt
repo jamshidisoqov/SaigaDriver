@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.karumi.dexter.Dexter
@@ -107,7 +108,6 @@ fun Activity.hasPermission(
 }
 
 
-
 fun Context.hasPermission(permission: String): Boolean {
     if (permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION &&
         android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q
@@ -171,7 +171,7 @@ fun Fragment.callPhoneNumber(phone: String) {
     startActivity(intent)
 }
 
-fun Context.checkLocation(dialogIsShowing:Boolean,onCancelListener:(Boolean)->Unit){
+fun Context.checkLocation(dialogIsShowing: Boolean, onCancelListener: (Boolean) -> Unit) {
     val manager =
         getSystemService(Context.LOCATION_SERVICE) as LocationManager?
     if (manager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -191,5 +191,13 @@ fun Context.checkLocation(dialogIsShowing:Boolean,onCancelListener:(Boolean)->Un
             val alert: AlertDialog = builder.create()
             alert.show()
         }
+    }
+}
+
+fun Fragment.getMapType(type: Int): Int {
+    return when (type) {
+        1 -> GoogleMap.MAP_TYPE_NORMAL
+        2 -> GoogleMap.MAP_TYPE_SATELLITE
+        else -> GoogleMap.MAP_TYPE_HYBRID
     }
 }

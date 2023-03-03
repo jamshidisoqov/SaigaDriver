@@ -107,12 +107,6 @@ class HomeViewModelImpl @Inject constructor(
         }
     }
 
-    override fun navigateToOrders() {
-        viewModelScope.launch {
-            direction.navigateToOrders()
-        }
-    }
-
     override fun navigateToFinance() {
         viewModelScope.launch {
             direction.navigateToFinance()

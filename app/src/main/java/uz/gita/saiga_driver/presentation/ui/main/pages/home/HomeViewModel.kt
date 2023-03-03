@@ -28,8 +28,6 @@ interface HomeViewModel : BaseViewModel {
 
     fun getAllMyDirections()
 
-    fun navigateToOrders()
-
     fun navigateToFinance()
 
     fun navigateToDirectionDetail(orderResponse: OrderResponse)

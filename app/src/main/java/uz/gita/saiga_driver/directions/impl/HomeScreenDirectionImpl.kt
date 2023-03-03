@@ -10,20 +10,20 @@ class HomeScreenDirectionImpl @Inject constructor(
     private val navigator: Navigator
 ) : HomeScreenDirection {
 
-    override suspend fun navigateToOrders() {
-
-    }
-
     override suspend fun navigateToNotification() {
 
     }
 
     override suspend fun navigateToFinance() {
-
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToFinanceScreen())
     }
 
     override suspend fun navigateToDirectionDetails(orderResponse: OrderResponse) {
-
+        navigator.navigateTo(
+            MainScreenDirections.actionMainScreenToDirectionDetailScreen(
+                orderResponse.copy(distance = "")
+            )
+        )
     }
 
     override suspend fun navigateToAddDirection() {

@@ -12,6 +12,7 @@ import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.databinding.ScreenSettingsBinding
 import uz.gita.saiga_driver.di.DatabaseModule
 import uz.gita.saiga_driver.presentation.dialogs.ChooseLanguageDialog
+import uz.gita.saiga_driver.presentation.dialogs.MapTypeDialog
 import uz.gita.saiga_driver.utils.extensions.include
 import javax.inject.Inject
 
@@ -26,6 +27,8 @@ class SettingsScreen : Fragment(R.layout.screen_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
+
+        setMapType(mySharedPref.mapType)
 
         imageBack.setOnClickListener {
             findNavController().navigateUp()
@@ -50,6 +53,21 @@ class SettingsScreen : Fragment(R.layout.screen_settings) {
             DatabaseModule.unauthorizedLiveData.value = Unit
         }
 
+        containerMapType.setOnClickListener {
+            val dialog = MapTypeDialog()
+            dialog.setChangeMapListener {
+                setMapType(it)
+            }
+            dialog.show(childFragmentManager,"map_type")
+        }
+    }
+
+    private fun setMapType(type:Int){
+        viewBinding.tvMapType.text = when(type){
+            0->resources.getString(R.string.normal)
+            1->resources.getString(R.string.satellite)
+            else->resources.getString(R.string.hybrid)
+        }
     }
 
 }

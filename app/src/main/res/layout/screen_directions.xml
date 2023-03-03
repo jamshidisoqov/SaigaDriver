@@ -48,6 +48,14 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_directions" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_place_holder"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_place_holder"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_direction"
             android:layout_width="wrap_content"

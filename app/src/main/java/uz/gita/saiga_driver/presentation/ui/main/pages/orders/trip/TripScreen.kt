@@ -3,6 +3,7 @@ package uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip
 import android.Manifest
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
@@ -20,11 +22,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import uz.gita.saiga_driver.R
+import uz.gita.saiga_driver.data.remote.response.order.AddressResponse
 import uz.gita.saiga_driver.databinding.ScreenTripBinding
 import uz.gita.saiga_driver.presentation.presenter.TripViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.ChooseEndOrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrderDialog
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
+import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
 
@@ -105,7 +109,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                 Snackbar.LENGTH_LONG
             )
                 .setAction(resources.getString(R.string.phone)) {
-                    callPhoneNumber("+998907144102")
+                    callPhoneNumber(args.order.fromUser.phoneNumber)
                 }
                 .show()
         }
@@ -123,7 +127,8 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         fabMapOrder.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                viewModel.navigateToMap(args.order)
+                //viewModel.navigateToMap(args.order)
+                openGoogleMap(args.order.direction.addressFrom, currentLocation.value?: NUKUS)
             }.launchIn(lifecycleScope)
     }
 
@@ -162,5 +167,12 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                 }
                     .show()
             })
+    }
+
+    private fun openGoogleMap(addressFrom: AddressResponse, end: LatLng) {
+        val uri =
+            "http://maps.google.com/maps?saddr=${addressFrom.lat},${addressFrom.lon}&daddr=${end.latitude},${end.longitude}"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(intent)
     }
 }
