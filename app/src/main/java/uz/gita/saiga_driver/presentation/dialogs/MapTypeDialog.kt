@@ -39,7 +39,7 @@ class MapTypeDialog : BottomSheetDialogFragment(R.layout.dialog_map_type) {
                     dismiss()
                 }
                 if (select == index) {
-                    view.setBackgroundResource(R.drawable.bg_stroke)
+                    setBackgroundResource(R.drawable.bg_stroke)
                 }
             }
         }
