@@ -3,6 +3,7 @@ package uz.gita.saiga_driver.presentation.ui.splash
 import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
@@ -24,14 +25,16 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
 
     override fun onResume() {
         super.onResume()
-        if (mySharedPref.isVerify)
+        if (mySharedPref.token.isEmpty()) {
+            viewModel.navigateToScreen()
+        } else if (mySharedPref.isVerify)
             statusCheck()
     }
 
     private fun statusCheck() {
         requireContext().checkLocation(dialogIsShowing) {
             if (it) {
-                viewModel.navigateToScreen()
+                findNavController().navigate(R.id.action_splashScreen_to_mainScreen)
             } else {
                 statusCheck()
             }

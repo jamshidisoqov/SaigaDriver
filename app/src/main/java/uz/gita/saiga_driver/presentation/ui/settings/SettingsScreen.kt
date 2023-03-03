@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/13/2022
 @AndroidEntryPoint
-class SettingsScreen :Fragment(R.layout.screen_settings){
+class SettingsScreen : Fragment(R.layout.screen_settings) {
 
     @Inject
     lateinit var mySharedPref: MySharedPref

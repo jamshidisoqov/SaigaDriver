@@ -90,7 +90,7 @@ class OrderRepositoryImpl @Inject constructor(
         try {
             stompClient.topic("/topic/new-order-from-user")
                 .doOnError {
-                    ordersLiveData.value = ResultData.Error(it)
+                    ordersLiveData.postValue(ResultData.Error(it))
                 }
                 .subscribe {
                     log(it.payload)
@@ -143,6 +143,7 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun getAllActiveOrders() {
         orderApi.getAllUserOrders().func(gson).onSuccess {
+            orders.clear()
             orders.addAll(it.body.data)
             ordersLiveData.postValue(ResultData.Success(orders))
         }.onMessage {

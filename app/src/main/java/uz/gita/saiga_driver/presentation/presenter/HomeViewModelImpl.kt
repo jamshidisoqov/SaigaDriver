@@ -61,7 +61,7 @@ class HomeViewModelImpl @Inject constructor(
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
-                authRepository.topUpBalance(10000L).collectLatest { result ->
+                authRepository.topUpBalance(0L).collectLatest { result ->
                     result.onSuccess {
                         currentBalanceFlow.emit(it.balance)
                     }.onMessage {

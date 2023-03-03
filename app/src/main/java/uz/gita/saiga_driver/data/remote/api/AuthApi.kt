@@ -22,17 +22,17 @@ interface AuthApi {
         @Body updateUserRequest: UpdateUserRequest
     ): Response<BaseResponse<AuthResponse>>
 
-    @POST("/api/users/sign-up")
+    @POST("/api/auth/sign-up")
     suspend fun registerUser(
         @Body userRequest: UserRequest
     ): Response<BaseResponse<AuthResponse>>
 
-    @POST("/api/users/sign-in")
+    @POST("/api/auth/sign-in")
     suspend fun login(
         @Body loginRequest: LoginRequest
     ): Response<BaseResponse<AuthResponse>>
 
-    @POST("/api/users/top-up-balance")
+    @POST("/api/admin/top-up-balance")
     suspend fun topUpBalance(@Body balanceRequest: BalanceRequest):Response<BaseResponse<BalanceBaseResponse>>
 
 
