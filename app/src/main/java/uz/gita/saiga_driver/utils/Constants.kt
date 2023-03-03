@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableSharedFlow
+import java.text.DecimalFormat
 
 // Created by Jamshid Isoqov on 12/18/2022
 
@@ -26,6 +27,8 @@ val currentLocation:MutableLiveData<LatLng> = MutableLiveData()
 val currentLocationBearing:MutableLiveData<Pair<LatLng,Float>> = MutableLiveData()
 
 val driverStatusLiveData:MutableLiveData<Boolean> = MutableLiveData()
+
+val decFormat = DecimalFormat("#.##")
 
 enum class OrderStatus{
     ACCEPT,BACK

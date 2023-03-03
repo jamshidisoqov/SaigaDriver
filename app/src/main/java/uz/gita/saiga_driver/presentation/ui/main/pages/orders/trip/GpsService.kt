@@ -33,9 +33,7 @@ class GpsService : Service(), LocationListener {
     override fun onLocationChanged(p0: Location) {
         val latLng = LatLng(p0.latitude, p0.longitude)
         currentLocation.value = latLng
-        log(p0.bearing.toString(), "XXX")
-        if (p0.bearing > 0.01)
-            currentLocationBearing.value = Pair(latLng, if (p0.bearing > 0.01) p0.bearing else 0f)
+        if (p0.bearing > 0.01) currentLocationBearing.value = Pair(latLng, if (p0.bearing > 0.01) p0.bearing else 0f)
     }
 
 
