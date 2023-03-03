@@ -40,6 +40,8 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         OrdersAdapter()
     }
 
+    private var isShown = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         listOrders.adapter = adapter
@@ -83,11 +85,17 @@ class OrdersPage : Fragment(R.layout.page_orders) {
     }
 
     private fun showNearDialog(orderResponse: OrderResponse) {
-        val dialog = NearAddressDialog(orderResponse)
-        dialog.setAcceptListener { order ->
-            viewModel.accept(order.copy(distance = ""))
+        if (!isShown) {
+            isShown = true
+            val dialog = NearAddressDialog(orderResponse)
+            dialog.setAcceptListener { order ->
+                viewModel.accept(order.copy(distance = ""))
+            }
+            dialog.dialog?.setOnDismissListener {
+                isShown = false
+            }
+            dialog.show(childFragmentManager, "showNearDialog")
         }
-        dialog.show(childFragmentManager, "showNearDialog")
     }
 
     private fun startGps() {

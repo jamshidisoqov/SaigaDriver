@@ -156,7 +156,7 @@ class AuthRepositoryImpl @Inject constructor(
         flow<ResultData<DriverBalanceResponse>> {
             authApi.getUserBalance().func(gson)
                 .onSuccess {
-                    emit(ResultData.Success(it.body))
+                    emit(ResultData.Success(it.body.data))
                 }.onMessage {
                     emit(ResultData.Message(it))
                 }.onError {

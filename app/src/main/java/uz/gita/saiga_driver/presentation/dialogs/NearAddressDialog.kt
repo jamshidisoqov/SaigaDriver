@@ -67,9 +67,9 @@ class NearAddressDialog(private val orderResponse: OrderResponse) :
         }
 
         lifecycleScope.launchWhenResumed {
-            delay(50)
             var s = 5000
             while (s > 0) {
+                delay(50)
                 s -= 100
                 progressHorizontalIndicator.progress = s / 50
             }

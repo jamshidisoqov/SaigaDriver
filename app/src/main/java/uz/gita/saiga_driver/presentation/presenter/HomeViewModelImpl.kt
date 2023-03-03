@@ -1,6 +1,7 @@
 package uz.gita.saiga_driver.presentation.presenter
 
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.home.HomeViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -34,7 +36,7 @@ class HomeViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-    override val currentBalanceFlow = MutableStateFlow("")
+    override val currentBalanceFlow = MutableLiveData("")
 
     override val ordersFlow = MediatorLiveData<Int>()
 
@@ -57,7 +59,8 @@ class HomeViewModelImpl @Inject constructor(
             if (hasConnection()) {
                 authRepository.getUserBalance().collectLatest { result ->
                     result.onSuccess {
-                        currentBalanceFlow.emit(it.balance.toString())
+                        log(it.balance.toString())
+                        currentBalanceFlow.value = it.balance.toString()
                         incomeBalance.emit(it.benefit)
                         expanseBalance.emit(it.balanceOut)
                     }.onMessage {

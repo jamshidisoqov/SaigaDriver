@@ -29,6 +29,7 @@ import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.MaskWatcherPayment
 import uz.gita.saiga_driver.utils.extensions.*
 import java.util.*
+import kotlin.math.min
 
 // Created by Jamshid Isoqov on 12/13/2022
 @AndroidEntryPoint
@@ -111,7 +112,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                 val dialog = MapDialog("Where from", fromAddress?.second)
                 dialog.setMapListener { title, address ->
                     fromAddress = Pair(title, address)
-                    actWhereFrom.setText(title)
+                    actWhereFrom.setText(title.substring(0, min(title.length,30)))
                     boolFromAddress = title.isNotEmpty()
                     isOrderEnabled()
                 }
@@ -123,7 +124,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                 val dialog = MapDialog("Where to", toAddress?.second)
                 dialog.setMapListener { title, address ->
                     toAddress = Pair(title, address)
-                    actWhereTo.setText(title)
+                    actWhereTo.setText(title.substring(0,min(title.length,30)))
                     boolToAddress = title.isNotEmpty()
                     isOrderEnabled()
                 }

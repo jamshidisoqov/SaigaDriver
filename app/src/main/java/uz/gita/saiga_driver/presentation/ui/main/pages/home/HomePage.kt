@@ -61,9 +61,9 @@ class HomePage : Fragment(R.layout.page_home) {
                 showMessageDialog(it)
             }.launchIn(lifecycleScope)
 
-        viewModel.currentBalanceFlow.onEach {
+        viewModel.currentBalanceFlow.observe(viewLifecycleOwner) {
             tvTotalBalance.text = it.getFormat(3).combine("sum")
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
 
         viewModel.expanseBalance.onEach {
             tvOrderExpanse.text = it.getFinanceType()

@@ -24,7 +24,7 @@ interface OrderRepository {
     ): Flow<ResultData<OrderResponse>>
 
 
-    suspend fun getAllOrders()
+    fun getAllOrders()
 
     fun receiveOrder(orderId: Long): Flow<ResultData<OrderResponse>>
 

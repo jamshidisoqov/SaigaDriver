@@ -75,7 +75,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:background="@drawable/bg_home_btn"
             android:text="@string/accept"
             android:textSize="16sp" />
@@ -83,7 +83,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_decline"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/margin_large"
             android:background="@drawable/bg_profile"

@@ -33,7 +33,7 @@ object DatabaseModule {
     private const val SHARED_NAME: String = "app_data"
     private const val SHARED_MODE: Int = Context.MODE_PRIVATE
     private const val BASE_URL: String = "http://saiga.1291833-cv25558.tw1.ru/"
-    private const val SOCKET_BASE_URL: String = "ws://saiga.1291833-cv25558.tw1.ru/ws"
+    private const val SOCKET_BASE_URL: String = "ws://185.211.170.109:5001/ws"
 
     val unauthorizedLiveData: MutableLiveData<Unit> = MutableLiveData()
 

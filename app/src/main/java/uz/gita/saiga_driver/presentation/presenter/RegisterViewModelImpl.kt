@@ -34,7 +34,6 @@ class RegisterViewModelImpl @Inject constructor(
             loadingSharedFlow.emit(true)
             authRepository.register(phoneNumber = phone, firstName, lastName)
                 .collectLatest { result ->
-                    loadingSharedFlow.emit(false)
                     result.onSuccess {
                         val userResponse = it.data
                         mySharedPref.firstName = userResponse.firstName

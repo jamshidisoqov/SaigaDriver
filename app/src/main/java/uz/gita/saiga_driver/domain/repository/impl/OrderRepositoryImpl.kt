@@ -83,7 +83,7 @@ class OrderRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     @SuppressLint("CheckResult")
-    override suspend fun getAllOrders() {
+    override fun getAllOrders() {
         try {
             stompClient.topic("/topic/new-order-from-user")
                 .doOnError {
@@ -190,6 +190,7 @@ class OrderRepositoryImpl @Inject constructor(
                     when (lifecycleEvent.type) {
                         LifecycleEvent.Type.OPENED -> {
                             receivedOrders()
+                            getAllOrders()
                         }
                         LifecycleEvent.Type.ERROR -> {
                             log("Error")

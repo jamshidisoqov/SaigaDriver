@@ -11,6 +11,7 @@ import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
+import uz.gita.saiga_driver.data.remote.response.DataResponse
 import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceBaseResponse
@@ -39,6 +40,6 @@ interface AuthApi {
 
 
     @GET("api/driver/balance-in-out")
-    suspend fun getUserBalance():Response<BaseResponse<DriverBalanceResponse>>
+    suspend fun getUserBalance():Response<BaseResponse<DataResponse<DriverBalanceResponse>>>
 
 }

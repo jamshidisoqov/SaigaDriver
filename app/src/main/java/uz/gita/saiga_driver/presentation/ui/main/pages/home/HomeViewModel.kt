@@ -1,5 +1,6 @@
 package uz.gita.saiga_driver.presentation.ui.main.pages.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,7 +10,7 @@ import uz.gita.saiga_driver.utils.BaseViewModel
 // Created by Jamshid Isoqov on 12/19/2022
 interface HomeViewModel : BaseViewModel {
 
-    val currentBalanceFlow: StateFlow<String>
+    val currentBalanceFlow: LiveData<String>
 
     val ordersFlow: MediatorLiveData<Int>
 

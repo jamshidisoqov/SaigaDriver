@@ -51,7 +51,11 @@ class LoginScreen : Fragment(R.layout.screen_login) {
         inputPhone.textChanges()
             .debounce(DEBOUNCE_TEXT_CHANGES)
             .onEach {
-                btnLogin.isEnabled = it.length == 17
+                val bool = it.length == 17
+                btnLogin.isEnabled = bool
+                if (bool){
+                    inputPhone.hideKeyboard()
+                }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         btnLogin.clicks()
