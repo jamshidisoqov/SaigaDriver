@@ -42,8 +42,8 @@ class DirectionsRepositoryImpl @Inject constructor(
     override suspend fun addStaticAddress(staticAddressRequest: StaticAddressRequest): Response<BaseResponse<StaticAddressResponse>> =
         directionsApi.addStaticAddress(staticAddressRequest)
 
-    override fun getAllStaticAddress(): Flow<ResultData<List<OrderResponse>>> =
-        flow<ResultData<List<OrderResponse>>> {
+    override fun getAllStaticAddress(): Flow<ResultData<List<StaticAddressResponse>>> =
+        flow<ResultData<List<StaticAddressResponse>>> {
             directionsApi.getAllStaticAddress().func(gson).onSuccess {
                 emit(ResultData.Success(it.body))
             }.onMessage {

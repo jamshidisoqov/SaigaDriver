@@ -45,11 +45,11 @@ class OrderRepositoryImpl @Inject constructor(
 
     private val type by lazy { object : TypeToken<BaseResponse<ActiveOrderResponse>>() {}.type }
 
-    init {
-      socketConnect()
-    }
-
     private var compositeDisposable: CompositeDisposable? = null
+
+    init {
+        socketConnect()
+    }
 
     override fun order(
         whereFrom: String,
@@ -162,7 +162,8 @@ class OrderRepositoryImpl @Inject constructor(
                 }
                 .subscribe {
                     log(it.payload)
-                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(it.payload,
+                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(
+                        it.payload,
                         object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type
                     )
                     orders.removeIf { response ->
@@ -213,7 +214,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun socketDisconnect() {
+    override fun socketDisconnect() {
         stompClient.disconnect()
         compositeDisposable?.dispose()
     }
@@ -237,9 +238,9 @@ class OrderRepositoryImpl @Inject constructor(
         compositeDisposable = CompositeDisposable()
     }
 
-        private fun fromGsonData(message: String): OrderResponse {
-            val baseOrderResponse = gson.fromJson<BaseResponse<ActiveOrderResponse>>(message, type)
-            return baseOrderResponse.body.order
-        }
+    private fun fromGsonData(message: String): OrderResponse {
+        val baseOrderResponse = gson.fromJson<BaseResponse<ActiveOrderResponse>>(message, type)
+        return baseOrderResponse.body.order
+    }
 
 }

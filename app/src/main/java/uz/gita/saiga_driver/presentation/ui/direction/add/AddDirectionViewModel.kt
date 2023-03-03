@@ -22,4 +22,6 @@ interface AddDirectionViewModel : BaseViewModel {
         comment: String?
     )
 
+    fun getAllStaticAddress()
+
 }

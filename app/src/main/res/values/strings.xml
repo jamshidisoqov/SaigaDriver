@@ -78,4 +78,6 @@
     <string name="light">Light</string>
     <string name="order">Order</string>
     <string name="order_near">Order near you</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 </resources>

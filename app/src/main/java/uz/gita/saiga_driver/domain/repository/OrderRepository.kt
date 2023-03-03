@@ -34,7 +34,7 @@ interface OrderRepository {
 
     fun socketConnect()
 
-    suspend fun socketDisconnect()
+    fun socketDisconnect()
 
     fun endOrder(endOrderRequest: EndOrderRequest): Flow<ResultData<Any>>
 

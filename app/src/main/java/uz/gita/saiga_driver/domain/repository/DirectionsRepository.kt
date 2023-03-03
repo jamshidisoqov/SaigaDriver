@@ -15,6 +15,6 @@ interface DirectionsRepository {
 
     suspend fun addStaticAddress(staticAddressRequest: StaticAddressRequest): Response<BaseResponse<StaticAddressResponse>>
 
-    fun getAllStaticAddress(): Flow<ResultData<List<OrderResponse>>>
+    fun getAllStaticAddress(): Flow<ResultData<List<StaticAddressResponse>>>
 
 }

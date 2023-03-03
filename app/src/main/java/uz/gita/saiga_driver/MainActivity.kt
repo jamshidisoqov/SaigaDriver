@@ -31,6 +31,7 @@ import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import uz.gita.saiga_driver.services.notification.NotificationService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
+import uz.gita.saiga_driver.utils.driverStatusLiveData
 import uz.gita.saiga_driver.utils.extensions.*
 import java.util.*
 import javax.inject.Inject
@@ -82,7 +83,13 @@ class MainActivity : AppCompatActivity() {
 
         registerLocationManager()
 
-
+        driverStatusLiveData.observe(this) {
+            if (it) {
+                orderRepository.socketConnect()
+            } else {
+                orderRepository.socketDisconnect()
+            }
+        }
     }
 
     fun showProgress() {
@@ -97,6 +104,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var activity: MainActivity
 
         private val language = listOf("uz", "en", "kaa", "ru")
+
     }
 
     private fun registerLocationManager() {

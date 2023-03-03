@@ -37,7 +37,6 @@ class AddDirectionViewModelImpl @Inject constructor(
 
     override val allDirections = MutableStateFlow<List<StaticAddressResponse>>(emptyList())
 
-
     override fun addDirection(
         whereFrom: Pair<String, LatLng?>,
         whereTo: Pair<String, LatLng?>,
@@ -97,6 +96,21 @@ class AddDirectionViewModelImpl @Inject constructor(
                 }
             } else {
                 messageSharedFlow.emit("No internet connection")
+            }
+        }
+    }
+
+    override fun getAllStaticAddress() {
+        viewModelScope.launch {
+            loadingSharedFlow.emit(true)
+            directionsRepository.getAllStaticAddress().collectLatest { result ->
+                result.onSuccess {
+                    allDirections.emit(it)
+                }.onMessage {
+                    messageSharedFlow.emit(it)
+                }.onError {
+                    errorSharedFlow.emit(it.getMessage())
+                }
             }
         }
     }

@@ -161,6 +161,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                 )
             }.launchIn(lifecycleScope)
 
+        viewModel.getAllStaticAddress()
 
     }
 

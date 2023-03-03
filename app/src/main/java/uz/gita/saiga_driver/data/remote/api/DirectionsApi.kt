@@ -16,10 +16,10 @@ interface DirectionsApi {
     @GET("/api/orders/non-received/driver")
     suspend fun getAllDirections(): Response<BaseResponse<DataResponse<List<OrderResponse>>>>
 
-    @POST("/api/static/address")
+    @POST("/admin/static/address")
     suspend fun addStaticAddress(@Body staticAddressRequest: StaticAddressRequest):Response<BaseResponse<StaticAddressResponse>>
 
-    @GET("/api/static/address")
-    suspend fun getAllStaticAddress():Response<BaseResponse<List<OrderResponse>>>
+    @GET("/api/address/static-address")
+    suspend fun getAllStaticAddress():Response<BaseResponse<List<StaticAddressResponse>>>
 
 }

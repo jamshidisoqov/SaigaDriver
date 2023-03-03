@@ -18,6 +18,7 @@ import uz.gita.saiga_driver.databinding.PageHomeBinding
 import uz.gita.saiga_driver.presentation.presenter.HomeViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.direction.DirectionalTaxiAdapter
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
+import uz.gita.saiga_driver.utils.driverStatusLiveData
 import uz.gita.saiga_driver.utils.extensions.*
 
 // Created by Jamshid Isoqov on 12/12/2022
@@ -42,6 +43,8 @@ class HomePage : Fragment(R.layout.page_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
         listDirections.adapter = adapter
+
+        driverStatusLiveData.value = btnSocketState.isChecked
 
         //observers
         viewModel.loadingSharedFlow.onEach {
@@ -125,6 +128,10 @@ class HomePage : Fragment(R.layout.page_home) {
 
         adapter.setItemClickListener {
             viewModel.navigateToDirectionDetail(it)
+        }
+
+        btnSocketState.setOnCheckedChangeListener { _, bool ->
+            driverStatusLiveData.value = bool
         }
 
         imageRefreshMoney.clicks()

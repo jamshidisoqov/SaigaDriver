@@ -25,10 +25,11 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
 
     override fun onResume() {
         super.onResume()
-        if (mySharedPref.token.isEmpty()) {
-            viewModel.navigateToScreen()
-        } else if (mySharedPref.isVerify)
+        if (mySharedPref.isVerify) {
             statusCheck()
+        } else {
+            viewModel.navigateToScreen()
+        }
     }
 
     private fun statusCheck() {
