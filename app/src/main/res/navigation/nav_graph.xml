@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_mainScreen_to_customerCareScreen"
             app:destination="@id/customerCareScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_directionDetailScreen"
+            app:destination="@id/directionDetailScreen" />
     </fragment>
     <fragment
         android:id="@+id/settingsScreen"

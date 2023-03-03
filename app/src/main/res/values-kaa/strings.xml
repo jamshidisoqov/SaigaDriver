@@ -80,6 +80,10 @@
     <string name="order_near">Sizge jaqın buyırta</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
+    <string name="normal">Normal</string>
+    <string name="satellite">Satellite</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="map_type">Map type</string>
 
 
 </resources>

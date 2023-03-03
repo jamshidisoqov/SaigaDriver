@@ -31,7 +31,9 @@ class DirectionViewModelImpl @Inject constructor(
 
 
     override fun delete(directionalTaxiData: OrderResponse) {
-        //TODO not impl
+        viewModelScope.launch {
+
+        }
     }
 
     override fun findRoutes(directionalTaxiData: OrderResponse) {
@@ -45,7 +47,7 @@ class DirectionViewModelImpl @Inject constructor(
                 LatLng(from.lat ?: 21.0, from.lon ?: 23.32),
                 LatLng(to?.lat ?: 21.0, to?.lon ?: 23.32),
             )
-            .key("")
+            .key(uz.gita.saiga_driver.BuildConfig.MAP_API_KEY)
             .build()
         routeData.execute()
     }

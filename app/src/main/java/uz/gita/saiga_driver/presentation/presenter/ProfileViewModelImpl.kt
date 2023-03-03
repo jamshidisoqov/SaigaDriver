@@ -53,6 +53,12 @@ class ProfileViewModelImpl @Inject constructor(
         }
     }
 
+    override fun navigateToProfileDetail() {
+        viewModelScope.launch {
+            direction.navigateToProfileDetail()
+        }
+    }
+
     override fun getData() {
         viewModelScope.launch {
             viewModelScope.launch(Dispatchers.IO) {

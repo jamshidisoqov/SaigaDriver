@@ -11,4 +11,6 @@ interface ProfileScreenDirection {
 
     suspend fun navigateToCustomerCare()
 
+    suspend fun navigateToProfileDetail()
+
 }

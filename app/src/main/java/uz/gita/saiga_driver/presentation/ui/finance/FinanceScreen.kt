@@ -56,6 +56,11 @@ class FinanceScreen : Fragment(R.layout.screen_finance) {
         listHistory.adapter = adapter
 
         viewModel.allOrdersHistory.onEach {
+            if (it.isEmpty()) {
+                imagePlaceHolder.visible()
+            } else {
+                imagePlaceHolder.gone()
+            }
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 

@@ -104,7 +104,6 @@ class HomePage : Fragment(R.layout.page_home) {
         cardOrderContainer.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                viewModel.navigateToOrders()
                 navigateToOrder?.invoke(1)
             }.launchIn(lifecycleScope)
 

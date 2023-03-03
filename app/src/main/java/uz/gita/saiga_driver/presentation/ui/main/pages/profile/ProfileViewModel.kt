@@ -18,6 +18,8 @@ interface ProfileViewModel:BaseViewModel {
 
     fun navigateToCustomerCare()
 
+    fun navigateToProfileDetail()
+
     fun getData()
 
 }

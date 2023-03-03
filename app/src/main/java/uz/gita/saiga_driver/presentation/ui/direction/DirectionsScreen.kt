@@ -53,6 +53,11 @@ class DirectionsScreen : Fragment(R.layout.screen_directions) {
         }
 
         viewModel.allDirections.onEach {
+            if (it.isEmpty()) {
+                imagePlaceHolder.visible()
+            } else {
+                imagePlaceHolder.gone()
+            }
             adapter.submitList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 

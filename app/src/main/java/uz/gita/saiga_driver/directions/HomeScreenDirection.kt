@@ -5,8 +5,6 @@ import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 // Created by Jamshid Isoqov on 12/19/2022
 interface HomeScreenDirection {
 
-    suspend fun navigateToOrders()
-
     suspend fun navigateToNotification()
 
     suspend fun navigateToFinance()

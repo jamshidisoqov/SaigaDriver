@@ -23,4 +23,8 @@ class ProfileScreenDirectionImpl @Inject constructor(
     override suspend fun navigateToCustomerCare() {
         navigator.navigateTo(MainScreenDirections.actionMainScreenToCustomerCareScreen())
     }
+
+    override suspend fun navigateToProfileDetail() {
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToProfileDetailScreen())
+    }
 }

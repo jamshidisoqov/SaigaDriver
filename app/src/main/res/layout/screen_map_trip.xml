@@ -17,17 +17,17 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-         <androidx.fragment.app.FragmentContainerView
-             android:id="@+id/trip_detail_map_container"
-             android:name="uz.gita.saiga_driver.utils.MapHelper"
-             android:layout_width="match_parent"
-             android:layout_height="0dp"
-             android:background="@color/white"
-             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-             app:layout_constraintBottom_toTopOf="@id/spacer_map"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent" />
+        <!--<androidx.fragment.app.FragmentContainerView
+            android:id="@+id/trip_detail_map_container"
+            android:name="uz.gita.saiga_driver.utils.MapHelper"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@id/spacer_map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
 
         <Space
             android:id="@+id/spacer_map"
@@ -42,15 +42,29 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="@dimen/margin_std"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_std"
             android:clickable="true"
             android:focusable="true"
+            android:background="@drawable/bg_circle"
             android:src="@drawable/ic_left"
             app:contentPadding="@dimen/margin_std"
+            android:elevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/CircleImageView"
             tools:ignore="UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_open_google_map"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:elevation="2dp"
+            android:padding="@dimen/margin_std"
+            android:src="@drawable/ic_map"
+            android:background="@drawable/bg_circle"
+            android:layout_margin="@dimen/margin_std"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
