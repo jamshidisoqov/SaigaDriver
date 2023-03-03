@@ -38,6 +38,6 @@ interface OrderRepository {
 
     fun endOrder(endOrderRequest: EndOrderRequest): Flow<ResultData<Any>>
 
-    fun cancelOrder(id: Long):Flow<ResultData<Any>>
+    fun cancelOrder(id: Long): Flow<ResultData<Any>>
 
 }

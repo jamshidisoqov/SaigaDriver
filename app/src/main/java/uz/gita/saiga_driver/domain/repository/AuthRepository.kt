@@ -1,6 +1,9 @@
 package uz.gita.saiga_driver.domain.repository
 
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
+import uz.gita.saiga_driver.data.remote.response.BaseResponse
+import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
@@ -31,5 +34,7 @@ interface AuthRepository {
     fun getUserData():Flow<ResultData<AuthResponse>>
 
     fun topUpBalance(amount:Long):Flow<ResultData<BalanceResponse>>
+
+    fun getUserBalance(): Flow<ResultData<DriverBalanceResponse>>
 
 }

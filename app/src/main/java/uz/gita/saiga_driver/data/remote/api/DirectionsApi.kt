@@ -20,6 +20,6 @@ interface DirectionsApi {
     suspend fun addStaticAddress(@Body staticAddressRequest: StaticAddressRequest):Response<BaseResponse<StaticAddressResponse>>
 
     @GET("/api/address/static-address")
-    suspend fun getAllStaticAddress():Response<BaseResponse<List<StaticAddressResponse>>>
+    suspend fun getAllStaticAddress():Response<BaseResponse<DataResponse<List<StaticAddressResponse>>>>
 
 }

@@ -47,36 +47,6 @@ class AddDirectionViewModelImpl @Inject constructor(
 
         viewModelScope.launch {
             if (hasConnection()) {
-                viewModelScope.launch {
-                    mapRepository.getAddressProperties(whereFrom.second ?: NUKUS).collectLatest {
-                        it.onSuccess { response ->
-                            val property = response.features[0].properties
-                            directionsRepository.addStaticAddress(
-                                StaticAddressRequest(
-                                    title = property.display_name!!.substring(0, 20),
-                                    district = property.address?.county ?: "Nukus",
-                                    whereFrom.second!!.latitude,
-                                    whereFrom.second!!.longitude
-                                )
-                            )
-                        }
-                    }
-
-                    mapRepository.getAddressProperties(whereTo.second ?: NUKUS).collectLatest {
-                        it.onSuccess { response ->
-                            val property = response.features[0].properties
-                            directionsRepository.addStaticAddress(
-                                StaticAddressRequest(
-                                    title = property.display_name!!.substring(0, 20),
-                                    district = property.address?.county ?: "Nukus",
-                                    whereFrom.second!!.latitude,
-                                    whereFrom.second!!.longitude
-                                )
-                            )
-                        }
-                    }
-                }
-
                 orderRepository.order(
                     whereFrom = whereFrom.first,
                     whereFromLatLng = whereFrom.second ?: NUKUS,
@@ -104,6 +74,7 @@ class AddDirectionViewModelImpl @Inject constructor(
         viewModelScope.launch {
             loadingSharedFlow.emit(true)
             directionsRepository.getAllStaticAddress().collectLatest { result ->
+                loadingSharedFlow.emit(false)
                 result.onSuccess {
                     allDirections.emit(it)
                 }.onMessage {

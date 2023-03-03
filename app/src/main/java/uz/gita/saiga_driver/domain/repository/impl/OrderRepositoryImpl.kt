@@ -47,9 +47,6 @@ class OrderRepositoryImpl @Inject constructor(
 
     private var compositeDisposable: CompositeDisposable? = null
 
-    init {
-        socketConnect()
-    }
 
     override fun order(
         whereFrom: String,

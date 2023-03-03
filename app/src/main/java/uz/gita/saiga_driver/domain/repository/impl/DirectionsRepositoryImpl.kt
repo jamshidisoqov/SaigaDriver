@@ -45,7 +45,7 @@ class DirectionsRepositoryImpl @Inject constructor(
     override fun getAllStaticAddress(): Flow<ResultData<List<StaticAddressResponse>>> =
         flow<ResultData<List<StaticAddressResponse>>> {
             directionsApi.getAllStaticAddress().func(gson).onSuccess {
-                emit(ResultData.Success(it.body))
+                emit(ResultData.Success(it.body.data))
             }.onMessage {
                 emit(ResultData.Message(it))
             }.onError {

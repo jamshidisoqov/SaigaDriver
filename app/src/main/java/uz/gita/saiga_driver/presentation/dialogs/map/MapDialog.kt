@@ -16,7 +16,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -171,7 +170,6 @@ class MapDialog(
                 isRotateGesturesEnabled = false
                 isMyLocationButtonEnabled = false
             }
-            googleMap.addMarker(MarkerOptions().position(NUKUS).title("Nukus"))
             if (!this@MapDialog::center.isInitialized)
                 googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -186,8 +184,8 @@ class MapDialog(
                     delay(1000L)
                     viewModel.getAddressByLocation(googleMap.cameraPosition.target)
                 }
+                center = googleMap.cameraPosition.target
             }
-            center = googleMap.cameraPosition.target
         }
     }
 

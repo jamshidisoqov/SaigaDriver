@@ -46,12 +46,6 @@ class HomeViewModelImpl @Inject constructor(
 
     override val nameSharedFlow = MutableSharedFlow<String>()
 
-    init {
-        viewModelScope.launch {
-            orderRepository.getAllOrders()
-        }
-    }
-
     override fun getData() {
         viewModelScope.launch {
             nameSharedFlow.emit(mySharedPref.firstName)
@@ -61,9 +55,11 @@ class HomeViewModelImpl @Inject constructor(
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
-                authRepository.topUpBalance(0L).collectLatest { result ->
+                authRepository.getUserBalance().collectLatest { result ->
                     result.onSuccess {
-                        currentBalanceFlow.emit(it.balance)
+                        currentBalanceFlow.emit(it.balance.toString())
+                        incomeBalance.emit(it.benefit)
+                        expanseBalance.emit(it.balanceOut)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {
@@ -79,7 +75,6 @@ class HomeViewModelImpl @Inject constructor(
     override fun getAllMyDirections() {
         viewModelScope.launch {
             if (hasConnection()) {
-
                 directionsRepository.getAllMyDirections()
                     .collectLatest { result ->
                         result.onSuccess {
