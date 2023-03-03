@@ -15,9 +15,12 @@ import uz.gita.saiga_driver.directions.TripScreenDirection
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
+import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class TripViewModelImpl @Inject constructor(
@@ -49,11 +52,12 @@ class TripViewModelImpl @Inject constructor(
     override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             lastLocation?.let {
-                val way = calculationByDistance(it, currentLocation)
+                val way = distance(it, currentLocation)
                 if (isStartTrip) {
                     if (way > 0.003)
                         _way += way
                 }
+                log(way.toString())
                 val speed: Double = way * 1000 * 3.6
                 if (_way > 3.0) {
                     val dMoney = (_way - 3.0) * 1000

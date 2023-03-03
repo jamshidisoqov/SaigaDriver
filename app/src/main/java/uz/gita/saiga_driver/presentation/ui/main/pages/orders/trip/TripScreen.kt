@@ -77,8 +77,6 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             callPhone(args.order.fromUser.phoneNumber)
         }
 
-        val intent = Intent(requireContext(), GpsService::class.java)
-        requireContext().startService(intent)
         currentLocation.observe(viewLifecycleOwner) {
             viewModel.setCurrentLocation(it, !isOrderActive)
         }
