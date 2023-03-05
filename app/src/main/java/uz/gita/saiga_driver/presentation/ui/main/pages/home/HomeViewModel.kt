@@ -36,4 +36,6 @@ interface HomeViewModel : BaseViewModel {
 
     fun navigateToAddDirection()
 
+    fun getAllOrders()
+
 }

@@ -46,7 +46,7 @@ class DirectionalTaxiAdapter :
             val data = getItem(absoluteAdapterPosition)
             tvFirstAddress.text = data.direction.addressFrom.title
             tvSecondAddress.text = data.direction.addressTo?.title ?: "Not Specified"
-            tvTime.text = data.timeWhen?.getBackendTimeFormat()?:""
+            tvTime.text = data.timeWhen?:""
             tvMoney.text = data.money.getFormat(3).combine("sum")
         }
     }

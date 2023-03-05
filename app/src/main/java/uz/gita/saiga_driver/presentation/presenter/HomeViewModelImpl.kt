@@ -130,4 +130,10 @@ class HomeViewModelImpl @Inject constructor(
             direction.navigateToAddDirection()
         }
     }
+
+    override fun getAllOrders() {
+        viewModelScope.launch {
+            orderRepository.getAllActiveOrders()
+        }
+    }
 }

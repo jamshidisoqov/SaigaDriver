@@ -90,8 +90,6 @@ class HomePage : Fragment(R.layout.page_home) {
 
         viewModel.getData()
 
-        viewModel.refreshUserBalance()
-
         viewModel.getAllMyDirections()
 
         //events
@@ -131,6 +129,9 @@ class HomePage : Fragment(R.layout.page_home) {
 
         btnSocketState.setOnCheckedChangeListener { _, bool ->
             driverStatusLiveData.value = bool
+            if (bool){
+                viewModel.getAllOrders()
+            }
         }
 
         imageRefreshMoney.clicks()
@@ -144,5 +145,10 @@ class HomePage : Fragment(R.layout.page_home) {
                 }.start()
                 viewModel.refreshUserBalance()
             }.launchIn(lifecycleScope)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshUserBalance()
     }
 }
