@@ -83,5 +83,19 @@
     <string name="satellite">Satellite</string>
     <string name="hybrid">Hybrid</string>
     <string name="map_type">Map type</string>
+    <string name="get_started">Get started</string>
+
+
+    <string-array name="title_intro">
+        <item>Oson ish toping</item>
+        <item>Haqiqiy vaqtda kuzatish</item>
+        <item>Pul ishlang</item>
+    </string-array>
+
+    <string-array name="sub_title_intro">
+        <item>Saiga bilan siz xohlagan joyda ish topishingiz mumkin</item>
+        <item>Siz barcha buyurtmalarni osongina va tez olishingiz mumkin</item>
+        <item>Oson pul topa olish imkoniyati va hizmat ko`rsatish ham arzon</item>
+    </string-array>
 
 </resources>

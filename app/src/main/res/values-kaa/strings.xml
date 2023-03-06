@@ -84,6 +84,19 @@
     <string name="satellite">Satellite</string>
     <string name="hybrid">Hybrid</string>
     <string name="map_type">Map type</string>
+    <string name="get_started">Get started</string>
+
+    <string-array name="title_intro">
+        <item>Ańsat jumıs tabıń</item>
+        <item>Haqıyqıy waqıtta baqlaw </item>
+        <item>Pul isleń</item>
+    </string-array>
+
+    <string-array name="sub_title_intro">
+        <item>Saiga menen siz qálegen orında jumıs tabıwıńız múmkin</item>
+        <item>Siz barlıq buyırtpalardı ańsatǵana hám tez alıwıńız múmkin</item>
+        <item>Ańsat pul tapa alıw múmkinshiligi hám hizmat kórsetiw de arzan </item>
+    </string-array>
 
 
 </resources>

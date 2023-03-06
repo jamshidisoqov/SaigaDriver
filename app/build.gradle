@@ -138,4 +138,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
 
     implementation 'com.github.tapadoo:alerter:7.2.4'
+
+    implementation("com.tbuonomo:dotsindicator:4.3")
 }

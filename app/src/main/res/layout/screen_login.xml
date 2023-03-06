@@ -11,24 +11,24 @@
         android:layout_height="?actionBarSize"
         android:background="@color/white"
         android:elevation="8dp"
-        app:title="@string/login"
-        app:titleCentered="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/login"
+        app:titleCentered="true" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_saiga"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintWidth_percent="0.3"
-        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/saiga_logo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/action_bar_container"
-        app:layout_constraintStart_toStartOf="@id/action_bar_container"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/action_bar_container"
-        android:src="@drawable/saiga_logo" />
+        app:layout_constraintStart_toStartOf="@id/action_bar_container"
+        app:layout_constraintTop_toBottomOf="@id/action_bar_container"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.3" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_phone"
@@ -60,26 +60,31 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_to_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/account_not"
-        android:textColor="#116BB3"
-        android:layout_marginBottom="@dimen/margin_large"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_to_register"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:backgroundTint="@color/dark_grey"
+        android:text="@string/register"
+        android:textSize="18sp"
+        app:cornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toTopOf="@id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_margin="16dp"
-        android:text="@string/next"
-        app:cornerRadius="@dimen/margin_component"
-        android:textSize="18sp"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_std"
+        android:layout_marginBottom="@dimen/margin_large"
         android:enabled="false"
+        android:text="@string/next"
+        android:textSize="18sp"
+        app:cornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

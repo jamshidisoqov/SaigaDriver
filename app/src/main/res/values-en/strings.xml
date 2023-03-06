@@ -86,5 +86,18 @@
     <string name="satellite">Satellite</string>
     <string name="hybrid">Hybrid</string>
     <string name="map_type">Map type</string>
+    <string name="get_started">Get started</string>
+
+    <string-array name="title_intro">
+        <item>Accept a job</item>
+        <item>Tracking Realtime</item>
+        <item>Earn Money</item>
+    </string-array>
+
+    <string-array name="sub_title_intro">
+        <item>With Saiga,you can find your job wherever you want</item>
+        <item>You can receive all orders easily and quickly</item>
+        <item>Easy earning opportunity and cheap service too</item>
+    </string-array>
 
 </resources>
