@@ -1,9 +1,7 @@
 package uz.gita.saiga_driver.data.remote.api
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import uz.gita.saiga_driver.data.remote.request.direction.StaticAddressRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.DataResponse
@@ -21,5 +19,8 @@ interface DirectionsApi {
 
     @GET("/api/address/static-address")
     suspend fun getAllStaticAddress():Response<BaseResponse<DataResponse<List<StaticAddressResponse>>>>
+
+    @PUT("/api/orders/cancel-non-received-order/{id}")
+    suspend fun cancelOrder(@Path("id") id: Long):Response<Any>
 
 }

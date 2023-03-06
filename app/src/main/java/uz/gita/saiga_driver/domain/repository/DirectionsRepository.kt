@@ -17,4 +17,6 @@ interface DirectionsRepository {
 
     fun getAllStaticAddress(): Flow<ResultData<List<StaticAddressResponse>>>
 
+    fun cancelOrder(id: Long): Flow<ResultData<Any>>
+
 }

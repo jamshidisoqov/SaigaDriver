@@ -27,7 +27,7 @@ interface OrderApi {
     @PUT("/api/orders/end-order")
     suspend fun endOrder(@Body endOrderRequest: EndOrderRequest): Response<Any>
 
-    @PUT("/api/orders/cancel-order/{id}")
+    @PUT("/api/orders/cancel-received-order/{id}")
     suspend fun cancelOrder(@Path("id") id: Long):Response<Any>
 
 

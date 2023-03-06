@@ -54,4 +54,10 @@ class DirectionsRepositoryImpl @Inject constructor(
         }.catch { error ->
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
+
+    override fun cancelOrder(id: Long): Flow<ResultData<Any>> = flow<ResultData<Any>> {
+        emit(directionsApi.cancelOrder(id).func(gson))
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
 }

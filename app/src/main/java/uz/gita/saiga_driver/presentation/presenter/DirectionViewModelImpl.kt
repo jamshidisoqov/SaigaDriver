@@ -8,16 +8,20 @@ import com.google.android.gms.common.api.internal.OnConnectionFailedListener
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.response.map.RouteData
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
+import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.presentation.ui.direction.detail.DirectionViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
 class DirectionViewModelImpl @Inject constructor(
-
+    private val directionsRepository: DirectionsRepository
 ) : DirectionViewModel, RoutingListener,
     OnConnectionFailedListener, ViewModel() {
 
@@ -27,12 +31,29 @@ class DirectionViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
+    override val backSharedFlow = MutableSharedFlow<Unit>()
+
     override val routes = MutableSharedFlow<RouteData>()
 
 
     override fun delete(directionalTaxiData: OrderResponse) {
         viewModelScope.launch {
-
+            if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                directionsRepository.cancelOrder(directionalTaxiData.id)
+                    .collectLatest { result ->
+                        loadingSharedFlow.emit(false)
+                        result.onSuccess {
+                            backSharedFlow.emit(Unit)
+                        }.onMessage {
+                            messageSharedFlow.emit(it)
+                        }.onError {
+                            errorSharedFlow.emit(it.getMessage())
+                        }
+                    }
+            } else {
+                messageSharedFlow.emit("no internet connection")
+            }
         }
     }
 
@@ -51,6 +72,7 @@ class DirectionViewModelImpl @Inject constructor(
             .build()
         routeData.execute()
     }
+
 
     override fun onRoutingFailure(p0: RouteException?) {
         viewModelScope.launch {

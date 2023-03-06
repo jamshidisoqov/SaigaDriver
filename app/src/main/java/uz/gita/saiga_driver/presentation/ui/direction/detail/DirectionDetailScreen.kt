@@ -26,10 +26,7 @@ import uz.gita.saiga_driver.presentation.presenter.DirectionViewModelImpl
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.MapHelper
 import uz.gita.saiga_driver.utils.NUKUS
-import uz.gita.saiga_driver.utils.extensions.bitmapFromVector
-import uz.gita.saiga_driver.utils.extensions.combine
-import uz.gita.saiga_driver.utils.extensions.getMapType
-import uz.gita.saiga_driver.utils.extensions.include
+import uz.gita.saiga_driver.utils.extensions.*
 import javax.inject.Inject
 
 // Created by Jamshid Isoqov on 12/13/2022
@@ -67,6 +64,23 @@ class DirectionDetailScreen : Fragment(R.layout.screen_directions_detail) {
                 end = end,
             )
         )
+
+        viewModel.loadingSharedFlow.onEach {
+            if (it) showProgress() else hideProgress()
+        }.launchIn(lifecycleScope)
+
+        viewModel.errorSharedFlow.onEach {
+            showErrorDialog(it)
+        }.launchIn(lifecycleScope)
+
+        viewModel.messageSharedFlow.onEach {
+            showMessageDialog(it)
+        }.launchIn(lifecycleScope)
+
+
+        viewModel.backSharedFlow.onEach {
+            findNavController().navigateUp()
+        }.launchIn(lifecycleScope)
 
         args.order.apply {
             tvTime.text = this.timeWhen
