@@ -56,35 +56,36 @@
     <string name="light">Jarıq </string>
 
 
-    <string name="hello">Xayrli kun</string>
+    <string name="hello">Iygilikli kún</string>
     <string name="comment">Comment</string>
-    <string name="required">Talab qilinadi*</string>
-    <string name="date">Sana</string>
+    <string name="required">Talap etiledi*</string>
+    <string name="date">Sáne</string>
     <string name="default_time">12:00</string>
-    <string name="decline">Buyurtmani bekor qilish</string>
-    <string name="help">Yordam</string>
-    <string name="call">Telefon qilish</string>
+    <string name="decline">Buyırtpanı bıykarlaw </string>
+    <string name="help">Járdem</string>
+    <string name="call">Telefon qılıw </string>
     <string name="km_h">km/h</string>
-    <string name="end_order">Buyurtmani tugatish</string>
-    <string name="start_pick_up">Buyurtamni boshlash</string>
-    <string name="back_order">Buyurtmani bekor qilish</string>
-    <string name="trip_ended">Buyurtma muvofaqqiyatli tugatildi</string>
-    <string name="distance">Oraliq masofa</string>
+    <string name="end_order">Buyırtpanı tamamlaw </string>
+    <string name="start_pick_up">Buyırtamni baslaw</string>
+    <string name="back_order">Buyırtpanı bıykarlaw </string>
+    <string name="trip_ended">Buyırtpa muvofaqqiyatli tamamlanıldı </string>
+    <string name="distance">Aralıq</string>
     <string name="money">Pul</string>
     <string name="close">Yopish</string>
     <string name="not_specified">Joylashuv ko`rsatilmagan</string>
     <string name="not_order_back">Kechirasiz, endi bu buyurtmani qaytarib bera olmaysiz. Ma`muriyat bilan bog`lanishga harakat qiling.</string>
     <string name="end_order_really">Haqiqatan ham bu buyruqni tugatmoqchimisiz? 1. Buyurtma tugallangan bo`lsa, uni davom ettirish mumkin emas!</string>
     <string name="kalpak">Karakalpak</string>
-    <string name="order">Order</string>
+    <string name="order">Buyırtpalar</string>
     <string name="order_near">Sizge jaqın buyırta</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="normal">Normal</string>
     <string name="satellite">Satellite</string>
     <string name="hybrid">Hybrid</string>
-    <string name="map_type">Map type</string>
-    <string name="get_started">Get started</string>
+    <string name="map_type">Karta túri</string>
+    <string name="get_started">Kettik</string>
+    <string name="enable_orders">Buyırmalarni alıwdı qosıw</string>
 
     <string-array name="title_intro">
         <item>Ańsat jumıs tabıń</item>
@@ -97,6 +98,4 @@
         <item>Siz barlıq buyırtpalardı ańsatǵana hám tez alıwıńız múmkin</item>
         <item>Ańsat pul tapa alıw múmkinshiligi hám hizmat kórsetiw de arzan </item>
     </string-array>
-
-
 </resources>

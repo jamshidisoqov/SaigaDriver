@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +20,6 @@
             android:id="@+id/tv_title_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/margin_large"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -31,15 +30,15 @@
         <ToggleButton
             android:id="@+id/btn_socket_state"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/bg_toggle"
-            android:textOff="@string/offline"
-            android:textOn="@string/online"
-            android:checked="false"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/margin_component"
             android:layout_marginVertical="@dimen/margin_std"
-            android:layout_height="match_parent"/>
+            android:layout_weight="1"
+            android:background="@drawable/bg_toggle"
+            android:button="@null"
+            android:checked="false"
+            android:textOff="@string/offline"
+            android:textOn="@string/online" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_notification"
@@ -72,6 +71,7 @@
         app:layout_constraintWidth_percent="0.9">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_balance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_large"
@@ -121,20 +121,84 @@
                 android:layout_height="40dp"
                 android:padding="@dimen/margin_std"
                 android:src="@drawable/ic_refresh"
+                android:tint="@color/light_grey"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:tint="@color/light_grey" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_balance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_large"
+            android:paddingStart="@dimen/margin_std"
+            android:visibility="invisible"
+            app:shimmer_duration="1500"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/shimmer_total_balance"
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/bg_shimmer"
+                    android:text="@string/total_balance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_tv_total_balance"
+                    android:layout_width="120dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="@dimen/margin_std"
+                    android:background="@drawable/bg_shimmer"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shimmer_total_balance"
+                    tools:text="123 000 sum" />
+
+                <View
+                    android:id="@+id/shimmer_image_money"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_shimmer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="@dimen/margin_component"
+                    android:background="@drawable/bg_shimmer"
+                    app:layout_constraintBottom_toBottomOf="@id/shimmer_image_money"
+                    app:layout_constraintStart_toEndOf="@id/shimmer_image_money"
+                    app:layout_constraintTop_toTopOf="@id/shimmer_image_money" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shimmer"
+                    android:padding="@dimen/margin_std"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="0dp"
+        android:layout_height="30dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_height="30dp"
         app:cardBackgroundColor="@color/primary"
         app:cardCornerRadius="@dimen/margin_large"
         app:cardElevation="0dp"
@@ -158,6 +222,7 @@
         app:layout_constraintWidth_percent="0.9">
 
         <RelativeLayout
+            android:id="@+id/container_orders"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_component"
@@ -183,15 +248,57 @@
                 tools:text="152 Orders" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_refresh_orders"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/margin_std"
-                android:src="@drawable/ic_right"
+                android:src="@drawable/ic_refresh"
                 app:tint="@color/dark_grey" />
 
         </RelativeLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/container_shimmer_orders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            android:visibility="gone"
+            app:shimmer_duration="1500"
+            tools:ignore="RtlSymmetry">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/shimmer_image_car"
+                    android:layout_width="40dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/shimmer_image_car"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_shimmer"
+                    android:padding="@dimen/margin_std"
+                    app:tint="@color/dark_grey" />
+
+            </RelativeLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -205,9 +312,10 @@
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="@id/card_balance"
         app:layout_constraintTop_toBottomOf="@+id/card_order_container"
-        app:layout_constraintWidth_percent="0.42">
+        app:layout_constraintWidth_percent="0.44">
 
         <RelativeLayout
+            android:id="@+id/container_income"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_component"
@@ -233,16 +341,56 @@
                 tools:text="152 000 sum" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_refresh_income"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_icon_main"
                 android:padding="@dimen/margin_std"
-                android:src="@drawable/ic_right"
+                android:src="@drawable/ic_refresh"
                 app:tint="@color/light_grey" />
 
         </RelativeLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/container_shimmer_income"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            android:visibility="gone"
+            app:shimmer_duration="1500"
+            tools:ignore="RtlSymmetry">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/shimmer_image_income"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:id="@+id/shimmer_order_income"
+                    android:layout_width="100dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@id/shimmer_image_income"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_shimmer"
+                    android:padding="@dimen/margin_std" />
+
+            </RelativeLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -255,9 +403,10 @@
         app:layout_constraintEnd_toEndOf="@id/card_balance"
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintTop_toBottomOf="@+id/card_order_container"
-        app:layout_constraintWidth_percent="0.42">
+        app:layout_constraintWidth_percent="0.44">
 
         <RelativeLayout
+            android:id="@+id/container_expanses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_component"
@@ -283,16 +432,55 @@
                 tools:text="152 000 sum" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_refresh_expanses"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_icon_main"
                 android:padding="@dimen/margin_std"
-                android:src="@drawable/ic_right"
+                android:src="@drawable/ic_refresh"
                 app:tint="@color/dark_grey" />
 
         </RelativeLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/container_shimmer_expanses"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_component"
+            android:paddingStart="@dimen/margin_small"
+            android:visibility="gone"
+            app:shimmer_duration="1500"
+            tools:ignore="RtlSymmetry">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/shimmer_image_expanses"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@id/shimmer_image_expanses"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@drawable/bg_shimmer" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_shimmer"
+                    android:padding="@dimen/margin_std" />
+
+            </RelativeLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -301,43 +489,90 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/margin_std"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_income_container"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_income_container"
         tools:listitem="@layout/list_item_directions" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/container_directions_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_std"
+        app:layout_constraintBottom_toBottomOf="@id/list_directions"
+        app:layout_constraintEnd_toEndOf="@id/list_directions"
+        app:layout_constraintStart_toStartOf="@id/list_directions"
+        app:layout_constraintTop_toTopOf="@id/list_directions"
+        app:shimmer_duration="1500"
+        android:visibility="gone"
+        app:shimmer_shape="linear">
+
+        <include layout="@layout/list_item_directions_shimmer" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_direction_container"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/card_income_container"
+        app:layout_constraintEnd_toEndOf="@id/list_directions"
         app:layout_constraintStart_toStartOf="@id/list_directions"
-        app:layout_constraintEnd_toEndOf="@id/list_directions">
+        app:layout_constraintTop_toBottomOf="@id/card_income_container">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_add_direction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/ic_add"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/image_add_direction"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/add_direction"
             android:textColor="@color/dark_grey"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_add_direction" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container_enabled_orders"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/list_directions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:tint="@color/dark_grey"
+            android:src="@drawable/ic_no_internet"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_margin="@dimen/margin_component"
+            android:backgroundTint="@color/primary"
+            android:text="@string/enable_orders"
+            android:textColor="@color/black"
+            android:paddingHorizontal="@dimen/margin_large"
+            android:background="@drawable/bg_main_btn"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

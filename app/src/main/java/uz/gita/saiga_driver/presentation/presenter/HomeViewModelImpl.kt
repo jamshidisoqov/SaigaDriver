@@ -36,6 +36,12 @@ class HomeViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
+    override val loadingBalanceLiveData = MutableLiveData<Boolean>()
+
+    override val loadingFinanceLiveData = MutableLiveData<Boolean>()
+
+    override val loadingOrdersLiveData = MutableLiveData<Boolean>()
+
     override val currentBalanceFlow = MutableLiveData("")
 
     override val ordersFlow = MediatorLiveData<Int>()
@@ -57,7 +63,9 @@ class HomeViewModelImpl @Inject constructor(
     override fun refreshUserBalance() {
         viewModelScope.launch {
             if (hasConnection()) {
+                loadingBalanceLiveData.postValue(true)
                 authRepository.getUserBalance().collectLatest { result ->
+                    loadingBalanceLiveData.postValue(false)
                     result.onSuccess {
                         log(it.balance.toString())
                         currentBalanceFlow.value = it.balance.toString()
@@ -78,8 +86,10 @@ class HomeViewModelImpl @Inject constructor(
     override fun getAllMyDirections() {
         viewModelScope.launch {
             if (hasConnection()) {
+                loadingSharedFlow.emit(true)
                 directionsRepository.getAllMyDirections()
                     .collectLatest { result ->
+                        loadingSharedFlow.emit(false)
                         result.onSuccess {
                             myDirectionsFlow.emit(it)
                         }.onMessage {
@@ -100,7 +110,6 @@ class HomeViewModelImpl @Inject constructor(
                 }
 
                 orderRepository.getAllActiveOrders()
-
             } else {
                 messageSharedFlow.emit("No internet connection")
             }
@@ -133,7 +142,34 @@ class HomeViewModelImpl @Inject constructor(
 
     override fun getAllOrders() {
         viewModelScope.launch {
-            orderRepository.getAllActiveOrders()
+            if (hasConnection()) {
+                loadingOrdersLiveData.postValue(true)
+                orderRepository.getAllActiveOrders()
+                loadingOrdersLiveData.postValue(false)
+            } else {
+                messageSharedFlow.emit("No internet connection")
+            }
+        }
+    }
+
+    override fun getDriverFinance() {
+        viewModelScope.launch {
+            loadingFinanceLiveData.postValue(true)
+            if (hasConnection()) {
+                authRepository.getUserBalance().collectLatest { result ->
+                    loadingFinanceLiveData.postValue(false)
+                    result.onSuccess {
+                        incomeBalance.emit(it.benefit)
+                        expanseBalance.emit(it.balanceOut)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
+                }
+            } else {
+                messageSharedFlow.emit("No internet connection")
+            }
         }
     }
 }

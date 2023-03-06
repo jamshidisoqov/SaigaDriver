@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -44,10 +45,9 @@ class OrdersViewModelImpl @Inject constructor(
 
     init {
         viewModelScope.launch {
+            delay(2000)
             mapRepository.requestCurrentLocation().collectLatest {
-                it.onSuccess {
-                    updateDistances(it)
-                }
+                it.onSuccess {latLng-> updateDistances(latLng) }
             }
         }
     }
@@ -121,6 +121,18 @@ class OrdersViewModelImpl @Inject constructor(
                             errorSharedFlow.emit(it.getMessage())
                         }
                     }
+            } else {
+                messageSharedFlow.emit("No internet connection")
+            }
+        }
+    }
+
+    override fun getAllOrders() {
+        viewModelScope.launch {
+            if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                orderRepository.getAllActiveOrders()
+                loadingSharedFlow.emit(false)
             } else {
                 messageSharedFlow.emit("No internet connection")
             }

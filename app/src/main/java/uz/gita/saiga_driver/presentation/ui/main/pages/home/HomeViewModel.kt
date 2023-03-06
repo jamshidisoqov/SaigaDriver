@@ -10,6 +10,12 @@ import uz.gita.saiga_driver.utils.BaseViewModel
 // Created by Jamshid Isoqov on 12/19/2022
 interface HomeViewModel : BaseViewModel {
 
+    val loadingBalanceLiveData:LiveData<Boolean>
+
+    val loadingFinanceLiveData:LiveData<Boolean>
+
+    val loadingOrdersLiveData:LiveData<Boolean>
+
     val currentBalanceFlow: LiveData<String>
 
     val ordersFlow: MediatorLiveData<Int>
@@ -37,5 +43,7 @@ interface HomeViewModel : BaseViewModel {
     fun navigateToAddDirection()
 
     fun getAllOrders()
+
+    fun getDriverFinance()
 
 }

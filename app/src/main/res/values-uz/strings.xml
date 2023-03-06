@@ -82,8 +82,9 @@
     <string name="normal">Normal</string>
     <string name="satellite">Satellite</string>
     <string name="hybrid">Hybrid</string>
-    <string name="map_type">Map type</string>
-    <string name="get_started">Get started</string>
+    <string name="map_type">Xarita turi</string>
+    <string name="get_started">Kettik</string>
+    <string name="enable_orders">Buyurmalarni olishni yoqish</string>
 
 
     <string-array name="title_intro">

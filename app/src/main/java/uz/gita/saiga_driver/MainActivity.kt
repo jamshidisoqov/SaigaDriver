@@ -144,15 +144,11 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
 
-    private fun showAlerter(orderResponse: OrderResponse) {
-
+    fun showAlerter(orderResponse: OrderResponse) {
         lifecycleScope.launch {
-
-
             val fromAddress = with(orderResponse.direction.addressFrom) {
                 LatLng(lat!!, lon!!)
             }
-
             repository.getAddressByLocation(fromAddress).collectLatest { result ->
                 result.onSuccess {
                     Alerter.create(this@MainActivity)

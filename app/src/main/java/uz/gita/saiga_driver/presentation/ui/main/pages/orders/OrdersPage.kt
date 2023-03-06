@@ -9,10 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.databinding.PageOrdersBinding
@@ -43,6 +41,10 @@ class OrdersPage : Fragment(R.layout.page_orders) {
 
         listOrders.adapter = adapter
 
+        viewModel.loadingSharedFlow.onEach {
+            root.isRefreshing = it
+        }.launchIn(lifecycleScope)
+
         viewModel.errorSharedFlow.onEach {
             showErrorDialog(it)
         }.launchIn(lifecycleScope)
@@ -67,10 +69,7 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }.launchIn(lifecycleScope)
 
         root.setOnRefreshListener {
-            lifecycleScope.launch {
-                delay(2000)
-                root.isRefreshing = false
-            }
+            viewModel.getAllOrders()
         }
 
         viewModel.getAllData()
@@ -109,10 +108,5 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             }
         }) {}
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.setCurrentLocation(currentLocation.value ?: NUKUS)
     }
 }
