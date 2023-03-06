@@ -78,7 +78,7 @@ class RegisterScreen : Fragment(R.layout.screen_register) {
                 )
             }.launchIn(lifecycleScope)
 
-        tvToLogin.clicks()
+        btnToLogin.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToLogin()

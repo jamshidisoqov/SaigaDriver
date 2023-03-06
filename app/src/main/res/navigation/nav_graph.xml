@@ -18,6 +18,10 @@
             android:id="@+id/action_splashScreen_to_mainScreen"
             app:destination="@id/mainScreen"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_splashScreen_to_introScreen"
+            app:destination="@id/introScreen"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/loginScreen"
@@ -158,6 +162,7 @@
         android:label="CustomerCareScreen" />
     <fragment
         android:id="@+id/permissionsCheckScreen"
+        tools:layout="@layout/screen_permissions_check"
         android:name="uz.gita.saiga_driver.presentation.ui.permission.PermissionsCheckScreen"
         android:label="PermissionsCheckScreen" >
         <action
@@ -170,4 +175,14 @@
         app:destination="@id/splashScreen"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/introScreen"
+        tools:layout="@layout/screen_intro"
+        android:name="uz.gita.saiga_driver.presentation.ui.intro.IntroScreen"
+        android:label="IntroScreen" >
+        <action
+            android:id="@+id/action_introScreen_to_loginScreen"
+            app:destination="@id/loginScreen"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
 </navigation>

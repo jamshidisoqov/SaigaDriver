@@ -43,7 +43,8 @@ class LoginScreen : Fragment(R.layout.screen_login) {
             showMessageDialog(it)
         }.launchIn(lifecycleScope)
 
-        tvToRegister.clicks().debounce(DEBOUNCE_VIEW_CLICK)
+        btnToRegister.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
                 viewModel.navigateToRegister()
             }.launchIn(lifecycleScope)
@@ -53,7 +54,7 @@ class LoginScreen : Fragment(R.layout.screen_login) {
             .onEach {
                 val bool = it.length == 17
                 btnLogin.isEnabled = bool
-                if (bool){
+                if (bool) {
                     inputPhone.hideKeyboard()
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)

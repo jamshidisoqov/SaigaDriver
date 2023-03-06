@@ -31,5 +31,7 @@ class MySharedPref @Inject constructor(
 
     var mapType: Int by Ints(0)
 
+    var introFinished:Boolean by Booleans(false)
+
 
 }
