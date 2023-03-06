@@ -26,7 +26,7 @@ class OrderBroadcast @Inject constructor() : BroadcastReceiver() {
                 if (orderString != null) {
                     val order = gson.fromJsonData<OrderResponse>(orderString,
                         object : TypeToken<OrderResponse>() {}.type)
-                    MainActivity.activity.createNotification(order,true)
+                    MainActivity.activity.showAlerter(order)
                 }
             }
         }

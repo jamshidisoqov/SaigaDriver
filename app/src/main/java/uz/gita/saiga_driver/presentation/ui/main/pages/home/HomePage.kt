@@ -2,7 +2,6 @@ package uz.gita.saiga_driver.presentation.ui.main.pages.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +34,7 @@ class HomePage : Fragment(R.layout.page_home) {
 
     private var navigateToOrder: ((Int) -> Unit)? = null
 
-    fun setNavigateToOrder(block:(Int)->Unit){
+    fun setNavigateToOrder(block: (Int) -> Unit) {
         navigateToOrder = block
     }
 
@@ -48,7 +47,21 @@ class HomePage : Fragment(R.layout.page_home) {
 
         //observers
         viewModel.loadingSharedFlow.onEach {
-            if (it) showProgress() else hideProgress()
+            if (it) {
+                showProgress()
+                containerDirectionsShimmer.apply {
+                    startShimmer()
+                    visible()
+                }
+                listDirections.inVisible()
+            } else {
+                hideProgress()
+                containerDirectionsShimmer.apply {
+                    stopShimmer()
+                    gone()
+                }
+                listDirections.visible()
+            }
         }.launchIn(lifecycleScope)
 
         viewModel.errorSharedFlow
@@ -63,6 +76,64 @@ class HomePage : Fragment(R.layout.page_home) {
 
         viewModel.currentBalanceFlow.observe(viewLifecycleOwner) {
             tvTotalBalance.text = it.getFormat(3).combine("sum")
+        }
+
+        viewModel.loadingBalanceLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                shimmerBalance.apply {
+                    startShimmer()
+                    visible()
+                }
+                containerBalance.gone()
+            } else {
+                shimmerBalance.apply {
+                    stopShimmer()
+                    inVisible()
+                }
+                containerBalance.visible()
+            }
+        }
+
+        viewModel.loadingOrdersLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                containerShimmerOrders.apply {
+                    startShimmer()
+                    visible()
+                }
+                containerOrders.gone()
+            } else {
+                containerShimmerOrders.apply {
+                    stopShimmer()
+                    inVisible()
+                }
+                containerOrders.visible()
+            }
+        }
+
+        viewModel.loadingFinanceLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                containerShimmerIncome.apply {
+                    startShimmer()
+                    visible()
+                }
+                containerShimmerExpanses.apply {
+                    startShimmer()
+                    visible()
+                }
+                containerIncome.gone()
+                containerExpanses.gone()
+            } else {
+                containerShimmerIncome.apply {
+                    stopShimmer()
+                    inVisible()
+                }
+                containerShimmerExpanses.apply {
+                    stopShimmer()
+                    inVisible()
+                }
+                containerIncome.visible()
+                containerExpanses.visible()
+            }
         }
 
         viewModel.expanseBalance.onEach {
@@ -91,6 +162,8 @@ class HomePage : Fragment(R.layout.page_home) {
         viewModel.getData()
 
         viewModel.getAllMyDirections()
+
+        viewModel.refreshUserBalance()
 
         //events
         imageNotification.clicks()
@@ -129,26 +202,57 @@ class HomePage : Fragment(R.layout.page_home) {
 
         btnSocketState.setOnCheckedChangeListener { _, bool ->
             driverStatusLiveData.value = bool
-            if (bool){
+            if (bool) {
                 viewModel.getAllOrders()
+                containerEnabledOrders.gone()
+            } else {
+                containerEnabledOrders.visible()
             }
         }
+
+        btnEnabled.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                btnSocketState.isChecked = true
+            }.launchIn(lifecycleScope)
+
+        btnSocketState.isChecked = true
 
         imageRefreshMoney.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                imageRefreshMoney.animate().apply {
-                    duration = 2000
-                    this.rotation(720f)
-                }.withEndAction {
-                    imageRefreshMoney.rotation = 0f
-                }.start()
+                refreshAnim(imageRefreshMoney)
                 viewModel.refreshUserBalance()
+            }.launchIn(lifecycleScope)
+
+        imageRefreshOrders.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                refreshAnim(imageRefreshOrders)
+                viewModel.getAllOrders()
+            }.launchIn(lifecycleScope)
+
+        imageRefreshExpanses.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                refreshAnim(imageRefreshExpanses)
+                viewModel.getDriverFinance()
+            }.launchIn(lifecycleScope)
+
+        imageRefreshIncome.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                refreshAnim(imageRefreshIncome)
+                viewModel.getDriverFinance()
             }.launchIn(lifecycleScope)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshUserBalance()
+    private fun refreshAnim(view: View) {
+        view.animate().apply {
+            duration = 2000
+            this.rotation(720f)
+        }.withEndAction {
+            view.rotation = 0f
+        }.start()
     }
 }

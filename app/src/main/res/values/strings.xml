@@ -85,6 +85,7 @@
     <string name="hybrid">Hybrid</string>
     <string name="map_type">Map type</string>
     <string name="get_started">Get started</string>
+    <string name="enable_orders">Enable receiving orders</string>
     <string-array name="title_intro">
         <item>Accept a job</item>
         <item>Tracking Realtime</item>

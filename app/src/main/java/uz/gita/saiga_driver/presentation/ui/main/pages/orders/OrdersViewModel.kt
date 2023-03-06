@@ -24,4 +24,6 @@ interface OrdersViewModel : BaseViewModel {
 
     fun accept(orderData: OrderResponse)
 
+    fun getAllOrders()
+
 }
