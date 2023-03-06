@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.DialogEndOrderBinding
+import uz.gita.saiga_driver.utils.decFormat
 import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
 import uz.gita.saiga_driver.utils.extensions.include
@@ -44,9 +45,9 @@ class EndOrderDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
-        tvDistance.text = distance.toString().combine("km")
+        tvDistance.text = decFormat.format(distance).combine("km")
 
-        tvMoney.text = price.getFinanceType()
+        tvMoney.text = decFormat.format(price).toDouble().getFinanceType()
 
         btnClose.setOnClickListener {
             cancelListener?.invoke()

@@ -14,13 +14,12 @@ import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.TripScreenDirection
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
-import uz.gita.saiga_driver.utils.extensions.calculationByDistance
+import uz.gita.saiga_driver.utils.decFormat
 import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class TripViewModelImpl @Inject constructor(
@@ -61,8 +60,8 @@ class TripViewModelImpl @Inject constructor(
                 val speed: Double = way * 1000 * 3.6
                 if (_way > 3.0) {
                     val dMoney = (_way - 3.0) * 1000
-                    _money += dMoney
-                    currentMoney.emit(_money)
+                    _money = 7000 + dMoney
+                    currentMoney.emit(decFormat.format(_money).toDouble())
                 }
                 currentWay.emit(_way)
 

@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:6b1f642d801a141f9fb662",
+        "mobilesdk_app_id": "1:699991940935:android:72b9db0fb4b493ac9fb662",
         "android_client_info": {
-          "package_name": "uz.gita.maxway_compose"
+          "package_name": "uz.gita.max_way_flutter.max_way_flutter"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "699991940935-ukeunp5jltfq75qc6h80as4al9a2ui8a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "uz.gita.maxway_compose",
-            "certificate_hash": "c474a909e8a7c5aaf2f77458b0948472767845d8"
-          }
-        },
         {
           "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
           "client_type": 3
@@ -37,6 +29,13 @@
             {
               "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
+              }
             }
           ]
         }
@@ -44,7 +43,43 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:12ad58df06e4f74c9fb662",
+        "mobilesdk_app_id": "1:699991940935:android:c6d8ea8e44cf94b69fb662",
+        "android_client_info": {
+          "package_name": "uz.gita.max_way_flutter_me.max_way_flutter_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699991940935:android:6d548b6e537251509fb662",
         "android_client_info": {
           "package_name": "uz.gita.saiga_driver"
         }
@@ -66,6 +101,49 @@
             {
               "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699991940935:android:33f0e6e2fa8061db9fb662",
+        "android_client_info": {
+          "package_name": "uz.gita.saiga_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
+              }
             }
           ]
         }
