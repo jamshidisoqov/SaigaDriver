@@ -69,6 +69,10 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             showEndOrderDialog()
         }.launchIn(lifecycleScope)
 
+        viewModel.backSharedFlow.onEach {
+            findNavController().navigateUp()
+        }.launchIn(lifecycleScope)
+
         tvFromUserName.text = with(args.order.fromUser) { this.firstName.combine(this.lastName) }
 
         tvFirstAddress.text = args.order.direction.addressFrom.title

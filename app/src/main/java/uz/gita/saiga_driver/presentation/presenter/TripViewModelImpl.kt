@@ -90,7 +90,7 @@ class TripViewModelImpl @Inject constructor(
                 ).collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                        endOrderDialog.emit(Unit)
+                        backSharedFlow.emit(Unit)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {

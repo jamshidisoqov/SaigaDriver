@@ -90,7 +90,6 @@ class OrderRepositoryImpl @Inject constructor(
                     ordersLiveData.postValue(ResultData.Error(it))
                 }
                 .subscribe {
-                    log(it.payload)
                     val order = fromGsonData(it.payload)
                     MainActivity.activity.createNotification(order)
                     orders.add(order)
@@ -173,6 +172,29 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
+    @SuppressLint("CheckResult")
+    private fun cancelOrders() {
+        try {
+            stompClient.topic("/topic/cancel-order-from-user")
+                .doOnError {
+                    ordersLiveData.value = ResultData.Error(it)
+                }
+                .subscribe {
+                    log("DELETED")
+                    val order = gson.fromJsonData<BaseResponse<ReceivedOrderResponse>>(
+                        it.payload,
+                        object : TypeToken<BaseResponse<ReceivedOrderResponse>>() {}.type
+                    )
+                    orders.removeIf { response ->
+                        order.body.order.id == response.id
+                    }
+                    ordersLiveData.postValue(ResultData.Success(orders))
+                }
+        } catch (e: Exception) {
+            ordersLiveData.value = ResultData.Error(e)
+        }
+    }
+
     override fun socketConnect() {
         try {
             resetSubscriptions()
@@ -191,6 +213,7 @@ class OrderRepositoryImpl @Inject constructor(
                         LifecycleEvent.Type.OPENED -> {
                             receivedOrders()
                             getAllOrders()
+                            cancelOrders()
                         }
                         LifecycleEvent.Type.ERROR -> {
                             log("Error")
