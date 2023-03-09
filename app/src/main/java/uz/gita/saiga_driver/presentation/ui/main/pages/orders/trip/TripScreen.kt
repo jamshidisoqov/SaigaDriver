@@ -28,7 +28,6 @@ import uz.gita.saiga_driver.presentation.presenter.TripViewModelImpl
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.ChooseEndOrderDialog
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrderDialog
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
-import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
 
@@ -73,6 +72,10 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             findNavController().navigateUp()
         }.launchIn(lifecycleScope)
 
+        viewModel.openGoogleMapSharedFlow.onEach {
+            openGoogleMap(args.order.direction.addressFrom, it)
+        }.launchIn(lifecycleScope)
+
         tvFromUserName.text = with(args.order.fromUser) { this.firstName.combine(this.lastName) }
 
         tvFirstAddress.text = args.order.direction.addressFrom.title
@@ -81,7 +84,6 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             args.order.direction.addressTo?.title ?: resources.getString(R.string.not_specified)
 
         cardCall.setOnClickListener {
-            log("cardCall")
             callPhone(args.order.fromUser.phoneNumber)
         }
 
@@ -131,8 +133,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         fabMapOrder.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                //viewModel.navigateToMap(args.order)
-                openGoogleMap(args.order.direction.addressFrom, currentLocation.value?: NUKUS)
+                viewModel.openGoogleMap()
             }.launchIn(lifecycleScope)
     }
 

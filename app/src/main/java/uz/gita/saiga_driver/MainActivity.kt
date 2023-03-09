@@ -149,52 +149,49 @@ class MainActivity : AppCompatActivity() {
             val fromAddress = with(orderResponse.direction.addressFrom) {
                 LatLng(lat!!, lon!!)
             }
-            repository.getAddressByLocation(fromAddress).collectLatest { result ->
-                result.onSuccess {
-                    Alerter.create(this@MainActivity)
-                        .setTitle(it)
-                        .setText(
-                            "Distance".combine(
-                                calculationByDistance(
-                                    fromAddress,
-                                    currentLocation.value ?: NUKUS
-                                ).toString()
-                            )
-                        )
-                        .setDuration(5000)
-                        .setIcon(R.drawable.saiga_yellow_car)
-                        .setIconSize(R.dimen.icon_size_alerter)
-                        .setIconColorFilter(Color.TRANSPARENT)
-                        .addButton("Accept") {
-                            lifecycleScope.launch {
-                                orderRepository.receiveOrder(orderResponse.id)
-                                    .collectLatest { result ->
-                                        result.onSuccess {
-                                            controller.navigate(
-                                                NavGraphDirections.actionGlobalTripScreen(
-                                                    orderResponse.copy(distance = "")
-                                                )
-                                            )
-                                        }.onMessage { message ->
-                                            Toast.makeText(
-                                                this@MainActivity,
-                                                message,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }.onError {
-                                            Toast.makeText(
-                                                this@MainActivity,
-                                                it.getMessage(),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
+            Alerter.create(this@MainActivity)
+                .setTitle(orderResponse.direction.addressFrom.title!!)
+                .setText(
+                    "Distance".combine(
+                        calculationByDistance(
+                            fromAddress,
+                            currentLocation.value ?: NUKUS
+                        ).toString()
+                    )
+                )
+                .setDuration(5000)
+                .setIcon(R.drawable.saiga_yellow_car)
+                .setIconSize(R.dimen.icon_size_alerter)
+                .setIconColorFilter(Color.TRANSPARENT)
+                .addButton("Accept") {
+                    lifecycleScope.launch {
+                        orderRepository.receiveOrder(orderResponse.id)
+                            .collectLatest { result ->
+                                result.onSuccess {
+                                    controller.navigate(
+                                        NavGraphDirections.actionGlobalTripScreen(
+                                            orderResponse.copy(distance = "")
+                                        )
+                                    )
+                                }.onMessage { message ->
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }.onError {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        it.getMessage(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
-                        }
-                        .setBackgroundColorInt(Color.parseColor("#975C28"))
-                        .show()
+                    }
                 }
-            }
+                .setBackgroundColorInt(Color.parseColor("#975C28"))
+                .show()
+
         }
     }
 

@@ -7,11 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.TripScreenDirection
+import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.decFormat
@@ -24,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TripViewModelImpl @Inject constructor(
     private val direction: TripScreenDirection,
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val mapRepository: MapRepository
 ) : TripViewModel, ViewModel() {
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -44,6 +47,8 @@ class TripViewModelImpl @Inject constructor(
     override val backSharedFlow = MutableSharedFlow<Unit>()
 
     override val endOrderDialog = MutableSharedFlow<Unit>()
+
+    override val openGoogleMapSharedFlow  =MutableSharedFlow<LatLng>()
 
     private var _way = 0.0
     private var _money = 7000.0
@@ -111,6 +116,25 @@ class TripViewModelImpl @Inject constructor(
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
                         backSharedFlow.emit(Unit)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
+                }
+            } else {
+                errorSharedFlow.emit("No internet connection")
+            }
+        }
+    }
+
+    override fun openGoogleMap() {
+        viewModelScope.launch {
+            if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                mapRepository.requestCurrentLocation().collectLatest { result->
+                    result.onSuccess {
+                       openGoogleMapSharedFlow.emit(it)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {

@@ -19,6 +19,8 @@ interface TripViewModel : BaseViewModel {
 
     val endOrderDialog:SharedFlow<Unit>
 
+    val openGoogleMapSharedFlow:SharedFlow<LatLng>
+
     fun setCurrentLocation(currentLocation: LatLng,isStartTrip:Boolean)
 
     fun navigateToMap(orderResponse: OrderResponse)
@@ -26,4 +28,6 @@ interface TripViewModel : BaseViewModel {
     fun endOrder(orderResponse: OrderResponse)
 
     fun cancelOrder(orderResponse: OrderResponse)
+
+    fun openGoogleMap()
 }
