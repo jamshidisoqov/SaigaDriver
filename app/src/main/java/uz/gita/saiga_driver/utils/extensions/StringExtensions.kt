@@ -19,6 +19,12 @@ fun getCurrentDate(date: Date): String {
 }
 
 @SuppressLint("SimpleDateFormat")
+fun getCurrentTime(date: Date): String {
+    return SimpleDateFormat("HH:mm").format(date)
+}
+
+
+@SuppressLint("SimpleDateFormat")
 fun String.toDate(): Date {
     val format = SimpleDateFormat("MMM dd,yyyy")
     format.parse(this)

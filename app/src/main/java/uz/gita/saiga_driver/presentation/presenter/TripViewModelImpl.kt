@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
@@ -82,7 +81,7 @@ class TripViewModelImpl @Inject constructor(
         }
     }
 
-    override fun endOrder(orderResponse: OrderResponse) {
+    override fun endOrder(orderResponse: OrderResponse, startTime: Long, endTime: Long) {
         viewModelScope.launch {
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
@@ -95,7 +94,7 @@ class TripViewModelImpl @Inject constructor(
                 ).collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                        backSharedFlow.emit(Unit)
+                        endOrderDialog.emit(Unit)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {

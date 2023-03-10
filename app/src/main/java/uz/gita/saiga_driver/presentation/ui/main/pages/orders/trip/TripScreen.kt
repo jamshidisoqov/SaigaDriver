@@ -30,6 +30,7 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrd
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
+import java.util.*
 
 // Created by Jamshid Isoqov on 2/5/2023
 @AndroidEntryPoint
@@ -43,12 +44,28 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
     private var isOrderActive = true
 
+    private val startTime: Long by lazy(LazyThreadSafetyMode.NONE) { System.currentTimeMillis() }
+
+    private val endTime: Long by lazy(LazyThreadSafetyMode.NONE) { System.currentTimeMillis() }
+
     private var distance = 0.0
 
     private var price = 7000.0
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
+
+        viewModel.loadingSharedFlow.onEach {
+            if (it) showProgress() else hideProgress()
+        }.launchIn(lifecycleScope)
+
+        viewModel.errorSharedFlow.onEach {
+            showErrorDialog(it)
+        }.launchIn(lifecycleScope)
+
+        viewModel.messageSharedFlow.onEach {
+            showMessageDialog(it)
+        }.launchIn(lifecycleScope)
 
         viewModel.currentMoney.onEach {
             price = it
@@ -101,7 +118,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                     cardOrderStatus.setCardBackgroundColor(Color.parseColor("#D61E1E"))
                     tvOrderStatus.text = getStringResource(resId = R.string.end_order)
                 } else {
-                    viewModel.endOrder(orderResponse = args.order)
+                    viewModel.endOrder(orderResponse = args.order,startTime,endTime)
                 }
                 isOrderActive = !isOrderActive
             }.launchIn(lifecycleScope)
@@ -138,15 +155,16 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     }
 
     private fun showEndOrderDialog() {
-        val dialog = EndOrderDialog(distance, price)
+        val dialog = EndOrderDialog(distance, price,startTime,endTime)
         dialog.setCancelListener {
             findNavController().navigateUp()
         }
         dialog.show(childFragmentManager, "end-order")
     }
 
-    private fun startTrip() {
-
+    private fun startTrip() = viewBinding.include {
+        tvStartTime.text =
+            resources.getString(R.string.start_time).combine(getCurrentTime(Date(startTime)))
     }
 
     private fun showChooseEndOrder() {

@@ -11,13 +11,17 @@ import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.databinding.DialogEndOrderBinding
 import uz.gita.saiga_driver.utils.decFormat
 import uz.gita.saiga_driver.utils.extensions.combine
+import uz.gita.saiga_driver.utils.extensions.getCurrentTime
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
 import uz.gita.saiga_driver.utils.extensions.include
+import java.util.*
 
 // Created by Jamshid Isoqov on 2/18/2023
 class EndOrderDialog(
     private val distance: Double,
-    private val price: Double
+    private val price: Double,
+    private val startTime: Long,
+    private val endTime: Long
 ) : DialogFragment(R.layout.dialog_end_order) {
 
     private val viewBinding: DialogEndOrderBinding by viewBinding()
@@ -48,6 +52,10 @@ class EndOrderDialog(
         tvDistance.text = decFormat.format(distance).combine("km")
 
         tvMoney.text = decFormat.format(price).toDouble().getFinanceType()
+
+        tvStartTime.text = getCurrentTime(Date(startTime))
+
+        tvEndTime.text = getCurrentTime(Date(endTime))
 
         btnClose.setOnClickListener {
             cancelListener?.invoke()

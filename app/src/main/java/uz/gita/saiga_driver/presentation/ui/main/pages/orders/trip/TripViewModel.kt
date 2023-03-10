@@ -25,7 +25,7 @@ interface TripViewModel : BaseViewModel {
 
     fun navigateToMap(orderResponse: OrderResponse)
 
-    fun endOrder(orderResponse: OrderResponse)
+    fun endOrder(orderResponse: OrderResponse, startTime: Long, endTime: Long)
 
     fun cancelOrder(orderResponse: OrderResponse)
 

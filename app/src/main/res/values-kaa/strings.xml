@@ -98,4 +98,7 @@
         <item>Siz barlıq buyırtpalardı ańsatǵana hám tez alıwıńız múmkin</item>
         <item>Ańsat pul tapa alıw múmkinshiligi hám hizmat kórsetiw de arzan </item>
     </string-array>
+    <string name="start_time">Baslanǵan waqtı</string>
+
+    <string name="end_time">Tamamlanǵan waqtı</string>
 </resources>

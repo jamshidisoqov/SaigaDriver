@@ -101,4 +101,7 @@
         <item>Easy earning opportunity and cheap service too</item>
     </string-array>
 
+    <string name="start_time">Start time</string>
+
+    <string name="end_time">End time</string>
 </resources>

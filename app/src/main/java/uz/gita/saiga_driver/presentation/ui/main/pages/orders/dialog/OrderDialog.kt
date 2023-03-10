@@ -24,6 +24,7 @@ class OrderDialog(private val orderData: OrderResponse) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.include {
         tvFromOrder.text = orderData.direction.addressFrom.title
         tvToOrder.text = orderData.direction.addressTo?.title?:"Hе указан"
+        tvComment.text = orderData.comment
         btnAccept.setOnClickListener {
             dismiss()
             acceptListener?.invoke(orderData)

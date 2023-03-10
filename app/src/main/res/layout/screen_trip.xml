@@ -111,7 +111,7 @@
         app:layout_constraintBottom_toTopOf="@id/card_order_status"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_order_container"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0.1">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_centre_location" />
+                    android:src="@drawable/ic_target_blue" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_first_address"
@@ -162,7 +162,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location_end" />
+                    android:src="@drawable/ic_target_red" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_second_address"
@@ -173,6 +173,30 @@
                     android:text="@string/default_to"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_marginVertical="@dimen/margin_small">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_time" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_start_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="16sp"
+                    tools:text="Start time 10:34" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -213,7 +237,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_small"
-                            android:gravity="center_vertical"
+                            android:gravity="center_horizontal"
                             android:text="@string/back_order"
                             android:textColor="#EDB118" />
 
@@ -253,7 +277,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_small"
-                            android:gravity="center_vertical"
+                            android:gravity="center_horizontal"
                             android:text="@string/call"
                             android:textColor="#409060" />
 
