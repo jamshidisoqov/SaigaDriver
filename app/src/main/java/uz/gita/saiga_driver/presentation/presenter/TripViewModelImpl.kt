@@ -18,6 +18,7 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.decFormat
 import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.getTimeFormat
 import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
@@ -89,7 +90,9 @@ class TripViewModelImpl @Inject constructor(
                     EndOrderRequest(
                         OrderLengthOfWay = _way,
                         orderId = orderResponse.id,
-                        orderMoney = _money
+                        orderMoney = _money,
+                        startTime.getTimeFormat(),
+                        endTime.getTimeFormat()
                     )
                 ).collectLatest { result ->
                     loadingSharedFlow.emit(false)

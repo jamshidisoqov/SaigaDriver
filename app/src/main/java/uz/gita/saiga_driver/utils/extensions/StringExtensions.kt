@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 // Created by Jamshid Isoqov an 10/12/2022
-
-
 @SuppressLint("SimpleDateFormat")
 fun getCurrentDate(): String {
     val c = Calendar.getInstance().time
