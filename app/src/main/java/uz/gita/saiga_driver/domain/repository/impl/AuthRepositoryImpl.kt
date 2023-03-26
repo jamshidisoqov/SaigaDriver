@@ -19,6 +19,8 @@ import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
 import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
+import uz.gita.saiga_driver.data.remote.response.auth.CabinetBaseResponse
+import uz.gita.saiga_driver.data.remote.response.auth.CabinetResponse
 import uz.gita.saiga_driver.domain.enums.StartScreen
 import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.utils.ResultData
@@ -57,7 +59,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun register(
         phoneNumber: String, firstName: String, lastName: String
-    ): Flow<ResultData<AuthResponse>> = flow<ResultData<AuthResponse>> {
+    ): Flow<ResultData<CabinetBaseResponse>> = flow<ResultData<CabinetBaseResponse>> {
         authApi.registerUser(UserRequest(firstName, lastName, phoneNumber.replace(" ", "")))
             .func(gson).onSuccess {
                 emit(ResultData.Success(it.body))

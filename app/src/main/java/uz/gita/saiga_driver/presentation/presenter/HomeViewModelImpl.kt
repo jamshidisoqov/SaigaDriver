@@ -172,4 +172,10 @@ class HomeViewModelImpl @Inject constructor(
             }
         }
     }
+
+    override fun navigateToPayment() {
+        viewModelScope.launch {
+            direction.navigateToPayment()
+        }
+    }
 }

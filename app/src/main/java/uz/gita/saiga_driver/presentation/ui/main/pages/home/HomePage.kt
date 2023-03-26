@@ -245,6 +245,12 @@ class HomePage : Fragment(R.layout.page_home) {
                 refreshAnim(imageRefreshIncome)
                 viewModel.getDriverFinance()
             }.launchIn(lifecycleScope)
+
+        tvPaymentMoney.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                viewModel.navigateToPayment()
+            }.launchIn(lifecycleScope)
     }
 
     private fun refreshAnim(view: View) {

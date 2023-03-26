@@ -29,4 +29,8 @@ class HomeScreenDirectionImpl @Inject constructor(
     override suspend fun navigateToAddDirection() {
         navigator.navigateTo(MainScreenDirections.actionMainScreenToAddDirectionScreen())
     }
+
+    override suspend fun navigateToPayment() {
+        navigator.navigateTo(MainScreenDirections.actionMainScreenToPaymentScreen())
+    }
 }

@@ -13,5 +13,7 @@ interface HomeScreenDirection {
 
     suspend fun navigateToAddDirection()
 
+    suspend fun navigateToPayment()
+
 
 }
