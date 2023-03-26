@@ -4,9 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
-import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
-import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
-import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
+import uz.gita.saiga_driver.data.remote.response.auth.*
 import uz.gita.saiga_driver.domain.enums.StartScreen
 import uz.gita.saiga_driver.utils.ResultData
 
@@ -21,7 +19,7 @@ interface AuthRepository {
         phoneNumber: String,
         firstName: String,
         lastName: String
-    ): Flow<ResultData<AuthResponse>>
+    ): Flow<ResultData<CabinetBaseResponse>>
 
     fun verifyCode(code: String): Flow<ResultData<String>>
 

@@ -46,4 +46,6 @@ interface HomeViewModel : BaseViewModel {
 
     fun getDriverFinance()
 
+    fun navigateToPayment()
+
 }

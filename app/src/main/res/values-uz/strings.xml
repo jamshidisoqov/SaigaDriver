@@ -103,5 +103,9 @@
 
     <string name="end_time">Tamomlangan vaqti</string>
     <string name="login_description">Shartnoma tuzishda ko`rsatilgan telefon raqamini kiritishingiz kerak</string>
+    <string name="payment">Payment</string>
+    <string name="payment_connection">No other services have been added yet. They will be added soon. For now, you can top up the account by contacting the administration.</string>
+
+    <string name="granted_phone">Agar ruxsat bermasangiz ushbu xizmatdan foydalana olmaysiz</string>
 
 </resources>

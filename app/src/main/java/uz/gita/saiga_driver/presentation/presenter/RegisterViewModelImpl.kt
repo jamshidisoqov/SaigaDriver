@@ -36,13 +36,14 @@ class RegisterViewModelImpl @Inject constructor(
                 .collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                        val userResponse = it.data
+                        val userResponse = it.data.user
                         mySharedPref.firstName = userResponse.firstName
                         mySharedPref.lastName = userResponse.lastName
                         mySharedPref.phoneNumber = userResponse.phoneNumber
                         mySharedPref.language = userResponse.lang.ordinal
-                        mySharedPref.token = it.token
                         mySharedPref.userId = userResponse.id
+                        mySharedPref.token = it.token
+                        mySharedPref.isVerify = true
                         direction.navigateToPermissionCheck()
                     }.onMessage {
                         messageSharedFlow.emit(it)

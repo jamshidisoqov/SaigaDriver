@@ -102,4 +102,8 @@
 
     <string name="end_time">Tamamlanǵan waqtı</string>
     <string name="login_description">Shártnama dúziwde kórsetilgen telefon nomerin kirgiziwińiz kerek</string>
+    <string name="payment">Payment</string>
+    <string name="payment_connection">No other services have been added yet. They will be added soon. For now, you can top up the account by contacting the administration.</string>
+
+    <string name="granted_phone">Eger ruxsat bermasangiz bul xızmetten paydalana almaysız </string>
 </resources>

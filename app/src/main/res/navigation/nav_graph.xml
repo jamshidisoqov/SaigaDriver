@@ -98,6 +98,9 @@
         <action
             android:id="@+id/action_mainScreen_to_directionDetailScreen"
             app:destination="@id/directionDetailScreen" />
+        <action
+            android:id="@+id/action_mainScreen_to_paymentScreen"
+            app:destination="@id/paymentScreen" />
     </fragment>
     <fragment
         android:id="@+id/settingsScreen"
@@ -191,4 +194,9 @@
             app:destination="@id/loginScreen"
             app:popUpTo="@id/nav_graph" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentScreen"
+        tools:layout="@layout/screen_payment"
+        android:name="uz.gita.saiga_driver.presentation.ui.payment.PaymentScreen"
+        android:label="PaymentScreen" />
 </navigation>

@@ -102,5 +102,8 @@
 
     <string name="end_time">End time</string>
     <string name="login_description">You must enter the phone number specified when concluding the contract</string>
+    <string name="payment">Payment</string>
+    <string name="payment_connection">No other services have been added yet. They will be added soon. For now, you can top up the account by contacting the administration.</string>
 
+    <string name="granted_phone">If you do not give permission, you will not be able to use this service</string>
 </resources>

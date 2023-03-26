@@ -49,6 +49,7 @@ class LoginViewModelImpl @Inject constructor(
                         mySharedPref.language = userResponse.lang.ordinal
                         mySharedPref.token = it.token
                         mySharedPref.userId = userResponse.id
+                        mySharedPref.isVerify = true
                         direction.navigateToPermissionCheck()
                     }.onMessage {
                         messageSharedFlow.emit(it)

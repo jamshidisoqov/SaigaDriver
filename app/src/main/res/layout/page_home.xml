@@ -44,12 +44,7 @@
             android:id="@+id/image_notification"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_std"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:padding="@dimen/margin_std"
             android:src="@drawable/ic_notification"
             app:tint="@color/dark_grey" />
@@ -107,7 +102,11 @@
                 app:tint="@color/light_grey" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_payment_money"
                 android:layout_width="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:selectableItemBackground"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_component"
                 android:text="@string/transfer_money"
