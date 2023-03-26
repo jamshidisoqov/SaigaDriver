@@ -16,6 +16,7 @@ import uz.gita.saiga_driver.data.remote.request.auth.BalanceRequest
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
+import uz.gita.saiga_driver.data.remote.request.auth.enums.Lang
 import uz.gita.saiga_driver.data.remote.response.DriverBalanceResponse
 import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceResponse
@@ -122,7 +123,7 @@ class AuthRepositoryImpl @Inject constructor(
         flow<ResultData<AuthResponse>> {
             authApi.updateUser(
                 mySharedPref.userId,
-                UpdateUserRequest(firstName, lastName, mySharedPref.phoneNumber)
+                UpdateUserRequest(firstName, lastName, mySharedPref.phoneNumber,Lang.values()[mySharedPref.language])
             )
                 .func(gson)
                 .onSuccess {
@@ -136,9 +137,7 @@ class AuthRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
-    override fun getUserData(): Flow<ResultData<AuthResponse>> = flow {
-
-    }
+    override fun getUserData(): Flow<ResultData<AuthResponse>> = flow {}
 
     override fun topUpBalance(amount: Long): Flow<ResultData<BalanceResponse>> =
         flow<ResultData<BalanceResponse>> {
@@ -179,4 +178,14 @@ class AuthRepositoryImpl @Inject constructor(
             onSuccess.invoke()
         }
     }
+
+    override suspend fun updateUser(): Any = authApi.updateUser(
+        mySharedPref.userId,
+        UpdateUserRequest(
+            mySharedPref.firstName,
+            mySharedPref.lastName,
+            mySharedPref.phoneNumber,
+            Lang.values()[mySharedPref.language]
+        )
+    )
 }

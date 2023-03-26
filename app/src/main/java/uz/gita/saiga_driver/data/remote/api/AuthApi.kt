@@ -21,7 +21,7 @@ import uz.gita.saiga_driver.data.remote.response.auth.CabinetResponse
 // Created by Jamshid Isoqov on 12/14/2022
 interface AuthApi {
 
-    @PUT("/api/users/{id}")
+    @PUT("/api/auth/{id}")
     suspend fun updateUser(
         @Path("id") userId: Long,
         @Body updateUserRequest: UpdateUserRequest

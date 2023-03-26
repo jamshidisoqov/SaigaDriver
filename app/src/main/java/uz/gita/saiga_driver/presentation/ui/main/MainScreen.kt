@@ -19,14 +19,11 @@ class MainScreen : Fragment(R.layout.screen_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         viewBinding.include {
-
             pagerMain.adapter = MainAdapter(requireActivity()) {
                 viewBinding.bnvMain.itemActiveIndex = it
                 pagerMain.setCurrentItem(it, true)
             }
-
             pagerMain.isUserInputEnabled = false
-
             bnvMain.setOnItemSelectedListener {
                 pagerMain.setCurrentItem(it, true)
             }

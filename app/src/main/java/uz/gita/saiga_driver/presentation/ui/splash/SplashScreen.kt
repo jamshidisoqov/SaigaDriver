@@ -33,7 +33,6 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
-            delay(1000)
             if (mySharedPref.introFinished) {
                 if (mySharedPref.isVerify) {
                     statusCheck()
@@ -53,7 +52,7 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
                     val intent = Intent(requireContext(), GpsService::class.java)
                     requireContext().startService(intent)
                 }, onPermissionDenied = {})
-                findNavController().navigate(R.id.action_splashScreen_to_mainScreen)
+                viewModel.navigateToScreen()
             } else {
                 statusCheck()
             }
