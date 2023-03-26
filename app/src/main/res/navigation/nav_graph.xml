@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_loginScreen_to_verifyCodeScreen"
             app:destination="@id/verifyCodeScreen" />
+        <action
+            android:id="@+id/action_loginScreen_to_permissionsCheckScreen"
+            app:destination="@id/permissionsCheckScreen" />
     </fragment>
     <fragment
         android:id="@+id/registerScreen"
@@ -48,6 +51,9 @@
         <action
             android:id="@+id/action_registerScreen_to_verifyCodeScreen"
             app:destination="@id/verifyCodeScreen" />
+        <action
+            android:id="@+id/action_registerScreen_to_permissionsCheckScreen"
+            app:destination="@id/permissionsCheckScreen" />
     </fragment>
     <fragment
         android:id="@+id/verifyCodeScreen"

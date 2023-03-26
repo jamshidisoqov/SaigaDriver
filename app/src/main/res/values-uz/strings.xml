@@ -102,5 +102,6 @@
     <string name="start_time">Boshlangan vaqti</string>
 
     <string name="end_time">Tamomlangan vaqti</string>
+    <string name="login_description">Shartnoma tuzishda ko`rsatilgan telefon raqamini kiritishingiz kerak</string>
 
 </resources>

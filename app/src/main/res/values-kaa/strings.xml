@@ -10,7 +10,7 @@
     <string name="go_to_settings">Sazlanmalarga ótiń</string>
     <string name="phone_hint">901234567</string>
     <string name="register">Dizimnen ótiw</string>
-    <string name="login">Kirisiw</string>
+    <string name="login">Login</string>
     <string name="permission_check">Ruxsatti tekseriw</string>
     <string name="check">Tekseriw</string>
     <string name="account_not">Ele dizimnen ótpedingizmi?</string>
@@ -101,4 +101,5 @@
     <string name="start_time">Baslanǵan waqtı</string>
 
     <string name="end_time">Tamamlanǵan waqtı</string>
+    <string name="login_description">Shártnama dúziwde kórsetilgen telefon nomerin kirgiziwińiz kerek</string>
 </resources>

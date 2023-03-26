@@ -5,30 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/action_bar_container"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/white"
-        android:elevation="8dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_component"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/login"
-        app:titleCentered="true" />
+        android:text="@string/login"/>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_saiga"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/saiga_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="@id/action_bar_container"
-        app:layout_constraintStart_toStartOf="@id/action_bar_container"
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_description_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/action_bar_container"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintWidth_percent="0.3" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/dark_grey"
+        android:layout_margin="@dimen/margin_component"
+        android:text="@string/login_description"/>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_phone"
@@ -41,8 +42,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_saiga"
-        app:layout_constraintVertical_bias="0.1">
+        app:layout_constraintTop_toBottomOf="@id/tv_description_login"
+        app:layout_constraintVertical_bias="0.05">
 
         <br.com.sapereaude.maskedEditText.MaskedEditText
             android:id="@+id/input_phone"
@@ -82,7 +83,7 @@
         android:layout_marginTop="@dimen/margin_std"
         android:layout_marginBottom="@dimen/margin_large"
         android:enabled="false"
-        android:text="@string/next"
+        android:text="@string/login"
         android:textSize="18sp"
         app:cornerRadius="@dimen/margin_component"
         app:layout_constraintBottom_toBottomOf="parent"

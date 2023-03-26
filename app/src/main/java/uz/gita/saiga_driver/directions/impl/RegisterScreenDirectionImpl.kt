@@ -15,4 +15,8 @@ class RegisterScreenDirectionImpl @Inject constructor(
     override suspend fun navigateToLogin() {
         navigator.navigateTo(RegisterScreenDirections.actionRegisterScreenToLoginScreen())
     }
+
+    override suspend fun navigateToPermissionCheck() {
+        navigator.navigateTo(RegisterScreenDirections.actionRegisterScreenToPermissionsCheckScreen())
+    }
 }

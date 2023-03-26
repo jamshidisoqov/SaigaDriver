@@ -23,7 +23,7 @@ class MySharedPref @Inject constructor(
 
     var phoneNumber: String by Strings("")
 
-    var language: Int by Ints(0)
+    var language: Int by Ints(2)
 
     var isVerify: Boolean by Booleans(false)
 

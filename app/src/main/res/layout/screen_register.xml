@@ -5,17 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/action_bar_container"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/white"
-        android:elevation="8dp"
-        app:title="@string/register"
-        app:titleCentered="true"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_component"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/register"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_description_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/action_bar_container"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/dark_grey"
+        android:layout_margin="@dimen/margin_component"
+        android:text="@string/login_description"/>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_phone"
@@ -29,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/action_bar_container"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0.1">
 
         <br.com.sapereaude.maskedEditText.MaskedEditText
             android:id="@+id/input_phone"
@@ -119,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_margin="16dp"
-        android:text="@string/next"
+        android:text="@string/register"
         android:textSize="18sp"
         android:enabled="false"
         app:cornerRadius="@dimen/margin_component"

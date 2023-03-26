@@ -34,6 +34,7 @@ class RegisterViewModelImpl @Inject constructor(
             loadingSharedFlow.emit(true)
             authRepository.register(phoneNumber = phone, firstName, lastName)
                 .collectLatest { result ->
+                    loadingSharedFlow.emit(false)
                     result.onSuccess {
                         val userResponse = it.data
                         mySharedPref.firstName = userResponse.firstName
@@ -42,21 +43,10 @@ class RegisterViewModelImpl @Inject constructor(
                         mySharedPref.language = userResponse.lang.ordinal
                         mySharedPref.token = it.token
                         mySharedPref.userId = userResponse.id
-                        authRepository.sendSms(phone).collectLatest { result ->
-                            loadingSharedFlow.emit(false)
-                            result.onSuccess {
-                                direction.navigateToVerify(phone)
-                            }.onMessage { message ->
-                                messageSharedFlow.emit(message)
-                            }.onError { error ->
-                                errorSharedFlow.emit(error.getMessage())
-                            }
-                        }
+                        direction.navigateToPermissionCheck()
                     }.onMessage {
-                        loadingSharedFlow.emit(false)
                         messageSharedFlow.emit(it)
                     }.onError {
-                        loadingSharedFlow.emit(false)
                         errorSharedFlow.emit(it.getMessage())
                     }
                 }

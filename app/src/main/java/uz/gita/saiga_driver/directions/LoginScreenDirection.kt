@@ -7,4 +7,6 @@ interface LoginScreenDirection {
 
     suspend fun navigateToRegisterScreen()
 
+    suspend fun navigateToPermissionCheck()
+
 }
