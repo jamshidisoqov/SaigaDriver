@@ -1,9 +1,7 @@
 package uz.gita.saiga_driver.data.remote.response.order
 
 import android.os.Parcelable
-import com.google.firebase.encoders.annotations.Encodable.Ignore
 import com.google.gson.annotations.Expose
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import uz.gita.saiga_driver.data.remote.response.auth.UserResponse
 import uz.gita.saiga_driver.domain.entity.TripWithDate

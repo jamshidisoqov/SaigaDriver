@@ -47,31 +47,39 @@ class OrdersViewModelImpl @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             mapRepository.requestCurrentLocation().collectLatest {
-                it.onSuccess {latLng-> updateDistances(latLng) }
+                it.onSuccess { latLng ->
+                    currentLocation = latLng
+                    updateDistances(latLng)
+                }
             }
         }
     }
 
     private suspend fun updateDistances(currentLocation: LatLng?) {
         viewModelScope.launch {
-            if (currentLocation != null) {
-                val orders = allOrderFlow.value.map {
-                    val addressFrom = it.direction.addressFrom
-                    it.copy(
-                        distance = calculationByDistance(
-                            LatLng(
-                                addressFrom.lat ?: NUKUS.latitude,
-                                addressFrom.lon ?: NUKUS.longitude
-                            ), currentLocation
-                        ).toString()
-                    )
-                }.sortedBy { it.distance.toDouble() }.toMutableList()
-                if (orders.isNotEmpty()) {
-                    if (orders[0].distance.toDouble() < 1.0) {
-                        openOrderDialog.emit(orders[0])
+            try {
+                if (currentLocation != null) {
+                    val orders = allOrderFlow.value.map {
+                        val addressFrom = it.direction.addressFrom
+                        it.copy(
+                            distance = calculationByDistance(
+                                LatLng(
+                                    addressFrom.lat ?: NUKUS.latitude,
+                                    addressFrom.lon ?: NUKUS.longitude
+                                ), currentLocation
+                            ).toString()
+                        )
+                    }.sortedBy { it.distance.toDouble() }.toMutableList()
+                    if (orders.isNotEmpty()) {
+                        if (orders[0].distance.toDouble() < 1.0) {
+                            openOrderDialog.emit(orders[0])
+                        }
                     }
+
+                    allOrderFlow.emit(orders)
                 }
-                allOrderFlow.emit(orders)
+            } catch (e: Exception) {
+                errorSharedFlow.emit(e.getMessage())
             }
         }
     }
