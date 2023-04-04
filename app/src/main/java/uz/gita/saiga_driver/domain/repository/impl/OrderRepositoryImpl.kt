@@ -198,7 +198,7 @@ class OrderRepositoryImpl @Inject constructor(
     override fun socketConnect() {
         try {
             resetSubscriptions()
-            stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
+            //stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
             resetSubscriptions()
             val disLifecycle = stompClient.lifecycle()
                 .doOnError {

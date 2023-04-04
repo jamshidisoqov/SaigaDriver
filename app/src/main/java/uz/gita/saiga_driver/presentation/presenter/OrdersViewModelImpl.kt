@@ -18,6 +18,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
+import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
@@ -62,7 +63,7 @@ class OrdersViewModelImpl @Inject constructor(
                     val orders = allOrderFlow.value.map {
                         val addressFrom = it.direction.addressFrom
                         it.copy(
-                            distance = calculationByDistance(
+                            distance = distance(
                                 LatLng(
                                     addressFrom.lat ?: NUKUS.latitude,
                                     addressFrom.lon ?: NUKUS.longitude
@@ -75,7 +76,6 @@ class OrdersViewModelImpl @Inject constructor(
                             openOrderDialog.emit(orders[0])
                         }
                     }
-
                     allOrderFlow.emit(orders)
                 }
             } catch (e: Exception) {
@@ -108,10 +108,14 @@ class OrdersViewModelImpl @Inject constructor(
 
     override fun setCurrentLocation(currentLocation: LatLng) {
         viewModelScope.launch(Dispatchers.Default) {
-            val distance =
-                calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
-            if (distance > 0.03) updateDistances(currentLocation)
-            this@OrdersViewModelImpl.currentLocation = currentLocation
+            try {
+                val distance =
+                    calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
+                if (distance > 0.03) updateDistances(currentLocation)
+                this@OrdersViewModelImpl.currentLocation = currentLocation
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

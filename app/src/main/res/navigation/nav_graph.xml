@@ -106,7 +106,12 @@
         android:id="@+id/settingsScreen"
         tools:layout="@layout/screen_settings"
         android:name="uz.gita.saiga_driver.presentation.ui.settings.SettingsScreen"
-        android:label="SettingsScreen" />
+        android:label="SettingsScreen" >
+        <action
+            android:id="@+id/action_settingsScreen_to_loginScreen"
+            app:destination="@id/loginScreen"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
     <fragment
         android:id="@+id/directionDetailScreen"
         tools:layout="@layout/screen_directions_detail"
@@ -178,7 +183,11 @@
             android:id="@+id/action_permissionsCheckScreen_to_mainScreen"
             app:destination="@id/mainScreen"
             app:popUpTo="@id/nav_graph" />
-    </fragment><action android:id="@+id/action_global_tripScreen" app:destination="@id/tripScreen"/><action android:id="@+id/action_global_loginScreen" app:destination="@id/loginScreen"/>
+    </fragment><action android:id="@+id/action_global_tripScreen" app:destination="@id/tripScreen"/>
+    <action
+        android:id="@+id/action_global_loginScreen"
+        app:destination="@id/loginScreen"
+        app:popUpTo="@id/nav_graph" />
     <action
         android:id="@+id/action_global_splashScreen"
         app:destination="@id/splashScreen"
