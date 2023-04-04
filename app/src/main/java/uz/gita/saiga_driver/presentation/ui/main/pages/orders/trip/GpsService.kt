@@ -13,6 +13,7 @@ import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.currentLocationBearing
 import uz.gita.saiga_driver.utils.extensions.log
 
+
 // Created by Jamshid Isoqov on 2/5/2023
 class GpsService : Service(), LocationListener {
     private var locationManager: LocationManager? = null

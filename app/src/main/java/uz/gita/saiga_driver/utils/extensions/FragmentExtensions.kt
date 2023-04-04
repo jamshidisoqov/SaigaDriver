@@ -135,11 +135,13 @@ fun Fragment.showProgress() {
 
 fun Fragment.showErrorDialog(message: String) {
     val dialog = ErrorDialog(requireContext(), message)
+    hideProgress()
     dialog.show()
 }
 
 fun Fragment.showMessageDialog(message: String) {
     val dialog = MessageDialog(requireContext(), message)
+    hideProgress()
     dialog.show()
 
 }

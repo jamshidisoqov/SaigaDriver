@@ -50,7 +50,7 @@ class SettingsScreen : Fragment(R.layout.screen_settings) {
 
         cardLogOut.setOnClickListener {
             mySharedPref.isVerify = false
-            DatabaseModule.unauthorizedLiveData.value = Unit
+            findNavController().navigate(SettingsScreenDirections.actionSettingsScreenToLoginScreen())
         }
 
         containerMapType.setOnClickListener {

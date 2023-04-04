@@ -29,6 +29,8 @@ interface AuthRepository {
 
     fun updateUser(firstName: String, lastName: String): Flow<ResultData<AuthResponse>>
 
+    suspend fun updateUser():Any
+
     fun getUserData():Flow<ResultData<AuthResponse>>
 
     fun topUpBalance(amount:Long):Flow<ResultData<BalanceResponse>>

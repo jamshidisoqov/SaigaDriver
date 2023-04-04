@@ -18,6 +18,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
+import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
@@ -47,31 +48,38 @@ class OrdersViewModelImpl @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             mapRepository.requestCurrentLocation().collectLatest {
-                it.onSuccess {latLng-> updateDistances(latLng) }
+                it.onSuccess { latLng ->
+                    currentLocation = latLng
+                    updateDistances(latLng)
+                }
             }
         }
     }
 
     private suspend fun updateDistances(currentLocation: LatLng?) {
         viewModelScope.launch {
-            if (currentLocation != null) {
-                val orders = allOrderFlow.value.map {
-                    val addressFrom = it.direction.addressFrom
-                    it.copy(
-                        distance = calculationByDistance(
-                            LatLng(
-                                addressFrom.lat ?: NUKUS.latitude,
-                                addressFrom.lon ?: NUKUS.longitude
-                            ), currentLocation
-                        ).toString()
-                    )
-                }.sortedBy { it.distance.toDouble() }.toMutableList()
-                if (orders.isNotEmpty()) {
-                    if (orders[0].distance.toDouble() < 1.0) {
-                        openOrderDialog.emit(orders[0])
+            try {
+                if (currentLocation != null) {
+                    val orders = allOrderFlow.value.map {
+                        val addressFrom = it.direction.addressFrom
+                        it.copy(
+                            distance = distance(
+                                LatLng(
+                                    addressFrom.lat ?: NUKUS.latitude,
+                                    addressFrom.lon ?: NUKUS.longitude
+                                ), currentLocation
+                            ).toString()
+                        )
+                    }.sortedBy { it.distance.toDouble() }.toMutableList()
+                    if (orders.isNotEmpty()) {
+                        if (orders[0].distance.toDouble() < 1.0) {
+                            openOrderDialog.emit(orders[0])
+                        }
                     }
+                    allOrderFlow.emit(orders)
                 }
-                allOrderFlow.emit(orders)
+            } catch (e: Exception) {
+                errorSharedFlow.emit(e.getMessage())
             }
         }
     }
@@ -100,10 +108,14 @@ class OrdersViewModelImpl @Inject constructor(
 
     override fun setCurrentLocation(currentLocation: LatLng) {
         viewModelScope.launch(Dispatchers.Default) {
-            val distance =
-                calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
-            if (distance > 0.03) updateDistances(currentLocation)
-            this@OrdersViewModelImpl.currentLocation = currentLocation
+            try {
+                val distance =
+                    calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
+                if (distance > 0.03) updateDistances(currentLocation)
+                this@OrdersViewModelImpl.currentLocation = currentLocation
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

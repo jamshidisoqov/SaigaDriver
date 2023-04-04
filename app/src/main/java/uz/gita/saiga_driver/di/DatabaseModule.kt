@@ -52,7 +52,7 @@ object DatabaseModule {
         mySharedPref: MySharedPref
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor.Builder(ctx).build())
+            //.addInterceptor(ChuckerInterceptor.Builder(ctx).build())
             .readTimeout(10L, TimeUnit.SECONDS)
             .writeTimeout(10L, TimeUnit.SECONDS)
             .connectTimeout(10L, TimeUnit.SECONDS)

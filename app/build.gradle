@@ -5,8 +5,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.firebase.crashlytics'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -26,7 +26,7 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String","MAP_API_KEY","\"AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ\""
+            buildConfigField "String", "MAP_API_KEY", "\"AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ\""
         }
 
         release {
@@ -58,6 +58,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
 
     // unit testing
     testImplementation 'junit:junit:4.13.2'
@@ -127,9 +129,6 @@ dependencies {
 
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
 
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.3.3'
-    implementation 'com.google.firebase:firebase-analytics:21.2.0'
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.6'

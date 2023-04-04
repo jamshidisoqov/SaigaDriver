@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:72b9db0fb4b493ac9fb662",
+        "mobilesdk_app_id": "1:699991940935:android:cd56d995987c5f489fb662",
         "android_client_info": {
-          "package_name": "uz.gita.max_way_flutter.max_way_flutter"
+          "package_name": "com.example.maw_way_clone_app"
         }
       },
       "oauth_client": [
@@ -43,81 +43,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:c6d8ea8e44cf94b69fb662",
-        "android_client_info": {
-          "package_name": "uz.gita.max_way_flutter_me.max_way_flutter_me"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:6d548b6e537251509fb662",
+        "mobilesdk_app_id": "1:699991940935:android:f5e9aacf5274f00f9fb662",
         "android_client_info": {
           "package_name": "uz.gita.saiga_driver"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBN5getsIuw5yNbH3xwNTTpi16Gpiic1tY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "699991940935-23a6vac5rbbs8qil04t145qt55sdal3v.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "699991940935-81b1m52chs7vtfr1820lemtmmvjr2ro2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "uz.gita.maxwayflutterme.maxWayFlutterMe"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:699991940935:android:33f0e6e2fa8061db9fb662",
-        "android_client_info": {
-          "package_name": "uz.gita.saiga_user"
         }
       },
       "oauth_client": [
