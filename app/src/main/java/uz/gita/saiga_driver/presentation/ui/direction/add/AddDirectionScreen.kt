@@ -24,6 +24,7 @@ import uz.gita.saiga_driver.presentation.dialogs.ChooseDateDialog
 import uz.gita.saiga_driver.presentation.dialogs.ChooseTimeDialog
 import uz.gita.saiga_driver.presentation.dialogs.map.MapDialog
 import uz.gita.saiga_driver.presentation.presenter.AddDirectionViewModelImpl
+import uz.gita.saiga_driver.presentation.ui.direction.add.address.AddressDialog
 import uz.gita.saiga_driver.utils.DEBOUNCE_TEXT_CHANGES
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.MaskWatcherPayment
@@ -42,43 +43,12 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
     private var toAddress: Pair<String, LatLng>? = null
     private var date: Date? = null
     private var time: String? = null
-    private var allDirection = emptyList<StaticAddressResponse>()
     private var boolFromAddress: Boolean = false
     private var boolToAddress: Boolean = false
     private var boolPrice: Boolean = false
-
-    private var selectedPositionFrom = 0
-    private var selectedPositionTo = 0
-
+    private var isFromFocus = true
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
-
-        viewModel.allDirections.onEach {
-            allDirection = it
-            val adapter = ArrayAdapter(
-                requireContext(),
-                R.layout.list_item_drop_down,
-                it.map { data -> data.title }
-            )
-
-            actWhereFrom.setAdapter(adapter)
-            actWhereTo.setAdapter(adapter)
-
-            actWhereFrom.itemClickEvents { adapterViewItemClickEvent ->
-                selectedPositionFrom = adapterViewItemClickEvent.position
-                fromAddress = with(allDirection[selectedPositionFrom]) {
-                    Pair(title, LatLng(lat,lat))
-                }
-            }
-            actWhereTo.itemClickEvents { adapterViewItemClickEvent ->
-                selectedPositionTo = adapterViewItemClickEvent.position
-                toAddress = with(allDirection[selectedPositionFrom]) {
-                    Pair(title,LatLng(lat,lat))
-                }
-            }
-
-        }.launchIn(lifecycleScope)
-
         viewModel.loadingSharedFlow.onEach {
             if (it) showProgress() else hideProgress()
         }.launchIn(lifecycleScope)
@@ -96,6 +66,20 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
         }.launchIn(lifecycleScope)
 
         //events
+
+        actWhereFrom.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                isFromFocus = true
+                showAddressDialog()
+            }.launchIn(lifecycleScope)
+
+        actWhereTo.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                isFromFocus = false
+                showAddressDialog()
+            }.launchIn(lifecycleScope)
 
         inputAmount.apply {
             addTextChangedListener(MaskWatcherPayment(this))
@@ -165,6 +149,25 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
         viewModel.getAllStaticAddress()
 
     }
+    private fun showAddressDialog() = viewBinding.include{
+        val dialog = AddressDialog()
+        dialog.setAddressCallback {
+            if (isFromFocus) {
+                boolFromAddress = true
+                actWhereFrom.setText(it.title ?: "")
+                fromAddress = Pair(it.title?: "",with(it) { LatLng(lat!!, lon!!) })
+            } else {
+                boolToAddress = true
+                actWhereTo.setText(it.title ?: "")
+                toAddress = Pair(it.title ?: "",with(it) { LatLng(lat!!, lon!!) })
+            }
+        }
+        dialog.setMapCallback {
+            //TODO
+        }
+        dialog.show(childFragmentManager, "AddressDialog")
+    }
+
 
     private fun openTime() = viewBinding.include {
         val timeDialog = ChooseTimeDialog(requireContext(), time ?: "12:00")

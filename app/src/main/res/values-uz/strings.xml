@@ -108,5 +108,7 @@
 
     <string name="granted_phone">Agar ruxsat bermasangiz ushbu xizmatdan foydalana olmaysiz</string>
     <string name="connection_error">Bog \'lanish bilan bog\'liq muoomolar yuz berdi iltimos tekshiring</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 
 </resources>

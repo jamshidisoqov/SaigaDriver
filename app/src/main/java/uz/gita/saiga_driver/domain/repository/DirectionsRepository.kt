@@ -5,6 +5,7 @@ import retrofit2.Response
 import uz.gita.saiga_driver.data.remote.request.direction.StaticAddressRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
+import uz.gita.saiga_driver.data.remote.response.nomination.SearchResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.utils.ResultData
 
@@ -18,5 +19,7 @@ interface DirectionsRepository {
     fun getAllStaticAddress(): Flow<ResultData<List<StaticAddressResponse>>>
 
     fun cancelOrder(id: Long): Flow<ResultData<Any>>
+
+    fun searchAddress(query:String):Flow<ResultData<List<SearchResponse>>>
 
 }

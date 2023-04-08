@@ -51,7 +51,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
     private var distance = 0.0
 
-    private var price = 7000.0
+    private var price = 8000.0
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
@@ -154,6 +154,18 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             .onEach {
                 viewModel.openGoogleMap()
             }.launchIn(lifecycleScope)
+
+        cardPauseOrder.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                pauseOrder()
+            }.launchIn(lifecycleScope)
+
+        btnResumeOrder.clicks()
+            .debounce(DEBOUNCE_VIEW_CLICK)
+            .onEach {
+                resumeOrder()
+            }.launchIn(lifecycleScope)
     }
 
     private fun showEndOrderDialog() {
@@ -164,10 +176,30 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         dialog.show(childFragmentManager, "end-order")
     }
 
+    private fun pauseOrder() = viewBinding.include{
+        viewModel.pauseOrder()
+        timerPauseChr.base = SystemClock.elapsedRealtime()
+        cardPauseOrder.gone()
+        showPauseDialog()
+    }
+
+    private fun showPauseDialog() = viewBinding.include {
+        pauseOrder.visible()
+        timerPauseChr.start()
+    }
+
+    private fun resumeOrder() = viewBinding.include{
+        viewModel.resumeOrder()
+        cardPauseOrder.visible()
+        pauseOrder.gone()
+        timerPauseChr.stop()
+    }
+
     private fun startTrip() = viewBinding.include {
         tvStartTime.text =
             resources.getString(R.string.start_time).combine(getCurrentTime(Date(startTime)))
         timerChr.base = SystemClock.elapsedRealtime()
+        cardPauseOrder.visible()
         timerChr.start()
     }
 

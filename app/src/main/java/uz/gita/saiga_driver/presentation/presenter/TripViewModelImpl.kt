@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -42,16 +44,19 @@ class TripViewModelImpl @Inject constructor(
 
     override val currentWay = MutableStateFlow(0.0)
 
-    override val currentMoney = MutableStateFlow(7000.0)
+    override val currentMoney = MutableStateFlow(8000.0)
 
     override val backSharedFlow = MutableSharedFlow<Unit>()
 
     override val endOrderDialog = MutableSharedFlow<Unit>()
 
-    override val openGoogleMapSharedFlow  =MutableSharedFlow<LatLng>()
+    override val openGoogleMapSharedFlow = MutableSharedFlow<LatLng>()
 
     private var _way = 0.0
-    private var _money = 7000.0
+
+    private var _money = 8000.0
+
+    private var pauseJob: Job? = null
 
     override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
@@ -65,7 +70,7 @@ class TripViewModelImpl @Inject constructor(
                 val speed: Double = way * 1000 * 3.6
                 if (_way > 3.0) {
                     val dMoney = (_way - 3.0) * 1000
-                    _money = 7000 + dMoney
+                    _money = 8000 + dMoney
                     currentMoney.emit(decFormat.format(_money).toDouble())
                 }
                 currentWay.emit(_way)
@@ -134,10 +139,10 @@ class TripViewModelImpl @Inject constructor(
         viewModelScope.launch {
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
-                mapRepository.requestCurrentLocation().collectLatest { result->
+                mapRepository.requestCurrentLocation().collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                       openGoogleMapSharedFlow.emit(it)
+                        openGoogleMapSharedFlow.emit(it)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {
@@ -150,5 +155,21 @@ class TripViewModelImpl @Inject constructor(
         }
     }
 
+    override fun pauseOrder() {
+        pauseJob?.cancel()
+        pauseJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(180000)
+            _money += 2000
+            currentMoney.emit(_money)
+            while (true) {
+                delay(60000)
+                _money += 500
+                currentMoney.emit(_money)
+            }
+        }
+    }
 
+    override fun resumeOrder() {
+        pauseJob?.cancel()
+    }
 }

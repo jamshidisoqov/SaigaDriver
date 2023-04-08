@@ -107,4 +107,6 @@
 
     <string name="granted_phone">Eger ruxsat bermasangiz bul xızmetten paydalana almaysız </string>
     <string name="connection_error">Baylanısıw menen baylanıslı muoomolar júz berdi ótinish tekseriń</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 </resources>

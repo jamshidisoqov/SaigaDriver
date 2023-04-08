@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.DirectionsApi
+import uz.gita.saiga_driver.data.remote.api.NominationApi
 import uz.gita.saiga_driver.data.remote.request.direction.StaticAddressRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.response.StaticAddressResponse
+import uz.gita.saiga_driver.data.remote.response.nomination.SearchResponse
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.domain.repository.DirectionsRepository
 import uz.gita.saiga_driver.utils.ResultData
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class DirectionsRepositoryImpl @Inject constructor(
     private val directionsApi: DirectionsApi,
     private val gson: Gson,
-    private val mySharedPref: MySharedPref
+    private val mySharedPref: MySharedPref,
+    private val nominationApi: NominationApi
 ) : DirectionsRepository {
     override fun getAllMyDirections(): Flow<ResultData<List<OrderResponse>>> =
         flow<ResultData<List<OrderResponse>>> {
@@ -57,6 +60,12 @@ class DirectionsRepositoryImpl @Inject constructor(
 
     override fun cancelOrder(id: Long): Flow<ResultData<Any>> = flow<ResultData<Any>> {
         emit(directionsApi.cancelOrder(id).func(gson))
+    }.catch { error ->
+        emit(ResultData.Error(error))
+    }.flowOn(Dispatchers.IO)
+
+    override fun searchAddress(query: String): Flow<ResultData<List<SearchResponse>>> = flow {
+        emit(nominationApi.searchOrders(query = query).func(gson))
     }.catch { error ->
         emit(ResultData.Error(error))
     }.flowOn(Dispatchers.IO)

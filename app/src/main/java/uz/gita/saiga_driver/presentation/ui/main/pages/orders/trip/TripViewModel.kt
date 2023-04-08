@@ -30,4 +30,7 @@ interface TripViewModel : BaseViewModel {
     fun cancelOrder(orderResponse: OrderResponse)
 
     fun openGoogleMap()
+    fun pauseOrder()
+
+    fun resumeOrder()
 }

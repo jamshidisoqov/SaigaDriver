@@ -2,7 +2,9 @@ package uz.gita.saiga_driver.data.local.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.qualifiers.ApplicationContext
+import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.SharedPreference
 import uz.gita.saiga_driver.utils.extensions.getCurrentDate
 import javax.inject.Inject
@@ -32,6 +34,12 @@ class MySharedPref @Inject constructor(
     var mapType: Int by Ints(0)
 
     var introFinished:Boolean by Booleans(false)
+
+    var lat: String by Strings(NUKUS.latitude.toString())
+
+    var lon: String by Strings(NUKUS.longitude.toString())
+
+    fun getCurrentLatLng(): LatLng = LatLng(lat.toDouble(), lon.toDouble())
 
 
 }
