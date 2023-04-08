@@ -27,12 +27,14 @@ import uz.gita.saiga_driver.di.DatabaseModule
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.navigation.NavigationHandler
+import uz.gita.saiga_driver.presentation.dialogs.CheckConnectionDialog
 import uz.gita.saiga_driver.presentation.dialogs.ProgressDialog
 import uz.gita.saiga_driver.services.notification.NotificationService
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.driverStatusLiveData
 import uz.gita.saiga_driver.utils.extensions.*
+import uz.gita.saiga_driver.utils.socketStatusLiveData
 import java.util.*
 import javax.inject.Inject
 
@@ -90,6 +92,18 @@ class MainActivity : AppCompatActivity() {
                 orderRepository.socketDisconnect()
             }
         }
+        socketStatusLiveData.observe(this) {
+            val dialog = CheckConnectionDialog()
+            dialog.setOnCheckListener {
+                orderRepository.socketConnect()
+            }
+            dialog.show(supportFragmentManager, "Check connection")
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        orderRepository.socketDisconnect()
     }
 
     fun showProgress() {

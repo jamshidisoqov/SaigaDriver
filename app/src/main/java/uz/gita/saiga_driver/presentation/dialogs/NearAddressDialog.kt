@@ -45,15 +45,19 @@ class NearAddressDialog(private val orderResponse: OrderResponse) :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
-
         orderResponse.direction.apply {
             tvFromAddress.text =
                 this.addressFrom.title ?: resources.getString(R.string.not_specified)
             tvToAddress.text = this.addressTo?.title ?: resources.getString(R.string.not_specified)
             tvDistance.text = resources.getString(R.string.order_near).combine(
-                calculationByDistance(
-                    with(this.addressFrom) { LatLng(lat!!, lon!!) }, currentLocation.value ?: NUKUS
-                ).toString()
+                try {
+                    calculationByDistance(
+                        with(this.addressFrom) { LatLng(lat!!, lon!!) },
+                        currentLocation.value ?: NUKUS
+                    ).toString()
+                } catch (_: Exception) {
+                    "0.0 km"
+                }
             )
         }
 

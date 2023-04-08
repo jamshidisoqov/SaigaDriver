@@ -29,6 +29,7 @@ import uz.gita.saiga_driver.utils.extensions.fromJsonData
 import uz.gita.saiga_driver.utils.extensions.func
 import uz.gita.saiga_driver.utils.extensions.getBackendTimeFormat
 import uz.gita.saiga_driver.utils.extensions.log
+import uz.gita.saiga_driver.utils.socketStatusLiveData
 import javax.inject.Inject
 
 @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
@@ -198,8 +199,6 @@ class OrderRepositoryImpl @Inject constructor(
     override fun socketConnect() {
         try {
             resetSubscriptions()
-            //stompClient.withClientHeartbeat(2000).withServerHeartbeat(2000)
-            resetSubscriptions()
             val disLifecycle = stompClient.lifecycle()
                 .doOnError {
                     ordersLiveData.value = (ResultData.Error(it))
@@ -217,12 +216,14 @@ class OrderRepositoryImpl @Inject constructor(
                         }
                         LifecycleEvent.Type.ERROR -> {
                             log("Error")
+                            socketStatusLiveData.postValue(Unit)
                         }
                         LifecycleEvent.Type.CLOSED -> {
                             resetSubscriptions()
                         }
                         LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                             log("FAILED")
+                            socketStatusLiveData.postValue(Unit)
                         }
                     }
                 }
@@ -231,7 +232,7 @@ class OrderRepositoryImpl @Inject constructor(
 
             stompClient.connect()
         } catch (_: Exception) {
-
+            socketStatusLiveData.postValue(Unit)
         }
     }
 

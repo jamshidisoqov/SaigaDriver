@@ -109,4 +109,9 @@ class OrdersPage : Fragment(R.layout.page_orders) {
         }) {}
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllOrders()
+    }
 }

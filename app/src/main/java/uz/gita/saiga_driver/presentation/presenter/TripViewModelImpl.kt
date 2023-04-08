@@ -135,6 +135,7 @@ class TripViewModelImpl @Inject constructor(
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)
                 mapRepository.requestCurrentLocation().collectLatest { result->
+                    loadingSharedFlow.emit(false)
                     result.onSuccess {
                        openGoogleMapSharedFlow.emit(it)
                     }.onMessage {

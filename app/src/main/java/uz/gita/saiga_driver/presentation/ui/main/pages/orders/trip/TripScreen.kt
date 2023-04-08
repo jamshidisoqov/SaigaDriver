@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -118,7 +119,8 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                     cardOrderStatus.setCardBackgroundColor(Color.parseColor("#D61E1E"))
                     tvOrderStatus.text = getStringResource(resId = R.string.end_order)
                 } else {
-                    viewModel.endOrder(orderResponse = args.order,startTime,endTime)
+                    viewModel.endOrder(orderResponse = args.order, startTime, endTime)
+                    timerChr.stop()
                 }
                 isOrderActive = !isOrderActive
             }.launchIn(lifecycleScope)
@@ -155,7 +157,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     }
 
     private fun showEndOrderDialog() {
-        val dialog = EndOrderDialog(distance, price,startTime,endTime)
+        val dialog = EndOrderDialog(distance, price, startTime, endTime)
         dialog.setCancelListener {
             findNavController().navigateUp()
         }
@@ -165,6 +167,8 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     private fun startTrip() = viewBinding.include {
         tvStartTime.text =
             resources.getString(R.string.start_time).combine(getCurrentTime(Date(startTime)))
+        timerChr.base = SystemClock.elapsedRealtime()
+        timerChr.start()
     }
 
     private fun showChooseEndOrder() {

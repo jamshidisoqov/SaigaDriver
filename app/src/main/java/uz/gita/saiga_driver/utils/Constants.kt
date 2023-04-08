@@ -30,6 +30,8 @@ val driverStatusLiveData:MutableLiveData<Boolean> = MutableLiveData()
 
 val decFormat = DecimalFormat("#.##")
 
+val socketStatusLiveData:MutableLiveData<Unit> = MutableLiveData()
+
 enum class OrderStatus{
     ACCEPT,BACK
 }

@@ -63,7 +63,7 @@ class OrdersViewModelImpl @Inject constructor(
                     val orders = allOrderFlow.value.map {
                         val addressFrom = it.direction.addressFrom
                         it.copy(
-                            distance = distance(
+                            distance = calculationByDistance(
                                 LatLng(
                                     addressFrom.lat ?: NUKUS.latitude,
                                     addressFrom.lon ?: NUKUS.longitude
