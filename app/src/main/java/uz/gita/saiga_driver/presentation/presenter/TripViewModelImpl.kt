@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.request.order.EndOrderRequest
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.TripScreenDirection
@@ -29,8 +30,11 @@ import javax.inject.Inject
 class TripViewModelImpl @Inject constructor(
     private val direction: TripScreenDirection,
     private val orderRepository: OrderRepository,
-    private val mapRepository: MapRepository
+    private val mapRepository: MapRepository,
+    private val mySharedPref: MySharedPref
 ) : TripViewModel, ViewModel() {
+
+
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
 
@@ -44,7 +48,7 @@ class TripViewModelImpl @Inject constructor(
 
     override val currentWay = MutableStateFlow(0.0)
 
-    override val currentMoney = MutableStateFlow(8000.0)
+    override val currentMoney = MutableStateFlow(mySharedPref.minPrice.toDouble())
 
     override val backSharedFlow = MutableSharedFlow<Unit>()
 
@@ -54,7 +58,9 @@ class TripViewModelImpl @Inject constructor(
 
     private var _way = 0.0
 
-    private var _money = 8000.0
+    private var _money = mySharedPref.minPrice.toDouble()
+
+    private val _currentMoney:Double by lazy { _money }
 
     private var pauseJob: Job? = null
 
@@ -70,8 +76,8 @@ class TripViewModelImpl @Inject constructor(
                 val speed: Double = way * 1000 * 3.6
                 if (_way > 3.0) {
                     val dMoney = (_way - 3.0) * 1000
-                    _money = 8000 + dMoney
-                    currentMoney.emit(decFormat.format(_money).toDouble())
+                    _money = _currentMoney + dMoney
+                    currentMoney.emit(String.format("%.2f", _money).toDouble())
                 }
                 currentWay.emit(_way)
 
@@ -158,7 +164,7 @@ class TripViewModelImpl @Inject constructor(
     override fun pauseOrder() {
         pauseJob?.cancel()
         pauseJob = viewModelScope.launch(Dispatchers.IO) {
-            delay(180000)
+            delay(120000)
             _money += 2000
             currentMoney.emit(_money)
             while (true) {

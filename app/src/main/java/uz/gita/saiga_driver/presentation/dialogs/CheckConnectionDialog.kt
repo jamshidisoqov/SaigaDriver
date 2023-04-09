@@ -1,5 +1,7 @@
 package uz.gita.saiga_driver.presentation.dialogs
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
@@ -29,6 +31,11 @@ class CheckConnectionDialog : DialogFragment(R.layout.dialog_check_connection) {
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
+
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        isCancelable = false
+
         btnCheck.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {

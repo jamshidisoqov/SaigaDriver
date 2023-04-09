@@ -53,9 +53,9 @@ object DatabaseModule {
     ): OkHttpClient =
         OkHttpClient.Builder()
             //.addInterceptor(ChuckerInterceptor.Builder(ctx).build())
-            .readTimeout(10L, TimeUnit.SECONDS)
-            .writeTimeout(10L, TimeUnit.SECONDS)
-            .connectTimeout(10L, TimeUnit.SECONDS)
+            .readTimeout(20L, TimeUnit.SECONDS)
+            .writeTimeout(20L, TimeUnit.SECONDS)
+            .connectTimeout(20L, TimeUnit.SECONDS)
             .addInterceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
                 if (mySharedPref.token.isNotEmpty())

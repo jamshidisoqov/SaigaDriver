@@ -41,5 +41,7 @@ class MySharedPref @Inject constructor(
 
     fun getCurrentLatLng(): LatLng = LatLng(lat.toDouble(), lon.toDouble())
 
+    var minPrice:String by Strings("8000")
+
 
 }
