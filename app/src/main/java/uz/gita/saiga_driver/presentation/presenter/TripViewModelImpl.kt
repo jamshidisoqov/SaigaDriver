@@ -18,11 +18,10 @@ import uz.gita.saiga_driver.directions.TripScreenDirection
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
-import uz.gita.saiga_driver.utils.decFormat
+import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.getTimeFormat
-import uz.gita.saiga_driver.utils.extensions.log
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -33,7 +32,6 @@ class TripViewModelImpl @Inject constructor(
     private val mapRepository: MapRepository,
     private val mySharedPref: MySharedPref
 ) : TripViewModel, ViewModel() {
-
 
 
     override val loadingSharedFlow = MutableSharedFlow<Boolean>()
@@ -60,30 +58,32 @@ class TripViewModelImpl @Inject constructor(
 
     private var _money = mySharedPref.minPrice.toDouble()
 
-    private val _currentMoney:Double by lazy { _money }
+    private val _currentMoney: Double get() = _money
 
     private var pauseJob: Job? = null
 
     override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
-            lastLocation?.let {
-                val way = distance(it, currentLocation)
-                if (isStartTrip) {
-                    if (way > 0.003)
-                        _way += way
-                }
-                log(way.toString())
-                val speed: Double = way * 1000 * 3.6
-                if (_way > 3.0) {
-                    val dMoney = (_way - 3.0) * 1000
-                    _money = _currentMoney + dMoney
-                    currentMoney.emit(String.format("%.2f", _money).toDouble())
-                }
-                currentWay.emit(_way)
+        try {
+            viewModelScope.launch(Dispatchers.Default) {
+                lastLocation?.let {
+                    val way = distance(it, currentLocation)
+                    if (isStartTrip) {
+                        if (way > 0.003) _way += way
+                    }
+                    val speed: Double = way * 1000 * 3.6
+                    if (_way > 3.0) {
+                        val dMoney = (_way - 3.0) * 1000
+                        _money = _currentMoney + dMoney
+                        currentMoney.emit(String.format("%.2f", _money).toDouble())
+                    }
+                    currentWay.emit(_way)
 
-                currentSpeed.emit(speed.toInt())
+                    currentSpeed.emit(speed.toInt())
+                }
+                lastLocation = currentLocation
             }
-            lastLocation = currentLocation
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -143,20 +143,24 @@ class TripViewModelImpl @Inject constructor(
 
     override fun openGoogleMap() {
         viewModelScope.launch {
-            if (hasConnection()) {
-                loadingSharedFlow.emit(true)
-                mapRepository.requestCurrentLocation().collectLatest { result ->
-                    loadingSharedFlow.emit(false)
-                    result.onSuccess {
-                        openGoogleMapSharedFlow.emit(it)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
-                    }
-                }
+            if (currentLocation.value != null) {
+                openGoogleMapSharedFlow.emit(currentLocation.value!!)
             } else {
-                errorSharedFlow.emit("No internet connection")
+                if (hasConnection()) {
+                    loadingSharedFlow.emit(true)
+                    mapRepository.requestCurrentLocation().collectLatest { result ->
+                        loadingSharedFlow.emit(false)
+                        result.onSuccess {
+                            openGoogleMapSharedFlow.emit(it)
+                        }.onMessage {
+                            messageSharedFlow.emit(it)
+                        }.onError {
+                            errorSharedFlow.emit(it.getMessage())
+                        }
+                    }
+                } else {
+                    errorSharedFlow.emit("No internet connection")
+                }
             }
         }
     }

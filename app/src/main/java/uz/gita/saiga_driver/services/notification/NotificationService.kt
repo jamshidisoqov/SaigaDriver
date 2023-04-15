@@ -25,6 +25,7 @@ import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.OrderStatus
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.calculationByDistance
+import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.fromJsonData
 import uz.gita.saiga_driver.utils.extensions.toJsonData
 import javax.inject.Inject
@@ -111,7 +112,7 @@ class NotificationService @Inject constructor() : Service() {
                                 setContentTitle(direction)
                                 setContentText(
                                     "Distance ${
-                                        calculationByDistance(
+                                        distance(
                                             fromAddress,
                                             currentLocation.value ?: NUKUS
                                         )

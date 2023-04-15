@@ -21,7 +21,7 @@ class MapRepositoryImpl @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient
 ) : MapRepository {
 
-    override fun getAddressByLocation(latLng: LatLng): Flow<ResultData<String>> =
+    override fun getAddressByLocation(latLng: LatLng) =
         flow<ResultData<String>> {
             if (hasConnection()) {
                 nominationApi.getNominationAddress(lat = latLng.latitude, lon = latLng.longitude)
@@ -46,7 +46,16 @@ class MapRepositoryImpl @Inject constructor(
             if (hasConnection()) {
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location ->
-                        trySend(ResultData.Success(LatLng(location.latitude, location.longitude)))
+                        location?.let {
+                            trySend(
+                                ResultData.Success(
+                                    LatLng(
+                                        location.latitude,
+                                        location.longitude
+                                    )
+                                )
+                            )
+                        }
                     }.addOnFailureListener {
                         trySend(ResultData.Error(it))
                     }
@@ -58,21 +67,22 @@ class MapRepositoryImpl @Inject constructor(
             emit(ResultData.Error(error))
         }.flowOn(Dispatchers.IO)
 
-    override fun getAddressProperties(latLng:LatLng): Flow<ResultData<NominationResponse>> = flow<ResultData<NominationResponse>>{
-        if (hasConnection()) {
-            nominationApi.getNominationAddress(lat = latLng.latitude, lon = latLng.longitude)
-                .func(gson = gson)
-                .onSuccess {
-                    emit(ResultData.Success(it))
-                }.onMessage {
-                    emit(ResultData.Message("Undefined area"))
-                }.onError {
-                    emit(ResultData.Error(it))
-                }
-        } else {
-            emit(ResultData.Message("No internet connection"))
-        }
-    }.catch { error ->
-        emit(ResultData.Error(error))
-    }.flowOn(Dispatchers.IO)
+    override fun getAddressProperties(latLng: LatLng): Flow<ResultData<NominationResponse>> =
+        flow<ResultData<NominationResponse>> {
+            if (hasConnection()) {
+                nominationApi.getNominationAddress(lat = latLng.latitude, lon = latLng.longitude)
+                    .func(gson = gson)
+                    .onSuccess {
+                        emit(ResultData.Success(it))
+                    }.onMessage {
+                        emit(ResultData.Message("Undefined area"))
+                    }.onError {
+                        emit(ResultData.Error(it))
+                    }
+            } else {
+                emit(ResultData.Message("No internet connection"))
+            }
+        }.catch { error ->
+            emit(ResultData.Error(error))
+        }.flowOn(Dispatchers.IO)
 }

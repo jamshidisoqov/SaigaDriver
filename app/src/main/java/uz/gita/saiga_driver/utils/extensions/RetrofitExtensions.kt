@@ -18,6 +18,9 @@ fun <T> Response<T>.func(gson: Gson): ResultData<T> {
                 ResultData.Error(Throwable("Body null"))
             }
         }
+        if (this.code() == 403) {
+            return ResultData.Message("Token expired")
+        }
         val messageData = gson.fromJson(errorBody()!!.string(), MessageData::class.java)
         return ResultData.Error(
             Throwable(message = messageData.message)

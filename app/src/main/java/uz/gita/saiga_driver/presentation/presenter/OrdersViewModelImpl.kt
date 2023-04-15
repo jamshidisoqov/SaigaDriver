@@ -44,18 +44,6 @@ class OrdersViewModelImpl @Inject constructor(
 
     private var currentLocation: LatLng = NUKUS
 
-    init {
-        viewModelScope.launch {
-            delay(2000)
-            mapRepository.requestCurrentLocation().collectLatest {
-                it.onSuccess { latLng ->
-                    currentLocation = latLng
-                    updateDistances(latLng)
-                }
-            }
-        }
-    }
-
     private suspend fun updateDistances(currentLocation: LatLng?) {
         viewModelScope.launch {
             try {
@@ -63,12 +51,16 @@ class OrdersViewModelImpl @Inject constructor(
                     val orders = allOrderFlow.value.map {
                         val addressFrom = it.direction.addressFrom
                         it.copy(
-                            distance = calculationByDistance(
-                                LatLng(
-                                    addressFrom.lat ?: NUKUS.latitude,
-                                    addressFrom.lon ?: NUKUS.longitude
-                                ), currentLocation
-                            ).toString()
+                            distance = String.format(
+                                "%.2f",
+                                distance(
+                                    LatLng(
+                                        addressFrom.lat ?: NUKUS.latitude,
+                                        addressFrom.lon ?: NUKUS.longitude
+                                    ),
+                                    currentLocation
+                                )
+                            )
                         )
                     }.sortedBy { it.distance.toDouble() }.toMutableList()
                     if (orders.isNotEmpty()) {
@@ -109,8 +101,7 @@ class OrdersViewModelImpl @Inject constructor(
     override fun setCurrentLocation(currentLocation: LatLng) {
         viewModelScope.launch(Dispatchers.Default) {
             try {
-                val distance =
-                    calculationByDistance(currentLocation, this@OrdersViewModelImpl.currentLocation)
+                val distance = distance(currentLocation, this@OrdersViewModelImpl.currentLocation)
                 if (distance > 0.03) updateDistances(currentLocation)
                 this@OrdersViewModelImpl.currentLocation = currentLocation
             } catch (e: Exception) {

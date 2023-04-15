@@ -2,7 +2,9 @@ package uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip
 
 import android.Manifest
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
@@ -52,6 +54,8 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     private var distance = 0.0
 
     private var price = 8000.0
+
+    private var isOrderPause: Boolean? = null
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
@@ -155,16 +159,16 @@ class TripScreen : Fragment(R.layout.screen_trip) {
                 viewModel.openGoogleMap()
             }.launchIn(lifecycleScope)
 
-        cardPauseOrder.clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
-                pauseOrder()
-            }.launchIn(lifecycleScope)
-
         btnResumeOrder.clicks()
             .debounce(DEBOUNCE_VIEW_CLICK)
             .onEach {
-                resumeOrder()
+                isOrderPause?.let {
+                    if (it) {
+                        pauseOrder()
+                    } else {
+                        resumeOrder()
+                    }
+                }
             }.launchIn(lifecycleScope)
     }
 
@@ -176,10 +180,12 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         dialog.show(childFragmentManager, "end-order")
     }
 
-    private fun pauseOrder() = viewBinding.include{
+    private fun pauseOrder() = viewBinding.include {
         viewModel.pauseOrder()
+        isOrderPause = false
+        btnResumeOrder.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F48787"))
+        btnResumeOrder.text = resources.getString(R.string.end)
         timerPauseChr.base = SystemClock.elapsedRealtime()
-        cardPauseOrder.gone()
         showPauseDialog()
     }
 
@@ -188,19 +194,21 @@ class TripScreen : Fragment(R.layout.screen_trip) {
         timerPauseChr.start()
     }
 
-    private fun resumeOrder() = viewBinding.include{
+    private fun resumeOrder() = viewBinding.include {
+        isOrderPause = true
         viewModel.resumeOrder()
-        cardPauseOrder.visible()
-        pauseOrder.gone()
+        SystemClock.elapsedRealtime()
         timerPauseChr.stop()
+        btnResumeOrder.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5DE88F"))
+        btnResumeOrder.text = resources.getString(R.string.start)
     }
 
     private fun startTrip() = viewBinding.include {
         tvStartTime.text =
             resources.getString(R.string.start_time).combine(getCurrentTime(Date(startTime)))
         timerChr.base = SystemClock.elapsedRealtime()
-        cardPauseOrder.visible()
         timerChr.start()
+        isOrderPause = false
     }
 
     private fun showChooseEndOrder() {
@@ -229,9 +237,14 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     }
 
     private fun openGoogleMap(addressFrom: AddressResponse, end: LatLng) {
-        val uri =
-            "http://maps.google.com/maps?saddr=${addressFrom.lat},${addressFrom.lon}&daddr=${end.latitude},${end.longitude}"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        startActivity(intent)
+        val gmmIntentUri =
+            Uri.parse("google.navigation:q=${addressFrom.lat},${addressFrom.lon}&saddr=${end.latitude},${end.longitude}")
+
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+
+        if (mapIntent.resolveActivity(requireContext().packageManager) != null) {
+            startActivity(mapIntent)
+        }
     }
 }

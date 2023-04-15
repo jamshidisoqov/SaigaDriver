@@ -109,4 +109,7 @@
     <string name="connection_error">Baylanısıw menen baylanıslı muoomolar júz berdi ótinish tekseriń</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
+    <string name="paid_waiting">Paid waiting</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
 </resources>

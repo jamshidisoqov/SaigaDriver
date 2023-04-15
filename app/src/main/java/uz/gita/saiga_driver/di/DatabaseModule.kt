@@ -102,7 +102,7 @@ object DatabaseModule {
     fun provideDirectionsApi(retrofit: Retrofit): DirectionsApi =
         retrofit.create(DirectionsApi::class.java)
 
-    @[Provides Singleton]
+    @[Provides]
     fun provideStomp(mySharedPref: MySharedPref, okHttpClient: OkHttpClient): StompClient {
         val headers = mapOf("Authorization" to "Bearer ${mySharedPref.token}")
         return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, headers, okHttpClient)

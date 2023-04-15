@@ -98,7 +98,6 @@ class OrdersPage : Fragment(R.layout.page_orders) {
             dialog.show(childFragmentManager, "showNearDialog")
         }
     }
-
     private fun startGps() {
         hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, onPermissionGranted = {
             val intent = Intent(requireContext(), GpsService::class.java)

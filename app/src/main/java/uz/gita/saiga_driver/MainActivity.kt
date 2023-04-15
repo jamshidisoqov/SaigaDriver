@@ -69,9 +69,11 @@ class MainActivity : AppCompatActivity() {
 
         val fragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+
         navigationHandler.navigationStack
             .onEach { it.invoke(fragment.findNavController()) }
             .launchIn(lifecycleScope)
+
         dialog = ProgressDialog(this)
 
         controller = fragment.navController
@@ -151,11 +153,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNotification(orderResponse: OrderResponse, showNotification: Boolean = false) {
-        if (!showNotification)
-            showAlerter(orderResponse)
-        val intent = Intent(this, NotificationService::class.java)
-        intent.putExtra("order", gson.toJsonData(orderResponse))
-        startService(intent)
+        try {
+            if (!showNotification)
+                showAlerter(orderResponse)
+            val intent = Intent(this, NotificationService::class.java)
+            intent.putExtra("order", gson.toJsonData(orderResponse))
+            startService(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun showAlerter(orderResponse: OrderResponse) {
@@ -174,7 +180,7 @@ class MainActivity : AppCompatActivity() {
                             ).toString()
                         )
                     )
-                    .setDuration(5000)
+                    .setDuration(3000)
                     .setIcon(R.drawable.saiga_yellow_car)
                     .setIconSize(R.dimen.icon_size_alerter)
                     .setIconColorFilter(Color.TRANSPARENT)
