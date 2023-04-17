@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                     .setTitle(orderResponse.direction.addressFrom.title!!)
                     .setText(
                         "Distance".combine(
-                            calculationByDistance(
+                            distance(
                                 fromAddress,
                                 currentLocation.value ?: NUKUS
                             ).toString()

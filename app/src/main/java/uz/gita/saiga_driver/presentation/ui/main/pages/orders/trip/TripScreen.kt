@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
@@ -33,6 +32,7 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrd
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
+import uz.gita.saiga_driver.utils.speed
 import java.util.*
 
 // Created by Jamshid Isoqov on 2/5/2023
@@ -82,9 +82,9 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             tvWay.text = it.getFormat(2).combine("km")
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.currentSpeed.onEach {
-            tvSpeed.text = it.toString()
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        speed.observe(viewLifecycleOwner){
+            tvSpeed.text = it.toInt().toString()
+        }
 
         viewModel.endOrderDialog.onEach {
             showEndOrderDialog()

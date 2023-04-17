@@ -42,8 +42,6 @@ class TripViewModelImpl @Inject constructor(
 
     private var lastLocation: LatLng? = null
 
-    override val currentSpeed = MutableStateFlow(0)
-
     override val currentWay = MutableStateFlow(0.0)
 
     override val currentMoney = MutableStateFlow(mySharedPref.minPrice.toDouble())
@@ -58,8 +56,6 @@ class TripViewModelImpl @Inject constructor(
 
     private var _money = mySharedPref.minPrice.toDouble()
 
-    private val _currentMoney: Double get() = _money
-
     private var pauseJob: Job? = null
 
     override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
@@ -70,15 +66,13 @@ class TripViewModelImpl @Inject constructor(
                     if (isStartTrip) {
                         if (way > 0.003) _way += way
                     }
-                    val speed: Double = way * 1000 * 3.6
                     if (_way > 3.0) {
                         val dMoney = (_way - 3.0) * 1000
-                        _money = _currentMoney + dMoney
-                        currentMoney.emit(String.format("%.2f", _money).toDouble())
+                        _money += dMoney
+                        currentMoney.emit(_money)
                     }
                     currentWay.emit(_way)
 
-                    currentSpeed.emit(speed.toInt())
                 }
                 lastLocation = currentLocation
             }
@@ -142,26 +136,30 @@ class TripViewModelImpl @Inject constructor(
     }
 
     override fun openGoogleMap() {
-        viewModelScope.launch {
-            if (currentLocation.value != null) {
-                openGoogleMapSharedFlow.emit(currentLocation.value!!)
-            } else {
-                if (hasConnection()) {
-                    loadingSharedFlow.emit(true)
-                    mapRepository.requestCurrentLocation().collectLatest { result ->
-                        loadingSharedFlow.emit(false)
-                        result.onSuccess {
-                            openGoogleMapSharedFlow.emit(it)
-                        }.onMessage {
-                            messageSharedFlow.emit(it)
-                        }.onError {
-                            errorSharedFlow.emit(it.getMessage())
-                        }
-                    }
+        try {
+            viewModelScope.launch {
+                if (currentLocation.value != null) {
+                    openGoogleMapSharedFlow.emit(currentLocation.value!!)
                 } else {
-                    errorSharedFlow.emit("No internet connection")
+                    if (hasConnection()) {
+                        loadingSharedFlow.emit(true)
+                        mapRepository.requestCurrentLocation().collectLatest { result ->
+                            loadingSharedFlow.emit(false)
+                            result.onSuccess {
+                                openGoogleMapSharedFlow.emit(it)
+                            }.onMessage {
+                                messageSharedFlow.emit(it)
+                            }.onError {
+                                errorSharedFlow.emit(it.getMessage())
+                            }
+                        }
+                    } else {
+                        errorSharedFlow.emit("No internet connection")
+                    }
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

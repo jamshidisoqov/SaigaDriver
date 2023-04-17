@@ -21,10 +21,22 @@ fun <T> Response<T>.func(gson: Gson): ResultData<T> {
         if (this.code() == 403) {
             return ResultData.Message("Token expired")
         }
-        val messageData = gson.fromJson(errorBody()!!.string(), MessageData::class.java)
-        return ResultData.Error(
-            Throwable(message = messageData.message)
-        )
+        return when(this.code()){
+            in (300..399)->{
+                ResultData.Error(Throwable(message = "Есть проблемы с интернетом"))
+            }
+            in (400..499)->{
+                val messageData = gson.fromJson(errorBody()!!.string(), MessageData::class.java)
+                ResultData.Error(Throwable(message = messageData.message))
+            }
+            in (500..599)->{
+                ResultData.Error(Throwable(message = "Есть проблемы с сервером"))
+            }
+            else->{
+                ResultData.Error(Throwable(message = "Произошла неизвестная ошибка"))
+            }
+        }
+
     } catch (e: Exception) {
         return ResultData.Error(e)
     }

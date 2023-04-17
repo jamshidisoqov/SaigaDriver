@@ -71,7 +71,7 @@ class OrdersViewModelImpl @Inject constructor(
                     allOrderFlow.emit(orders)
                 }
             } catch (e: Exception) {
-                errorSharedFlow.emit(e.getMessage())
+                e.printStackTrace()
             }
         }
     }
