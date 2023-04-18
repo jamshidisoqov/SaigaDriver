@@ -27,7 +27,6 @@ class FinanceViewModelImpl @Inject constructor(
     override val errorSharedFlow = MutableSharedFlow<String>()
 
     override val allOrdersHistory = MutableStateFlow<List<TripWithDate>>(emptyList())
-
     override fun getAllTrips() {
         viewModelScope.launch {
             if (hasConnection()) {

@@ -9,8 +9,6 @@ import uz.gita.saiga_driver.utils.BaseViewModel
 // Created by Jamshid Isoqov on 2/5/2023
 interface TripViewModel : BaseViewModel {
 
-    val currentSpeed: StateFlow<Int>
-
     val currentWay: StateFlow<Double>
 
     val currentMoney: StateFlow<Double>
