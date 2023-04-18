@@ -3,7 +3,6 @@ package uz.gita.saiga_driver.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -12,6 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.naiksoftware.stomp.Stomp
@@ -53,6 +53,7 @@ object DatabaseModule {
     ): OkHttpClient =
         OkHttpClient.Builder()
             //.addInterceptor(ChuckerInterceptor.Builder(ctx).build())
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .readTimeout(20L, TimeUnit.SECONDS)
             .writeTimeout(20L, TimeUnit.SECONDS)
             .connectTimeout(20L, TimeUnit.SECONDS)

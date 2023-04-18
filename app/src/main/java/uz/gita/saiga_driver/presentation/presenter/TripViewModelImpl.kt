@@ -143,24 +143,28 @@ class TripViewModelImpl @Inject constructor(
 
     override fun openGoogleMap() {
         viewModelScope.launch {
-            if (currentLocation.value != null) {
-                openGoogleMapSharedFlow.emit(currentLocation.value!!)
-            } else {
-                if (hasConnection()) {
-                    loadingSharedFlow.emit(true)
-                    mapRepository.requestCurrentLocation().collectLatest { result ->
-                        loadingSharedFlow.emit(false)
-                        result.onSuccess {
-                            openGoogleMapSharedFlow.emit(it)
-                        }.onMessage {
-                            messageSharedFlow.emit(it)
-                        }.onError {
-                            errorSharedFlow.emit(it.getMessage())
-                        }
-                    }
+            try {
+                if (currentLocation.value != null) {
+                    openGoogleMapSharedFlow.emit(currentLocation.value!!)
                 } else {
-                    errorSharedFlow.emit("No internet connection")
+                    if (hasConnection()) {
+                        loadingSharedFlow.emit(true)
+                        mapRepository.requestCurrentLocation().collectLatest { result ->
+                            loadingSharedFlow.emit(false)
+                            result.onSuccess {
+                                openGoogleMapSharedFlow.emit(it)
+                            }.onMessage {
+                                messageSharedFlow.emit(it)
+                            }.onError {
+                                errorSharedFlow.emit(it.getMessage())
+                            }
+                        }
+                    } else {
+                        errorSharedFlow.emit("No internet connection")
+                    }
                 }
+            } catch (e: java.lang.Exception) {
+                errorSharedFlow.emit("Возникла проблема с определением местоположения")
             }
         }
     }

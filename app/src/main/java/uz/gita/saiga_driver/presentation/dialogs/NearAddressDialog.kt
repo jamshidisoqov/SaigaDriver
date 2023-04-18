@@ -60,16 +60,13 @@ class NearAddressDialog(private val orderResponse: OrderResponse) :
                 }
             )
         }
-
         btnDecline.setOnClickListener {
             dismiss()
         }
-
         btnAccept.setOnClickListener {
             acceptListener?.invoke(orderResponse)
             dismiss()
         }
-
         lifecycleScope.launchWhenResumed {
             var s = 5000
             while (s > 0) {
@@ -79,7 +76,5 @@ class NearAddressDialog(private val orderResponse: OrderResponse) :
             }
             dismiss()
         }
-
     }
-
 }

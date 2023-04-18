@@ -15,16 +15,27 @@ fun <T> Response<T>.func(gson: Gson): ResultData<T> {
                 val body = data.body()!!
                 ResultData.Success(body)
             } else {
-                ResultData.Error(Throwable("Body null"))
+                ResultData.Error(Throwable("Что-то пошло не так"))
             }
         }
         if (this.code() == 403) {
-            return ResultData.Message("Token expired")
+            return ResultData.Message("Срок действия токена истек")
         }
-        val messageData = gson.fromJson(errorBody()!!.string(), MessageData::class.java)
-        return ResultData.Error(
-            Throwable(message = messageData.message)
-        )
+        return when (this.code()) {
+            in (400..499) -> {
+                val messageData = gson.fromJson(errorBody()!!.string(), MessageData::class.java)
+                ResultData.Error(
+                    Throwable(message = messageData.message)
+                )
+            }
+
+            in (500..599) -> {
+                ResultData.Message("Есть проблема с сервером")
+            }
+
+            else -> ResultData.Error(Throwable("Что-то пошло не так"))
+        }
+
     } catch (e: Exception) {
         return ResultData.Error(e)
     }

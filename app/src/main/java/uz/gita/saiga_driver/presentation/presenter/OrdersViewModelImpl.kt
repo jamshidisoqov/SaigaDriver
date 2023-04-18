@@ -6,18 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import uz.gita.saiga_driver.data.remote.response.order.OrderResponse
 import uz.gita.saiga_driver.directions.OrderPageDirections
 import uz.gita.saiga_driver.domain.repository.MapRepository
 import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.OrdersViewModel
 import uz.gita.saiga_driver.utils.NUKUS
-import uz.gita.saiga_driver.utils.extensions.calculationByDistance
 import uz.gita.saiga_driver.utils.extensions.distance
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.hasConnection
@@ -45,7 +44,7 @@ class OrdersViewModelImpl @Inject constructor(
     private var currentLocation: LatLng = NUKUS
 
     private suspend fun updateDistances(currentLocation: LatLng?) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 if (currentLocation != null) {
                     val orders = allOrderFlow.value.map {
@@ -68,10 +67,12 @@ class OrdersViewModelImpl @Inject constructor(
                             openOrderDialog.emit(orders[0])
                         }
                     }
-                    allOrderFlow.emit(orders)
+                    withContext(Dispatchers.Main) {
+                        allOrderFlow.emit(orders)
+                    }
                 }
             } catch (e: Exception) {
-                errorSharedFlow.emit(e.getMessage())
+                e.printStackTrace()
             }
         }
     }
