@@ -14,7 +14,6 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.getMessage
-import uz.gita.saiga_driver.utils.extensions.getTimeWhenFormat
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -53,7 +52,7 @@ class AddDirectionViewModelImpl @Inject constructor(
                     whereTo = toAddress,
                     whereToLatLng = whereTo.second,
                     price = price,
-                    schedule = schedule?.getTimeWhenFormat(),
+                    schedule = schedule,
                     comment = comment
                 ).collectLatest { result ->
                     loadingSharedFlow.emit(false)

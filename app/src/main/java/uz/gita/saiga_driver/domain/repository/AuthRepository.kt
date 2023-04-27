@@ -13,19 +13,18 @@ interface AuthRepository {
 
     suspend fun getStartScreen(): StartScreen
 
-    fun login(phoneNumber: String): Flow<ResultData<AuthResponse>>
+    fun login(phoneNumber: String): Flow<ResultData<Any>>
 
     fun register(
         phoneNumber: String,
         firstName: String,
         lastName: String
-    ): Flow<ResultData<CabinetBaseResponse>>
+    ): Flow<ResultData<Any>>
 
-    fun verifyCode(code: String): Flow<ResultData<String>>
+    fun verifyCode(code: String): Flow<ResultData<BaseResponse<UserBaseResponse>>>
 
-    fun resendCode()
+    suspend fun resendCode():Flow<ResultData<Any>>
 
-    fun sendSms(phone: String):Flow<ResultData<String>>
 
     fun updateUser(firstName: String, lastName: String): Flow<ResultData<AuthResponse>>
 
@@ -36,5 +35,7 @@ interface AuthRepository {
     fun topUpBalance(amount:Long):Flow<ResultData<BalanceResponse>>
 
     fun getUserBalance(): Flow<ResultData<DriverBalanceResponse>>
+
+    suspend fun saveUser(userResponse: UserResponse,token:String)
 
 }

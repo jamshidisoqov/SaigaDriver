@@ -25,7 +25,7 @@ val NUKUS = LatLng(42.460168, 59.607280)
 
 val currentLocation:MutableLiveData<LatLng> = MutableLiveData()
 val currentLocationBearing:MutableLiveData<Pair<LatLng,Float>> = MutableLiveData()
-val speed:MutableLiveData<Float> = MutableLiveData()
+val speed:MutableLiveData<Float> = MutableLiveData(0f)
 
 
 val driverStatusLiveData:MutableLiveData<Boolean> = MutableLiveData()

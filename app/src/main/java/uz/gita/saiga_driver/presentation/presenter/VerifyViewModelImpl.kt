@@ -12,11 +12,11 @@ import uz.gita.saiga_driver.directions.VerifyScreenDirection
 import uz.gita.saiga_driver.domain.repository.AuthRepository
 import uz.gita.saiga_driver.presentation.ui.verify.VerifyViewModel
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
 @HiltViewModel
 class VerifyViewModelImpl @Inject constructor(
-    private val direction: VerifyScreenDirection,
     private val authRepository: AuthRepository,
     private val mySharedPref: MySharedPref
 ) : VerifyViewModel, ViewModel() {
@@ -31,23 +31,38 @@ class VerifyViewModelImpl @Inject constructor(
 
     override fun resendCode() {
         viewModelScope.launch {
-            authRepository.resendCode()
+            if (hasConnection()) {
+                authRepository.resendCode().collectLatest {result->
+                    result.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
+                }
+            }else{
+                messageSharedFlow.emit("No internet connection")
+            }
         }
     }
 
     override fun verifyCode(code: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            loadingSharedFlow.emit(true)
-            authRepository.verifyCode(code).collectLatest { result ->
-                loadingSharedFlow.emit(false)
-                result.onSuccess {
-                    mySharedPref.isVerify = true
-                    openPermissionChecker.emit(Unit)
-                }.onMessage {
-                    messageSharedFlow.emit(it)
-                }.onError {
-                    errorSharedFlow.emit(it.getMessage())
+            if (hasConnection()) {
+                loadingSharedFlow.emit(true)
+                authRepository.verifyCode(code).collectLatest { result ->
+                    loadingSharedFlow.emit(false)
+                    result.onSuccess {
+                        authRepository.saveUser(it.body.userResponse, it.body.token)
+                        mySharedPref.isVerify = true
+                        openPermissionChecker.emit(Unit)
+                    }.onMessage {
+                        messageSharedFlow.emit(it)
+                    }.onError {
+                        errorSharedFlow.emit(it.getMessage())
+                    }
                 }
+            }else{
+                messageSharedFlow.emit("No internet connection")
             }
         }
     }

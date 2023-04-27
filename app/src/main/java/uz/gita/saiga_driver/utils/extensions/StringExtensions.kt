@@ -31,11 +31,6 @@ fun String.toDate(): Date {
 
 fun String?.combine(s2: String) = "$this $s2"
 
-@SuppressLint("SimpleDateFormat")
-fun String.getTimeWhenFormat(): String {
-    val date = this.toDate()
-    return SimpleDateFormat("dd-MM-yyyy").format(date)
-}
 
 fun String.getDigitOnly(): Double {
     val builder = StringBuilder()

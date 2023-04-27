@@ -22,19 +22,39 @@ import uz.gita.saiga_driver.presentation.presenter.VerifyViewModelImpl
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getTimeFormat
+import uz.gita.saiga_driver.utils.extensions.hideProgress
 import uz.gita.saiga_driver.utils.extensions.include
+import uz.gita.saiga_driver.utils.extensions.showErrorDialog
+import uz.gita.saiga_driver.utils.extensions.showMessageDialog
+import uz.gita.saiga_driver.utils.extensions.showProgress
 
 // Created by Jamshid Isoqov on 12/12/2022
 @AndroidEntryPoint
 class VerifyCodeScreen : Fragment(R.layout.screen_verify_code) {
+
     private val viewModel: VerifyViewModel by viewModels<VerifyViewModelImpl>()
+
     private val viewBinding: ScreenVerifyCodeBinding by viewBinding()
+
     private var isFinishedTime: Boolean = false
     private var isCompletedSms: Boolean = false
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         viewBinding.include {
+
+            viewModel.loadingSharedFlow.onEach {
+                if (it) showProgress() else hideProgress()
+            }.launchIn(lifecycleScope)
+
+            viewModel.errorSharedFlow.onEach {
+                showErrorDialog(it)
+            }.launchIn(lifecycleScope)
+
+            viewModel.messageSharedFlow.onEach {
+                showMessageDialog(it)
+            }.launchIn(lifecycleScope)
+
             viewModel.openPermissionChecker.onEach {
                 findNavController().navigate(R.id.permissionsCheckScreen)
             }.launchIn(lifecycleScope)

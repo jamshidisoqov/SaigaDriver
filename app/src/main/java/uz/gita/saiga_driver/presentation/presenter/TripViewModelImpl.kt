@@ -20,6 +20,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.distance
+import uz.gita.saiga_driver.utils.extensions.getFormat
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.getTimeFormat
 import uz.gita.saiga_driver.utils.hasConnection
@@ -56,6 +57,8 @@ class TripViewModelImpl @Inject constructor(
 
     private var _money = mySharedPref.minPrice.toDouble()
 
+    private var _price = mySharedPref.minPrice.toDouble()
+
     private var pauseJob: Job? = null
 
     override fun setCurrentLocation(currentLocation: LatLng, isStartTrip: Boolean) {
@@ -68,8 +71,8 @@ class TripViewModelImpl @Inject constructor(
                     }
                     if (_way > 3.0) {
                         val dMoney = (_way - 3.0) * 1000
-                        _money += dMoney
-                        currentMoney.emit(_money)
+                        _money = _price + dMoney
+                        currentMoney.emit(_money.getFormat(2).toDouble())
                     }
                     currentWay.emit(_way)
 
@@ -168,10 +171,12 @@ class TripViewModelImpl @Inject constructor(
         pauseJob = viewModelScope.launch(Dispatchers.IO) {
             delay(120000)
             _money += 2000
+            _price += 2000
             currentMoney.emit(_money)
             while (true) {
                 delay(60000)
                 _money += 500
+                _price += 500
                 currentMoney.emit(_money)
             }
         }

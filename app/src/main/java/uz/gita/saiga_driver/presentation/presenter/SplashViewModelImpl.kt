@@ -22,8 +22,7 @@ class SplashViewModelImpl @Inject constructor(
     override fun navigateToScreen() {
         viewModelScope.launch {
             if (mySharedPref.isVerify) {
-                log("KIRDI")
-                authRepository.updateUser()
+                //authRepository.updateUser()
             }
             delay(1000)
             when (authRepository.getStartScreen()) {

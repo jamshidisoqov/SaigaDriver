@@ -39,8 +39,7 @@ class GpsService : Service() {
                 override fun onLocationResult(location: LocationResult) {
                     location.lastLocation?.let { p0 ->
                         val latLng = LatLng(p0.latitude, p0.longitude)
-                        speed.value = p0.speed
-                        log("speed->${p0.speed}")
+                        speed.value = p0.speed*3.6f
                         currentLocation.value = latLng
                         if (p0.bearing > 0.01) currentLocationBearing.value =
                             Pair(latLng, if (p0.bearing > 0.01) p0.bearing else 0f)

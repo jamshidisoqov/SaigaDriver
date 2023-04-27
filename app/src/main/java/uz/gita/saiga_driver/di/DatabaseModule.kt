@@ -3,6 +3,7 @@ package uz.gita.saiga_driver.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -52,7 +53,7 @@ object DatabaseModule {
         mySharedPref: MySharedPref
     ): OkHttpClient =
         OkHttpClient.Builder()
-            //.addInterceptor(ChuckerInterceptor.Builder(ctx).build())
+            .addInterceptor(ChuckerInterceptor.Builder(ctx).build())
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .readTimeout(20L, TimeUnit.SECONDS)
             .writeTimeout(20L, TimeUnit.SECONDS)
@@ -103,10 +104,9 @@ object DatabaseModule {
     fun provideDirectionsApi(retrofit: Retrofit): DirectionsApi =
         retrofit.create(DirectionsApi::class.java)
 
-    @[Provides]
-    fun provideStomp(mySharedPref: MySharedPref, okHttpClient: OkHttpClient): StompClient {
-        val headers = mapOf("Authorization" to "Bearer ${mySharedPref.token}")
-        return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, headers, okHttpClient)
+    @[Provides Singleton]
+    fun provideStomp(okHttpClient: OkHttpClient): StompClient {
+        return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, emptyMap(), okHttpClient)
     }
 
     @[Provides Singleton]

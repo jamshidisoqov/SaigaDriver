@@ -9,6 +9,7 @@ import retrofit2.http.Path
 import uz.gita.saiga_driver.data.remote.request.auth.BalanceRequest
 import uz.gita.saiga_driver.data.remote.response.BaseResponse
 import uz.gita.saiga_driver.data.remote.request.auth.LoginRequest
+import uz.gita.saiga_driver.data.remote.request.auth.SmsRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UpdateUserRequest
 import uz.gita.saiga_driver.data.remote.request.auth.UserRequest
 import uz.gita.saiga_driver.data.remote.response.DataResponse
@@ -17,6 +18,8 @@ import uz.gita.saiga_driver.data.remote.response.auth.AuthResponse
 import uz.gita.saiga_driver.data.remote.response.auth.BalanceBaseResponse
 import uz.gita.saiga_driver.data.remote.response.auth.CabinetBaseResponse
 import uz.gita.saiga_driver.data.remote.response.auth.CabinetResponse
+import uz.gita.saiga_driver.data.remote.response.auth.SmsResponse
+import uz.gita.saiga_driver.data.remote.response.auth.UserBaseResponse
 
 // Created by Jamshid Isoqov on 12/14/2022
 interface AuthApi {
@@ -30,12 +33,12 @@ interface AuthApi {
     @POST("/api/auth/sign-up")
     suspend fun registerUser(
         @Body userRequest: UserRequest
-    ): Response<BaseResponse<CabinetBaseResponse>>
+    ): Response<BaseResponse<Any>>
 
     @POST("/api/auth/sign-in")
     suspend fun login(
         @Body loginRequest: LoginRequest
-    ): Response<BaseResponse<AuthResponse>>
+    ): Response<BaseResponse<Any>>
 
     @POST("/api/admin/top-up-balance")
     suspend fun topUpBalance(@Body balanceRequest: BalanceRequest):Response<BaseResponse<BalanceBaseResponse>>
@@ -43,5 +46,10 @@ interface AuthApi {
 
     @GET("api/driver/balance-in-out")
     suspend fun getUserBalance():Response<BaseResponse<DataResponse<DriverBalanceResponse>>>
+
+    @POST("api/auth/confirm-code")
+    suspend fun verifySms(
+        @Body smsRequest: SmsRequest
+    ):Response<BaseResponse<UserBaseResponse>>
 
 }
