@@ -47,6 +47,7 @@ class HomePage : Fragment(R.layout.page_home) {
 
         //observers
         viewModel.loadingSharedFlow.onEach {
+            root.isRefreshing = false
             if (it) {
                 showProgress()
                 containerDirectionsShimmer.apply {
@@ -159,11 +160,11 @@ class HomePage : Fragment(R.layout.page_home) {
             tvTitleHome.text = getStringResource(R.string.hello).combine(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.getData()
+        updateData()
 
-        viewModel.getAllMyDirections()
-
-        viewModel.refreshUserBalance()
+        root.setOnRefreshListener {
+            updateData()
+        }
 
         //events
         imageNotification.clicks()
@@ -261,4 +262,13 @@ class HomePage : Fragment(R.layout.page_home) {
             view.rotation = 0f
         }.start()
     }
+
+    private fun updateData() {
+        viewModel.getData()
+
+        viewModel.refreshUserBalance()
+
+        viewModel.getAllMyDirections()
+    }
+
 }

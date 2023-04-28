@@ -62,3 +62,9 @@ fun String.getFormat(count: Int): String {
 }
 
 
+@SuppressLint("SimpleDateFormat")
+fun String.getScheduleFormat():String{
+    val date = SimpleDateFormat("MMM dd,yyyy HH:mm").parse(this)!!
+    return SimpleDateFormat("dd-MM-yyyy HH:mm").format(date)
+}
+

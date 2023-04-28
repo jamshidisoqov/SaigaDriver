@@ -84,6 +84,9 @@ class HomeViewModelImpl @Inject constructor(
     }
 
     override fun getAllMyDirections() {
+
+        ordersFlow.removeSource(orderRepository.ordersLiveData)
+
         viewModelScope.launch {
             if (hasConnection()) {
                 loadingSharedFlow.emit(true)

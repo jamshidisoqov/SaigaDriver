@@ -14,6 +14,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.direction.add.AddDirectionViewModel
 import uz.gita.saiga_driver.utils.NUKUS
 import uz.gita.saiga_driver.utils.extensions.getMessage
+import uz.gita.saiga_driver.utils.extensions.getScheduleFormat
 import uz.gita.saiga_driver.utils.hasConnection
 import javax.inject.Inject
 
@@ -43,26 +44,35 @@ class AddDirectionViewModelImpl @Inject constructor(
 
         viewModelScope.launch {
             if (hasConnection()) {
-                loadingSharedFlow.emit(true)
-                val fromIndex = if (whereFrom.first.lastIndex > 30) 30 else whereFrom.first.lastIndex
-                val toAddress = whereTo.first.substring(0, if (whereTo.first.length > 30) 30 else whereTo.first.length)
-                orderRepository.order(
-                    whereFrom = whereFrom.first.substring(0, fromIndex),
-                    whereFromLatLng = whereFrom.second ?: NUKUS,
-                    whereTo = toAddress,
-                    whereToLatLng = whereTo.second,
-                    price = price,
-                    schedule = schedule,
-                    comment = comment
-                ).collectLatest { result ->
-                    loadingSharedFlow.emit(false)
-                    result.onSuccess {
-                        backFlow.emit(Unit)
-                    }.onMessage {
-                        messageSharedFlow.emit(it)
-                    }.onError {
-                        errorSharedFlow.emit(it.getMessage())
+                try {
+
+                    loadingSharedFlow.emit(true)
+                    val fromIndex =
+                        if (whereFrom.first.lastIndex > 30) 30 else whereFrom.first.lastIndex
+                    val toAddress = whereTo.first.substring(
+                        0,
+                        if (whereTo.first.length > 30) 30 else whereTo.first.length
+                    )
+                    orderRepository.order(
+                        whereFrom = whereFrom.first.substring(0, fromIndex),
+                        whereFromLatLng = whereFrom.second ?: NUKUS,
+                        whereTo = toAddress,
+                        whereToLatLng = whereTo.second,
+                        price = price,
+                        schedule = schedule?.getScheduleFormat(),
+                        comment = comment
+                    ).collectLatest { result ->
+                        loadingSharedFlow.emit(false)
+                        result.onSuccess {
+                            backFlow.emit(Unit)
+                        }.onMessage {
+                            messageSharedFlow.emit(it)
+                        }.onError {
+                            errorSharedFlow.emit(it.getMessage())
+                        }
                     }
+                } catch (e: Exception) {
+                    messageSharedFlow.emit(e.getMessage())
                 }
             } else {
                 messageSharedFlow.emit("No internet connection")
