@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.currentLocationBearing
 import uz.gita.saiga_driver.utils.extensions.log
+import uz.gita.saiga_driver.utils.speed
 
 
 // Created by Jamshid Isoqov on 2/5/2023
@@ -27,6 +28,7 @@ class GpsService : Service() {
 
         locationRequest = LocationRequest.Builder(1000L)
             .setIntervalMillis(1000L)
+            .setMaxUpdateDelayMillis(1000L)
             .setMinUpdateDistanceMeters(0f)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .build()
@@ -37,7 +39,7 @@ class GpsService : Service() {
                 override fun onLocationResult(location: LocationResult) {
                     location.lastLocation?.let { p0 ->
                         val latLng = LatLng(p0.latitude, p0.longitude)
-                        log("Last location->$latLng")
+                        speed.value = p0.speed*3.6f
                         currentLocation.value = latLng
                         if (p0.bearing > 0.01) currentLocationBearing.value =
                             Pair(latLng, if (p0.bearing > 0.01) p0.bearing else 0f)

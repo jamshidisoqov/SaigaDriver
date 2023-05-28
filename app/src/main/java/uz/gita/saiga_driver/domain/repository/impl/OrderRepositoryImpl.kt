@@ -11,7 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import ua.naiksoftware.stomp.dto.StompHeader
 import uz.gita.saiga_driver.MainActivity
+import uz.gita.saiga_driver.data.local.prefs.MySharedPref
 import uz.gita.saiga_driver.data.remote.api.OrderApi
 import uz.gita.saiga_driver.data.remote.request.order.AddressRequest
 import uz.gita.saiga_driver.data.remote.request.order.DirectionRequest
@@ -36,6 +38,7 @@ import javax.inject.Inject
 class OrderRepositoryImpl @Inject constructor(
     private val orderApi: OrderApi,
     private val gson: Gson,
+    private val mySharedPref: MySharedPref,
     private val stompClient: StompClient
 ) : OrderRepository {
 
@@ -230,7 +233,7 @@ class OrderRepositoryImpl @Inject constructor(
 
             compositeDisposable?.add(disLifecycle)
 
-            stompClient.connect()
+            stompClient.connect(/*listOf(StompHeader("Authorization","Bearer ${mySharedPref.token}"))*/)
         } catch (_: Exception) {
             socketStatusLiveData.postValue(Unit)
         }

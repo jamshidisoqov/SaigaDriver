@@ -20,6 +20,7 @@ import uz.gita.saiga_driver.domain.repository.OrderRepository
 import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.TripViewModel
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.distance
+import uz.gita.saiga_driver.utils.extensions.getFormat
 import uz.gita.saiga_driver.utils.extensions.getMessage
 import uz.gita.saiga_driver.utils.extensions.getTimeFormat
 import uz.gita.saiga_driver.utils.hasConnection
@@ -40,10 +41,6 @@ class TripViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-    private var lastLocation: LatLng? = null
-
-    override val currentSpeed = MutableStateFlow(0)
-
     override val currentWay = MutableStateFlow(0.0)
 
     override val currentMoney = MutableStateFlow(mySharedPref.minPrice.toDouble())
@@ -56,9 +53,21 @@ class TripViewModelImpl @Inject constructor(
 
     private var _way = 0.0
 
+    private var lastLocation: LatLng? = null
+
     private var _money = mySharedPref.minPrice.toDouble()
 
-    private val _currentMoney: Double get() = _money
+    private var _price = mySharedPref.minPrice.toDouble()
+
+    private var pricePerKm = mySharedPref.pricePerKm.toDouble()
+
+    private var minCalculationWay = mySharedPref.minWayCalculation.toDouble()
+
+    private var waitingFirstTimePrice = mySharedPref.waitingFirstTimePrice.toDouble()
+
+    private var waitingPricePerMin = mySharedPref.waitingPricePerMin.toDouble()
+
+    private var waitingTimeFirst = mySharedPref.waitingTimeFirst
 
     private var pauseJob: Job? = null
 
@@ -70,15 +79,13 @@ class TripViewModelImpl @Inject constructor(
                     if (isStartTrip) {
                         if (way > 0.003) _way += way
                     }
-                    val speed: Double = way * 1000 * 3.6
-                    if (_way > 3.0) {
-                        val dMoney = (_way - 3.0) * 1000
-                        _money = _currentMoney + dMoney
-                        currentMoney.emit(String.format("%.2f", _money).toDouble())
+                    if (_way > minCalculationWay) {
+                        val dMoney = (_way - minCalculationWay) * pricePerKm
+                        _money = _price + dMoney
+                        currentMoney.emit(_money.getFormat(2).toDouble())
                     }
                     currentWay.emit(_way)
 
-                    currentSpeed.emit(speed.toInt())
                 }
                 lastLocation = currentLocation
             }
@@ -142,38 +149,44 @@ class TripViewModelImpl @Inject constructor(
     }
 
     override fun openGoogleMap() {
-        viewModelScope.launch {
-            if (currentLocation.value != null) {
-                openGoogleMapSharedFlow.emit(currentLocation.value!!)
-            } else {
-                if (hasConnection()) {
-                    loadingSharedFlow.emit(true)
-                    mapRepository.requestCurrentLocation().collectLatest { result ->
-                        loadingSharedFlow.emit(false)
-                        result.onSuccess {
-                            openGoogleMapSharedFlow.emit(it)
-                        }.onMessage {
-                            messageSharedFlow.emit(it)
-                        }.onError {
-                            errorSharedFlow.emit(it.getMessage())
-                        }
-                    }
+        try {
+            viewModelScope.launch {
+                if (currentLocation.value != null) {
+                    openGoogleMapSharedFlow.emit(currentLocation.value!!)
                 } else {
-                    errorSharedFlow.emit("No internet connection")
+                    if (hasConnection()) {
+                        loadingSharedFlow.emit(true)
+                        mapRepository.requestCurrentLocation().collectLatest { result ->
+                            loadingSharedFlow.emit(false)
+                            result.onSuccess {
+                                openGoogleMapSharedFlow.emit(it)
+                            }.onMessage {
+                                messageSharedFlow.emit(it)
+                            }.onError {
+                                errorSharedFlow.emit(it.getMessage())
+                            }
+                        }
+                    } else {
+                        errorSharedFlow.emit("No internet connection")
+                    }
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     override fun pauseOrder() {
         pauseJob?.cancel()
         pauseJob = viewModelScope.launch(Dispatchers.IO) {
-            delay(120000)
-            _money += 2000
+            delay(waitingTimeFirst)
+            _money += waitingFirstTimePrice
+            _price += waitingFirstTimePrice
             currentMoney.emit(_money)
             while (true) {
                 delay(60000)
-                _money += 500
+                _money += waitingPricePerMin
+                _price += waitingPricePerMin
                 currentMoney.emit(_money)
             }
         }

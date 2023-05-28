@@ -30,7 +30,6 @@ class LoginScreen : Fragment(R.layout.screen_login) {
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
-
         viewModel.loadingSharedFlow.onEach {
             if (it) showProgress() else hideProgress()
         }.launchIn(lifecycleScope)

@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
@@ -33,6 +32,7 @@ import uz.gita.saiga_driver.presentation.ui.main.pages.orders.trip.dialog.EndOrd
 import uz.gita.saiga_driver.utils.DEBOUNCE_VIEW_CLICK
 import uz.gita.saiga_driver.utils.currentLocation
 import uz.gita.saiga_driver.utils.extensions.*
+import uz.gita.saiga_driver.utils.speed
 import java.util.*
 
 // Created by Jamshid Isoqov on 2/5/2023
@@ -55,7 +55,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
 
     private var price = 8000.0
 
-    private var isOrderPause: Boolean? = null
+    private var isOrderPause: Boolean = false
 
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
@@ -82,9 +82,9 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             tvWay.text = it.getFormat(2).combine("km")
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.currentSpeed.onEach {
-            tvSpeed.text = it.toString()
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        speed.observe(viewLifecycleOwner) {
+            tvSpeed.text = it.toInt().toString()
+        }
 
         viewModel.endOrderDialog.onEach {
             showEndOrderDialog()
@@ -113,10 +113,7 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             viewModel.setCurrentLocation(it, !isOrderActive)
         }
 
-        cardOrderStatus
-            .clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
+        cardOrderStatus.clicks().debounce(DEBOUNCE_VIEW_CLICK).onEach {
                 if (isOrderActive) {
                     startTrip()
                     fabMapOrder.gone()
@@ -130,17 +127,12 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             }.launchIn(lifecycleScope)
 
         cardBackOrder.setOnClickListener {
-            if (isOrderActive)
-                viewModel.cancelOrder(args.order)
+            if (isOrderActive) viewModel.cancelOrder(args.order)
             else Snackbar.make(
-                cardBackOrder,
-                resources.getString(R.string.not_order_back),
-                Snackbar.LENGTH_LONG
-            )
-                .setAction(resources.getString(R.string.phone)) {
+                cardBackOrder, resources.getString(R.string.not_order_back), Snackbar.LENGTH_LONG
+            ).setAction(resources.getString(R.string.phone)) {
                     callPhoneNumber(args.order.fromUser.phoneNumber)
-                }
-                .show()
+                }.show()
         }
 
         val backPresentCallback = object : OnBackPressedCallback(true) {
@@ -149,25 +141,18 @@ class TripScreen : Fragment(R.layout.screen_trip) {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            backPresentCallback
+            viewLifecycleOwner, backPresentCallback
         )
 
-        fabMapOrder.clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
+        fabMapOrder.clicks().debounce(DEBOUNCE_VIEW_CLICK).onEach {
                 viewModel.openGoogleMap()
             }.launchIn(lifecycleScope)
 
-        btnResumeOrder.clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
-                isOrderPause?.let {
-                    if (it) {
-                        pauseOrder()
-                    } else {
-                        resumeOrder()
-                    }
+        btnResumeOrder.clicks().debounce(DEBOUNCE_VIEW_CLICK).onEach {
+                if (isOrderPause) {
+                    pauseOrder()
+                } else {
+                    resumeOrder()
                 }
             }.launchIn(lifecycleScope)
     }
@@ -220,20 +205,15 @@ class TripScreen : Fragment(R.layout.screen_trip) {
     }
 
     private fun callPhone(phone: String) {
-        hasPermission(
-            permission = Manifest.permission.CALL_PHONE,
-            onPermissionGranted = {
-                callPhoneNumber(phone)
-            },
-            onPermissionDenied = {
-                Snackbar.make(
-                    viewBinding.fabMapOrder, "Permission denied",
-                    Snackbar.LENGTH_SHORT
-                ).setAction("Try check") {
-                    callPhone(phone)
-                }
-                    .show()
-            })
+        hasPermission(permission = Manifest.permission.CALL_PHONE, onPermissionGranted = {
+            callPhoneNumber(phone)
+        }, onPermissionDenied = {
+            Snackbar.make(
+                viewBinding.fabMapOrder, "Permission denied", Snackbar.LENGTH_SHORT
+            ).setAction("Try check") {
+                callPhone(phone)
+            }.show()
+        })
     }
 
     private fun openGoogleMap(addressFrom: AddressResponse, end: LatLng) {

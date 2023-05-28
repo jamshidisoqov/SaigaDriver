@@ -140,7 +140,7 @@ class AddDirectionScreen : Fragment(R.layout.screen_add_direction) {
                 viewModel.addDirection(
                     whereFrom = fromAddress!!,
                     whereTo = toAddress!!,
-                    schedule = schedule,
+                    schedule = schedule.combine(time?: getCurrentTime(Date())),
                     price = inputAmount.text.toString().getDigitOnly(),
                     comment = inputComment.text.toString()
                 )

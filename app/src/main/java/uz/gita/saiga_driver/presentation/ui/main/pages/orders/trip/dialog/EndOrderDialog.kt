@@ -13,8 +13,9 @@ import uz.gita.saiga_driver.utils.decFormat
 import uz.gita.saiga_driver.utils.extensions.combine
 import uz.gita.saiga_driver.utils.extensions.getCurrentTime
 import uz.gita.saiga_driver.utils.extensions.getFinanceType
+import uz.gita.saiga_driver.utils.extensions.getFormat
 import uz.gita.saiga_driver.utils.extensions.include
-import java.util.*
+import java.util.Date
 
 // Created by Jamshid Isoqov on 2/18/2023
 class EndOrderDialog(
@@ -49,17 +50,21 @@ class EndOrderDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewBinding.include {
 
-        tvDistance.text = decFormat.format(distance).combine("km")
+        try {
 
-        tvMoney.text = decFormat.format(price).toDouble().getFinanceType()
+            tvDistance.text = distance.getFormat(2).combine("km")
+            tvMoney.text = price.getFormat(2).toDouble().getFinanceType()
 
-        tvStartTime.text = getCurrentTime(Date(startTime))
+            tvStartTime.text = getCurrentTime(Date(startTime))
 
-        tvEndTime.text = getCurrentTime(Date(endTime))
+            tvEndTime.text = getCurrentTime(Date(endTime))
 
-        btnClose.setOnClickListener {
-            cancelListener?.invoke()
-            dismiss()
+            btnClose.setOnClickListener {
+                cancelListener?.invoke()
+                dismiss()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
     }

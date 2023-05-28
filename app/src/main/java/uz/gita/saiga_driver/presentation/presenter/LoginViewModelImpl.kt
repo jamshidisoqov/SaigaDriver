@@ -42,15 +42,7 @@ class LoginViewModelImpl @Inject constructor(
                 .collectLatest { result ->
                     loadingSharedFlow.emit(false)
                     result.onSuccess {
-                        val userResponse = it.data
-                        mySharedPref.firstName = userResponse.firstName
-                        mySharedPref.lastName = userResponse.lastName
-                        mySharedPref.phoneNumber = userResponse.phoneNumber
-                        mySharedPref.language = userResponse.lang.ordinal
-                        mySharedPref.token = it.token
-                        mySharedPref.userId = userResponse.id
-                        mySharedPref.isVerify = true
-                        direction.navigateToPermissionCheck()
+                        direction.navigateToVerifyScreen(phone)
                     }.onMessage {
                         messageSharedFlow.emit(it)
                     }.onError {

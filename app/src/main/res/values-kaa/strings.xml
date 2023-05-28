@@ -55,6 +55,11 @@
     <string name="filter">Saralaw </string>
     <string name="light">Jarıq </string>
 
+    <string name="last_name">Famılıya</string>
+    <string name="theme">Tema</string>
+    <string name="accept_order">Buyırtpanı alıwdı qaleysizba?</string>
+    <string name="accept">Aliw</string>
+
 
     <string name="hello">Iygilikli kún</string>
     <string name="comment">Comment</string>
@@ -99,17 +104,16 @@
         <item>Ańsat pul tapa alıw múmkinshiligi hám hizmat kórsetiw de arzan </item>
     </string-array>
     <string name="start_time">Baslanǵan waqtı</string>
-
     <string name="end_time">Tamamlanǵan waqtı</string>
     <string name="login_description">Shártnama dúziwde kórsetilgen telefon nomerin kirgiziwińiz kerek</string>
     <string name="payment">Payment</string>
     <string name="payment_connection">No other services have been added yet. They will be added soon. For now, you can top up the account by contacting the administration.</string>
 
     <string name="granted_phone">Eger ruxsat bermasangiz bul xızmetten paydalana almaysız </string>
-    <string name="connection_error">Baylanısıw menen baylanıslı muoomolar júz berdi ótinish tekseriń</string>
+    <string name="connection_error">Baylanısıw menen baylanıslı muoomolar júz berdi tekseriń</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="paid_waiting">Paid waiting</string>
-    <string name="start">Start</string>
-    <string name="end">End</string>
+    <string name="paid_waiting">Pulli kutip turıw </string>
+    <string name="start">Baslaw</string>
+    <string name="end">Tamamlaw</string>
 </resources>

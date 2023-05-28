@@ -55,6 +55,11 @@
     <string name="filter">Saralash</string>
     <string name="light">Yorug`</string>
 
+    <string name="last_name">Familiya</string>
+    <string name="theme">Tema</string>
+    <string name="accept_order">Buyurtmani olishni xoxlaysizmi?</string>
+    <string name="accept">Buyurtmani olish</string>
+
     <string name="hello">Xayrli kun</string>
     <string name="comment">Comment</string>
     <string name="required">Talab qilinadi*</string>
@@ -110,8 +115,8 @@
     <string name="connection_error">Bog \'lanish bilan bog\'liq muoomolar yuz berdi iltimos tekshiring</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="paid_waiting">Paid waiting</string>
-    <string name="start">Start</string>
-    <string name="end">End</string>
+    <string name="paid_waiting">Pulli kutip turish</string>
+    <string name="start">Boshlash</string>
+    <string name="end">Tamomlash</string>
 
 </resources>

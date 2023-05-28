@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import uz.gita.saiga_driver.R
 import uz.gita.saiga_driver.data.local.prefs.MySharedPref
@@ -33,14 +32,16 @@ class SplashScreen : Fragment(R.layout.screen_splash) {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
-            if (mySharedPref.introFinished) {
-                if (mySharedPref.isVerify) {
-                    statusCheck()
+            if (mySharedPref.appIsIntro) {
+                if (mySharedPref.introFinished) {
+                    if (mySharedPref.isVerify) {
+                        statusCheck()
+                    } else {
+                        viewModel.navigateToScreen()
+                    }
                 } else {
-                    viewModel.navigateToScreen()
+                    findNavController().navigate(SplashScreenDirections.actionSplashScreenToIntroScreen())
                 }
-            } else {
-                findNavController().navigate(SplashScreenDirections.actionSplashScreenToIntroScreen())
             }
         }
     }

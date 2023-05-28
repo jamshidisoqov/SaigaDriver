@@ -37,6 +37,8 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="theme">Theme</string>
+    <string name="accept_order">Do you accept this order?</string>
+    <string name="accept">Accept</string>
     <string name="log_out">Log out</string>
     <string name="filter">Filter</string>
     <string name="language">Language</string>
@@ -48,8 +50,6 @@
     <string name="english">English</string>
     <string name="message">Message</string>
     <string name="success">Success</string>
-    <string name="accept_order">Do you accept this order?</string>
-    <string name="accept">Accept</string>
     <string name="edit_profile">Edit profile</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
