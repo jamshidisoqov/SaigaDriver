@@ -41,8 +41,6 @@ class TripViewModelImpl @Inject constructor(
 
     override val errorSharedFlow = MutableSharedFlow<String>()
 
-    private var lastLocation: LatLng? = null
-
     override val currentWay = MutableStateFlow(0.0)
 
     override val currentMoney = MutableStateFlow(mySharedPref.minPrice.toDouble())
@@ -55,9 +53,21 @@ class TripViewModelImpl @Inject constructor(
 
     private var _way = 0.0
 
+    private var lastLocation: LatLng? = null
+
     private var _money = mySharedPref.minPrice.toDouble()
 
     private var _price = mySharedPref.minPrice.toDouble()
+
+    private var pricePerKm = mySharedPref.pricePerKm.toDouble()
+
+    private var minCalculationWay = mySharedPref.minWayCalculation.toDouble()
+
+    private var waitingFirstTimePrice = mySharedPref.waitingFirstTimePrice.toDouble()
+
+    private var waitingPricePerMin = mySharedPref.waitingPricePerMin.toDouble()
+
+    private var waitingTimeFirst = mySharedPref.waitingTimeFirst
 
     private var pauseJob: Job? = null
 
@@ -69,8 +79,8 @@ class TripViewModelImpl @Inject constructor(
                     if (isStartTrip) {
                         if (way > 0.003) _way += way
                     }
-                    if (_way > 3.0) {
-                        val dMoney = (_way - 3.0) * 1000
+                    if (_way > minCalculationWay) {
+                        val dMoney = (_way - minCalculationWay) * pricePerKm
                         _money = _price + dMoney
                         currentMoney.emit(_money.getFormat(2).toDouble())
                     }
@@ -169,14 +179,14 @@ class TripViewModelImpl @Inject constructor(
     override fun pauseOrder() {
         pauseJob?.cancel()
         pauseJob = viewModelScope.launch(Dispatchers.IO) {
-            delay(120000)
-            _money += 2000
-            _price += 2000
+            delay(waitingTimeFirst)
+            _money += waitingFirstTimePrice
+            _price += waitingFirstTimePrice
             currentMoney.emit(_money)
             while (true) {
                 delay(60000)
-                _money += 500
-                _price += 500
+                _money += waitingPricePerMin
+                _price += waitingPricePerMin
                 currentMoney.emit(_money)
             }
         }

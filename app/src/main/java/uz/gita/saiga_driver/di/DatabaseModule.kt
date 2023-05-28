@@ -33,9 +33,6 @@ object DatabaseModule {
 
     private const val SHARED_NAME: String = "app_data"
     private const val SHARED_MODE: Int = Context.MODE_PRIVATE
-    private const val BASE_URL: String = "http://saiga.1291833-cv25558.tw1.ru/"
-    private const val SOCKET_BASE_URL: String = "ws://185.211.170.109:5001/ws"
-
     val unauthorizedLiveData: MutableLiveData<Unit> = MutableLiveData()
 
 
@@ -77,10 +74,11 @@ object DatabaseModule {
     @[Provides Singleton]
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        gson: Gson
+        gson: Gson,
+        mySharedPref: MySharedPref
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(mySharedPref.baseUrl)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
@@ -105,8 +103,13 @@ object DatabaseModule {
         retrofit.create(DirectionsApi::class.java)
 
     @[Provides Singleton]
-    fun provideStomp(okHttpClient: OkHttpClient): StompClient {
-        return Stomp.over(Stomp.ConnectionProvider.OKHTTP, SOCKET_BASE_URL, emptyMap(), okHttpClient)
+    fun provideStomp(okHttpClient: OkHttpClient, mySharedPref: MySharedPref): StompClient {
+        return Stomp.over(
+            Stomp.ConnectionProvider.OKHTTP,
+            mySharedPref.socketBaseUrl,
+            emptyMap(),
+            okHttpClient
+        )
     }
 
     @[Provides Singleton]

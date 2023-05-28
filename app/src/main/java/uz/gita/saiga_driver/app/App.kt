@@ -8,7 +8,7 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import uz.gita.saiga_driver.BuildConfig
 import uz.gita.saiga_driver.app.work.LocationWork
-import uz.gita.saiga_driver.app.work.MinPriceWorker
+import uz.gita.saiga_driver.app.work.FirebaseSyncWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -59,7 +59,7 @@ class App : Application(),Configuration.Provider {
             .build()
 
         val priceWork = PeriodicWorkRequest.Builder(
-            MinPriceWorker::class.java,
+            FirebaseSyncWorker::class.java,
             DEFAULT_WORK_INTERVAL_IN_MINUTES,
             TimeUnit.MINUTES
         )
