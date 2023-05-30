@@ -42,15 +42,11 @@ class LoginScreen : Fragment(R.layout.screen_login) {
             showMessageDialog(it)
         }.launchIn(lifecycleScope)
 
-        btnToRegister.clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
+        btnToRegister.clicks().debounce(DEBOUNCE_VIEW_CLICK).onEach {
                 viewModel.navigateToRegister()
             }.launchIn(lifecycleScope)
 
-        inputPhone.textChanges()
-            .debounce(DEBOUNCE_TEXT_CHANGES)
-            .onEach {
+        inputPhone.textChanges().debounce(DEBOUNCE_TEXT_CHANGES).onEach {
                 val bool = it.length == 17
                 btnLogin.isEnabled = bool
                 if (bool) {
@@ -58,9 +54,7 @@ class LoginScreen : Fragment(R.layout.screen_login) {
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        btnLogin.clicks()
-            .debounce(DEBOUNCE_VIEW_CLICK)
-            .onEach {
+        btnLogin.clicks().debounce(DEBOUNCE_VIEW_CLICK).onEach {
                 viewModel.login(inputPhone.text.toString().replace(Regex("[() ]"), ""))
             }.launchIn(lifecycleScope)
 
