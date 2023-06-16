@@ -15,7 +15,6 @@
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="28sp"
-
         android:textStyle="bold" />
 
 
