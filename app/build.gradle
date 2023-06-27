@@ -31,6 +31,7 @@ android {
 
         release {
             minifyEnabled false
+            buildConfigField "String", "MAP_API_KEY", "\"AIzaSyB88Y--vbmjOWwUPMIJ71APPpAKc5ODOMQ\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

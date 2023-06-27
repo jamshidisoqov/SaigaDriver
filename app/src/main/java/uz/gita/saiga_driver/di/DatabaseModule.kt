@@ -3,7 +3,6 @@ package uz.gita.saiga_driver.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -50,7 +49,7 @@ object DatabaseModule {
         mySharedPref: MySharedPref
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor.Builder(ctx).build())
+            //.addInterceptor(ChuckerInterceptor.Builder(ctx).build())
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .readTimeout(20L, TimeUnit.SECONDS)
             .writeTimeout(20L, TimeUnit.SECONDS)
